@@ -3,12 +3,12 @@ import java.util.Random;
 
 public class Model {
 
-    int numberOfLocations = 10;//64
+    int numberOfLocations = 1;//64
     ArrayList<Location> locations;
     Random random;
     double a;
     double q;
-    private float T = 1000;//10000
+    private float T = 100;//10000
     public int N;
     public double mD;
     public double lyambda_out;

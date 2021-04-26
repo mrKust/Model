@@ -26,25 +26,20 @@ public class Location {
         inputStream.add(new WorkUser(2, numberOfThisLocation, 0.03, 2));
         inputStream.add(new WorkUser(3, numberOfThisLocation, 0.05, 5));*/
 
-        int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / q) / this.sizeOfQuant);
-        //int tmpSize = (int) Math.ceil(1 / this.sizeOfQuant);;
-        //int tmpSize = 1000;
+        int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
         double tmpWindowIn = - (Math.log(Math.random()) / lyambda);
-        //int tmpWindowIn = (int) Math.ceil(- (Math.log(Math.random()) / lyambda));
         this.lengthOfAllWorks += tmpSize;
-        int userNumber = 1;
+        int userNumber = 0;
 
-        inputStream.add(new WorkUser(userNumber, numberOfThisLocation, tmpWindowIn, tmpSize));
+        inputStream.add(new WorkUser(userNumber, numberOfThisLocation, tmpWindowIn, tmpSize, this.q));
         userNumber++;
 
-        for (int i = 1; i < 10000; i++) {
-            tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / q) / this.sizeOfQuant);
-            //tmpSize = (int) Math.ceil(1 / this.sizeOfQuant);
-            //tmpSize = 1000;
+        while (inputStream.get(userNumber - 1).workInfo.windowIn <= time) {
+            tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
             tmpWindowIn = - (Math.log(Math.random()) / lyambda);
-            //tmpWindowIn = (int) Math.ceil(- (Math.log(Math.random()) / lyambda));
             inputStream.add(new WorkUser(userNumber, numberOfThisLocation,
-                    inputStream.get(i - 1).workInfo.windowIn + tmpWindowIn, tmpSize));
+                    inputStream.get(userNumber - 1).workInfo.windowIn + tmpWindowIn, tmpSize,
+                    this.q));
             this.lengthOfAllWorks += tmpSize;
             userNumber++;
         }

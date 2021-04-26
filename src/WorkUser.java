@@ -12,6 +12,8 @@ public class WorkUser {
     // она переносится и не обрабатывается(false)
     public boolean statusOfBeginingCount;//true работа уже начала выполняться
     //на сервере , false ещё не начала
+    public double timeInCurrentLocation; //показывает сколько времени проведёт в данной области
+    //если время достигло 0, то пользователь выбирает новую область для перехода
     public double q;
     public double a;
     public double d;
@@ -19,7 +21,7 @@ public class WorkUser {
     public boolean currentProcessingWorkOnServer;//показывает обрабатывается работа
     //сервером на данном кванте или нет false не обрабатывается, true обрабатывается
 
-    public WorkUser(int i, int numberOfLocation, double windowIn, double workSize) {
+    public WorkUser(int i, int numberOfLocation, double windowIn, double workSize, double qIn) {
 
         userNumber = i;
         userLocation = numberOfLocation;
@@ -30,6 +32,8 @@ public class WorkUser {
         this.statusOfBeginingCount = false;
         this.currentProcessingWorkOnServer = false;
         this.delay = 0;
+        this.q = qIn;
+        this.timeInCurrentLocation = Math.ceil(- (Math.log(Math.random()) / 1));//это надо спросить и пофиксить
         workInfo = new Pair(windowIn, workSize);
         System.out.println("User №" + this.userNumber + " from area " + this.userLocation +
                 " have work size = " + this.workInfo.workSize + " windowIn = " + workInfo.windowIn);
