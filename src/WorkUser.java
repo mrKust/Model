@@ -12,7 +12,7 @@ public class WorkUser {
     // она переносится и не обрабатывается(false)
     public boolean statusOfBeginingCount;//true работа уже начала выполняться
     //на сервере , false ещё не начала
-    public double timeInCurrentLocation; //показывает сколько времени проведёт в данной области
+    public int timeInCurrentLocation; //показывает сколько времени проведёт в данной области
     //если время достигло 0, то пользователь выбирает новую область для перехода
     public double q;
     public double a;
@@ -21,7 +21,8 @@ public class WorkUser {
     public boolean currentProcessingWorkOnServer;//показывает обрабатывается работа
     //сервером на данном кванте или нет false не обрабатывается, true обрабатывается
 
-    public WorkUser(int i, int numberOfLocation, double windowIn, double workSize, double qIn) {
+    public WorkUser(int i, int numberOfLocation, double windowIn, double workSize, double qIn,
+                    double sizeOfQuant) {
 
         userNumber = i;
         userLocation = numberOfLocation;
@@ -33,7 +34,7 @@ public class WorkUser {
         this.currentProcessingWorkOnServer = false;
         this.delay = 0;
         this.q = qIn;
-        this.timeInCurrentLocation = Math.ceil(- (Math.log(Math.random()) / 1));//это надо спросить и пофиксить
+        this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / this.q) / sizeOfQuant);//это надо спросить и пофиксить
         workInfo = new Pair(windowIn, workSize);
         System.out.println("User №" + this.userNumber + " from area " + this.userLocation +
                 " have work size = " + this.workInfo.workSize + " windowIn = " + workInfo.windowIn);
@@ -42,25 +43,20 @@ public class WorkUser {
 
     public void increaseWorkProcessing(double serviceRate) {
         this.workProcessingValue += serviceRate;
+        this.decreaseTimeInCurrentLocation();
         this.checkWorkStatus();
     }
 
     public void changeUserLocation(int newLocation) {
-        if (newLocation != (-1))
-            this.userLocation = newLocation;
+        this.userLocation = newLocation;
     }
 
     public void changeWorkLocation(int newLocation) {
         this.workLocation = newLocation;
     }
 
-    public boolean changeLocationOrNot() {
-        if (this.workLocation != this.userLocation)
-            return false;
-        Random random = new Random();
-        if (random.nextDouble() <= this.a)
-            return true;
-        else return false;
+    public void decreaseTimeInCurrentLocation() {
+        this.timeInCurrentLocation--;
     }
 
     public void checkWorkStatus() {
@@ -87,7 +83,6 @@ public class WorkUser {
 
     public void setStatusTransfer(int currentWindow) {
         this.statusOfProcessing = false;
-        //this.workInfo.windowIn = currentWindow + (int)Math.ceil(distribution.getExponential(this.d));
     }
 
     public void setCurrentProcessingWorkOnServer(boolean status) {

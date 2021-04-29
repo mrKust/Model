@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class Model {
 
-    int numberOfLocations = 1;//64
+    int numberOfLocations = 2;//64
     ArrayList<Location> locations;
     Random random;
     double a;
@@ -40,6 +40,25 @@ public class Model {
 
             for (int i = 0; i < locations.size(); i++) {
                 locations.get(i).processingAtLocation(t);
+                for (int k = 0; k < locations.get(i).inputStream.size(); k++) {
+                    WorkUser tmp = locations.get(i).inputStream.get(k);
+                    if ((tmp.statusFinishedOrUnfinished == false) && (tmp.timeInCurrentLocation == 0)) {
+                        ArrayList<Double> timeToMove = new ArrayList<>();
+                        for (int j = 0; j < this.numberOfLocations; j++) {
+                            if (j == k)
+                                timeToMove.add(-1.0);
+                            timeToMove.add(- (Math.log(Math.random()) / this.q));
+                        }
+                        int nextLocation = 0;
+                        double tmpMinTimeToMove = timeToMove.get(0);
+                        for (int j = 1; j < timeToMove.size(); j++) {
+                            if ((timeToMove.get(j) < tmpMinTimeToMove) && (timeToMove.get(j) != -1.0)) {
+                                nextLocation = j;
+                                tmpMinTimeToMove = timeToMove.get(j);
+                            }
+                        }
+                    }
+                }
             }
         }
 
