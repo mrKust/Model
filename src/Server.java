@@ -26,7 +26,6 @@ public class Server {
                             this.serviceRate);
                     workUsersOnServer.get(i).setCurrentProcessingWorkOnServer(false);
                     workUsersOnServer.get((i + 1) % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
-                    //workUsersOnServer.get(i).delay++;
                     break;
                 }
             }
@@ -54,7 +53,7 @@ public class Server {
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
         this.countServiceRate();
-        tmp.delay = (int) (currentTime - tmp.workInfo.windowIn);
+        tmp.delay = currentTime - tmp.workInfo.windowIn;
         System.out.println("Work removed from server. User number " + tmp.userNumber);
     }
 

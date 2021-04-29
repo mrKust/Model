@@ -17,7 +17,7 @@ public class WorkUser {
     public double q;
     public double a;
     public double d;
-    public int delay;
+    public double delay;
     public boolean currentProcessingWorkOnServer;//показывает обрабатывается работа
     //сервером на данном кванте или нет false не обрабатывается, true обрабатывается
 

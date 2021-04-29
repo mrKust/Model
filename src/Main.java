@@ -8,7 +8,7 @@ public class Main {
         double d = 0.15; //время необходимое для переноса данных
         double a = 0.5; //вероятность перехода данных на другие вычислительные мощности
         double quant = 0.01; // размер кванта
-        FileWork file = new FileWork("/media/D/Pereezd/Labs/Димплом/Model_diskret/model.txt", false);
+        FileWork file = new FileWork("/media/D/Pereezd/Labs/Димплом/Model/model.txt", false);
 
         for (float lyambda = (float) 0.1; lyambda < 2.0; lyambda += 0.1) {
         //for (float lyambda = (float) 0.1; lyambda < 0.3; lyambda += 0.1) {

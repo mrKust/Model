@@ -22,14 +22,14 @@ public class Location {
     }
 
     public void createInputStream(float lyambda, double time) {
-        inputStream.add(new WorkUser(1, numberOfThisLocation, 0.0289, 14,
+        /*inputStream.add(new WorkUser(1, numberOfThisLocation, 0.0289, 14,
                 this.q, this.sizeOfQuant));
         inputStream.add(new WorkUser(2, numberOfThisLocation, 0.03, 2,
                 this.q, this.sizeOfQuant));
         inputStream.add(new WorkUser(3, numberOfThisLocation, 0.05, 5,
-                this.q, this.sizeOfQuant));
+                this.q, this.sizeOfQuant));*/
 
-        /*int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
+        int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
         double tmpWindowIn = - (Math.log(Math.random()) / lyambda);
         this.lengthOfAllWorks += tmpSize;
         int userNumber = 0;
@@ -47,7 +47,7 @@ public class Location {
             this.lengthOfAllWorks += tmpSize;
             userNumber++;
         }
-        this.numberOfRequests = userNumber;*/
+        this.numberOfRequests = userNumber;
 
     }
 
