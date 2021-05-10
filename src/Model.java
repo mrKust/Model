@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class Model {
 
-    int numberOfLocations = 5;//64
+    int numberOfLocations = 2;//64
     ArrayList<Location> locations;
     Random random;
     double a;
@@ -40,25 +40,7 @@ public class Model {
 
             for (int i = 0; i < locations.size(); i++) {
                 locations.get(i).processingAtLocation(t);
-               /* for (int k = 0; k < locations.get(i).inputStream.size(); k++) {
-                    WorkUser tmp = locations.get(i).inputStream.get(k);
-                    if ((tmp.statusFinishedOrUnfinished == false) && (tmp.timeInCurrentLocation == 0)) {
-                        ArrayList<Double> timeToMove = new ArrayList<>();
-                        for (int j = 0; j < this.numberOfLocations; j++) {
-                            if (j == k)
-                                timeToMove.add(-1.0);
-                            timeToMove.add(- (Math.log(Math.random()) / this.q));
-                        }
-                        int nextLocation = 0;
-                        double tmpMinTimeToMove = timeToMove.get(0);
-                        for (int j = 1; j < timeToMove.size(); j++) {
-                            if ((timeToMove.get(j) < tmpMinTimeToMove) && (timeToMove.get(j) != -1.0)) {
-                                nextLocation = j;
-                                tmpMinTimeToMove = timeToMove.get(j);
-                            }
-                        }
-                    }
-                }*/
+                this.userSwitchLocation();
             }
         }
 
@@ -89,6 +71,42 @@ public class Model {
 
         System.out.println("End of modeling");
 
+    }
+
+    public void userSwitchLocation() {
+        for (int i = 0; i < locations.size(); i++) {
+            Location tmpLocation = locations.get(i);
+            Server tmpServer = tmpLocation.server;
+            Random random = new Random();
+            for (int k = 0; k < tmpServer.workUsersOnServer.size(); k++) {
+                WorkUser tmpWorkUser = tmpServer.workUsersOnServer.get(k);
+                if (tmpWorkUser.timeInCurrentLocation == 0) {
+                    double probabilityToSwitch = random.nextDouble();
+                    int nextLocation = random.nextInt(numberOfLocations);
+                    if (nextLocation == tmpWorkUser.userLocation) {
+                        while (nextLocation == tmpWorkUser.userLocation) {
+                            nextLocation = random.nextInt(numberOfLocations);
+                        }
+                    }
+                    if (tmpWorkUser.userLocation != tmpWorkUser.workLocation) {
+                        tmpWorkUser.userLocation = nextLocation;
+                        continue;
+                    }
+                    //в этом случае меняем положение пользователя
+                    if (tmpWorkUser.userLocation == tmpWorkUser.workLocation) {
+                        //в случае, если случайное значение больше заданного значения
+                        //вероятности, тогда пользователь решает перенести свою работу с одних серверов на другие
+                        if (probabilityToSwitch > this.a) {
+                            tmpServer.removeJobToSwitchServer(tmpWorkUser);
+                            locations.get(nextLocation).server.addNewJob(tmpWorkUser);
+                            tmpWorkUser.workLocation = nextLocation;
+                            tmpWorkUser.userLocation = nextLocation;
+
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public double countMdAverage(ArrayList<Double> locationsData) {

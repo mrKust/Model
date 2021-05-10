@@ -57,6 +57,13 @@ public class Server {
         System.out.println("Work removed from server. User number " + tmp.userNumber);
     }
 
+    public void removeJobToSwitchServer(WorkUser tmp) {
+        this.numberOfJobs--;
+        this.workUsersOnServer.remove(tmp);
+        this.countServiceRate();
+        System.out.println("Work removed to change server. User number " + tmp.userNumber);
+    }
+
     public void countServiceRate() {
         int numberOfActiveWorks = 0;
         for (int i = 0; i < this.workUsersOnServer.size(); i++) {
