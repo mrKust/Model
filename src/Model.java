@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class Model {
 
-    int numberOfLocations = 2;//64
+    int numberOfLocations = 5;//64
     ArrayList<Location> locations;
     Random random;
     double a;
