@@ -82,12 +82,30 @@ public class Model {
                 WorkUser tmpWorkUser = tmpServer.workUsersOnServer.get(k);
                 if (tmpWorkUser.timeInCurrentLocation == 0) {
                     double probabilityToSwitch = random.nextDouble();
-                    int nextLocation = random.nextInt(numberOfLocations);
-                    if (nextLocation == tmpWorkUser.userLocation) {
-                        while (nextLocation == tmpWorkUser.userLocation) {
-                            nextLocation = random.nextInt(numberOfLocations);
+                    ArrayList<Pair> timeToNextLocation = new ArrayList<>();
+                    for (int j = 0; j < locations.size(); j++) {
+                        if (j == tmpWorkUser.userLocation)
+                            continue;
+                        //добавляем пару с значениями
+                        //1 - Номер локации
+                        //2 - Путь до данной локации (значение распределённое по экспоненциальному
+                        // закону с параметром q)
+                        timeToNextLocation.add(new Pair(j,
+                                (int) Math.ceil(- (Math.log(Math.random()) / this.q) / this.sizeOfQuant)));
+                    }
+
+                    int nextLocation = (int) timeToNextLocation.get(0).windowIn;
+                    double tmpClosetPath = timeToNextLocation.get(0).workSize;
+                    for (int j = 0; j < timeToNextLocation.size(); j++) {
+                        if (tmpClosetPath > timeToNextLocation.get(j).workSize) {
+                            tmpClosetPath = timeToNextLocation.get(j).workSize;
+                            nextLocation = (int) timeToNextLocation.get(j).windowIn;
                         }
                     }
+
+                    //случай, когда задача пользователя уже находится отдельно от пользователя
+                    //в случае симметричной системы, мы не переносим задачу, а только перемещаем
+                    //пользователя
                     if (tmpWorkUser.userLocation != tmpWorkUser.workLocation) {
                         tmpWorkUser.userLocation = nextLocation;
                         continue;

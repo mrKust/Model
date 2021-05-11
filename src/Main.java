@@ -3,7 +3,7 @@ public class Main {
     public static void main(String[] args) {
         double q = 1;//время перемещения q = 1, для симметричной системы
         double d = 0.15; //время необходимое для переноса данных
-        double a = 0.5; //вероятность перехода данных на другие вычислительные мощности
+        double a = 0.7; //вероятность перехода данных на другие вычислительные мощности
         double quant = 0.01; // размер кванта
         FileWork fileUbuntu = new FileWork("/media/D/Pereezd/Labs/Димплом/Model/model.txt", false);
         //FileWork fileMac = new FileWork("Desktop/Model/model.txt", false);
