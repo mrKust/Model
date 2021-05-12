@@ -1,4 +1,3 @@
-import java.util.Random;
 
 public class WorkUser {
 
@@ -15,8 +14,7 @@ public class WorkUser {
     public int timeInCurrentLocation; //показывает сколько времени проведёт в данной области
     //если время достигло 0, то пользователь выбирает новую область для перехода
     public double q;
-    public double a;
-    public double d;
+    public double sizeOfQuant;
     public double delay;
     public boolean currentProcessingWorkOnServer;//показывает обрабатывается работа
     //сервером на данном кванте или нет false не обрабатывается, true обрабатывается
@@ -34,7 +32,8 @@ public class WorkUser {
         this.currentProcessingWorkOnServer = false;
         this.delay = 0;
         this.q = qIn;
-        this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / this.q) / sizeOfQuant);//это надо спросить и пофиксить
+        this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / this.q) /
+                this.sizeOfQuant);//это надо спросить и пофиксить
         workInfo = new Pair(windowIn, workSize);
         System.out.println("User №" + this.userNumber + " from area " + this.userLocation +
                 " have work size = " + this.workInfo.workSize + " windowIn = " + workInfo.windowIn);
@@ -49,6 +48,7 @@ public class WorkUser {
 
     public void changeUserLocation(int newLocation) {
         this.userLocation = newLocation;
+        this.countTimeInNewLocation();
     }
 
     public void changeWorkLocation(int newLocation) {
@@ -77,12 +77,8 @@ public class WorkUser {
         this.statusOfBeginingCount = status;
     }
 
-    public void setStatusWorking() {
-        this.statusOfProcessing = true;
-    }
-
-    public void setStatusTransfer(int currentWindow) {
-        this.statusOfProcessing = false;
+    public void countTimeInNewLocation() {
+        this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / this.q) / sizeOfQuant);
     }
 
     public void setCurrentProcessingWorkOnServer(boolean status) {

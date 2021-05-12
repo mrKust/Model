@@ -8,6 +8,7 @@ public class Model {
     Random random;
     double a;
     double q;
+    public double d;
     private float T = 1000;//10000
     public int N;
     public double mD;
@@ -25,6 +26,7 @@ public class Model {
         }
         this.a = a;
         this.q = q;
+        this.d = d;
         this.N = 0;
         this.mD = 0;
         this.lyambda_out = 0;
@@ -117,8 +119,8 @@ public class Model {
                         if (probabilityToSwitch > this.a) {
                             tmpServer.removeJobToSwitchServer(tmpWorkUser);
                             locations.get(nextLocation).server.addNewJob(tmpWorkUser);
-                            tmpWorkUser.workLocation = nextLocation;
-                            tmpWorkUser.userLocation = nextLocation;
+                            tmpWorkUser.changeWorkLocation(nextLocation);
+                            tmpWorkUser.changeUserLocation(nextLocation);
 
                         }
                     }
