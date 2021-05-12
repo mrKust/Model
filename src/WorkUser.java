@@ -13,14 +13,15 @@ public class WorkUser {
     //на сервере , false ещё не начала
     public int timeInCurrentLocation; //показывает сколько времени проведёт в данной области
     //если время достигло 0, то пользователь выбирает новую область для перехода
-    public double q;
+    public int timeToTransfer;
+    public double d;
     public double sizeOfQuant;
     public double delay;
     public boolean currentProcessingWorkOnServer;//показывает обрабатывается работа
     //сервером на данном кванте или нет false не обрабатывается, true обрабатывается
 
-    public WorkUser(int i, int numberOfLocation, double windowIn, double workSize, double qIn,
-                    double sizeOfQuant) {
+    public WorkUser(int i, int numberOfLocation, double windowIn, double workSize, double sizeOfQuant,
+                    double dIn) {
 
         userNumber = i;
         userLocation = numberOfLocation;
@@ -31,9 +32,10 @@ public class WorkUser {
         this.statusOfBeginingCount = false;
         this.currentProcessingWorkOnServer = false;
         this.delay = 0;
-        this.q = qIn;
-        this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / this.q) /
-                this.sizeOfQuant);//это надо спросить и пофиксить
+        this.d = dIn;
+        this.sizeOfQuant = sizeOfQuant;
+        this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / 1) /
+                this.sizeOfQuant);
         workInfo = new Pair(windowIn, workSize);
         System.out.println("User №" + this.userNumber + " from area " + this.userLocation +
                 " have work size = " + this.workInfo.workSize + " windowIn = " + workInfo.windowIn);
@@ -41,9 +43,17 @@ public class WorkUser {
     }
 
     public void increaseWorkProcessing(double serviceRate) {
-        this.workProcessingValue += serviceRate;
-        this.decreaseTimeInCurrentLocation();
-        this.checkWorkStatus();
+        boolean status = this.checkWorkForTransferProcess();
+        if (status == true) {
+            this.workProcessingValue += serviceRate;
+            this.decreaseTimeInCurrentLocation();
+            this.checkWorkStatus();
+        } else {
+            this.timeToTransfer--;
+            if (this.timeToTransfer == 0)
+                this.statusOfProcessing = true;
+
+        }
     }
 
     public void changeUserLocation(int newLocation) {
@@ -77,8 +87,24 @@ public class WorkUser {
         this.statusOfBeginingCount = status;
     }
 
+    //возвращает true - если работа не переносится и может обрабатываться
+    //           false - если работа переносится и не может получить обслуживание
+    public boolean checkWorkForTransferProcess() {
+        if (this.statusOfProcessing = true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void transferWork() {
+        this.statusOfProcessing = false;
+        this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) /
+                this.sizeOfQuant);
+    }
+
     public void countTimeInNewLocation() {
-        this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / this.q) / sizeOfQuant);
+        this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / 1) / sizeOfQuant);
     }
 
     public void setCurrentProcessingWorkOnServer(boolean status) {

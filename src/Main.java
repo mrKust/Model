@@ -12,7 +12,8 @@ public class Main {
             System.out.println("lyambda = " + lyambda);
             Model model = new Model(lyambda, a, q, d, quant);
             model.getModeling();
-            fileUbuntu.write(lyambda, model.mD, model.lyambda_out, model.mediumSizeOfWork);
+            fileUbuntu.write(lyambda, model.mD, model.lyambda_out, model.mediumSizeOfWork,
+                    model.mDTheoretical);
             //fileMac.write(lyambda, model.mD, model.lyambda_out, model.mediumSizeOfWork);
             System.out.println("lyambda = " + lyambda + " M[D] = " + model.mD + " lyambda_out = " +
                     model.lyambda_out);

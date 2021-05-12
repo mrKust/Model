@@ -12,6 +12,7 @@ public class Model {
     private float T = 1000;//10000
     public int N;
     public double mD;
+    public double mDTheoretical;
     public double lyambda_out;
     public double sizeOfQuant;
     public double mediumSizeOfWork;
@@ -22,13 +23,14 @@ public class Model {
         random = new Random();
         this.sizeOfQuant = quant;
         for (int i = 0; i < numberOfLocations; i++) {
-            locations.add(new Location(lyambda, T, q, i, quant));
+            locations.add(new Location(lyambda, T, q, i, quant, d));
         }
         this.a = a;
         this.q = q;
         this.d = d;
         this.N = 0;
         this.mD = 0;
+        //this.mDTheoretical = 1 / (1 - lyambda);
         this.lyambda_out = 0;
         this.mediumSizeOfWork = 0;
 
@@ -121,6 +123,7 @@ public class Model {
                             locations.get(nextLocation).server.addNewJob(tmpWorkUser);
                             tmpWorkUser.changeWorkLocation(nextLocation);
                             tmpWorkUser.changeUserLocation(nextLocation);
+                            tmpWorkUser.transferWork();
 
                         }
                     }
@@ -131,8 +134,10 @@ public class Model {
 
     public double countMdAverage(ArrayList<Double> locationsData) {
         double tmp = 0;
+        System.out.println("Info about delay's length in new location");
         for (int i = 0; i < locationsData.size(); i++) {
             tmp += locationsData.get(i);
+            System.out.println("Delay " + locationsData.get(i));
         }
         return tmp / locationsData.size();
     }

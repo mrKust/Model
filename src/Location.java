@@ -6,11 +6,13 @@ public class Location {
     public Server server;
     public ArrayList<WorkUser> inputStream;
     public double q;
+    public double d;
     public double sizeOfQuant;
     public double lengthOfAllWorks;
     public int numberOfRequests;
 
-    public Location(float lyambda, double time, double q, int numberOfThisLocation, double quant) {
+    public Location(float lyambda, double time, double q, int numberOfThisLocation, double quant,
+                    double d) {
         this.numberOfThisLocation = numberOfThisLocation;
         server = new Server(this.numberOfThisLocation);
         inputStream = new ArrayList<>();
@@ -34,8 +36,8 @@ public class Location {
         this.lengthOfAllWorks += tmpSize;
         int userNumber = 0;
 
-        inputStream.add(new WorkUser(userNumber, numberOfThisLocation, tmpWindowIn, tmpSize, this.q,
-                 this.sizeOfQuant));
+        inputStream.add(new WorkUser(userNumber, numberOfThisLocation, tmpWindowIn, tmpSize,
+                this.sizeOfQuant, this.d));
         userNumber++;
 
         while (inputStream.get(userNumber - 1).workInfo.windowIn <= time) {
@@ -43,7 +45,7 @@ public class Location {
             tmpWindowIn = - (Math.log(Math.random()) / lyambda);
             inputStream.add(new WorkUser(userNumber, numberOfThisLocation,
                     inputStream.get(userNumber - 1).workInfo.windowIn + tmpWindowIn, tmpSize,
-                    this.q, this.sizeOfQuant));
+                    this.sizeOfQuant, this.d));
             this.lengthOfAllWorks += tmpSize;
             userNumber++;
         }
@@ -79,7 +81,7 @@ public class Location {
     }
 
     public double countMd(int N) {
-        int commonDelay = 0;
+        double commonDelay = 0;
         for (int k = 0; k < inputStream.size(); k++) {
             if (inputStream.get(k).statusFinishedOrUnfinished == true) {
                 commonDelay += inputStream.get(k).delay;
