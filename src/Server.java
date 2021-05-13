@@ -21,12 +21,19 @@ public class Server {
             for (int i = 0; i < workUsersOnServer.size(); i++) {
                 if ((workUsersOnServer.get(i).statusOfProcessing == true &&
                         (workUsersOnServer.get(i).currentProcessingWorkOnServer == true))) {
-                    double coeffUdalennost = 1;
-                    workUsersOnServer.get(i).increaseWorkProcessing(coeffUdalennost *
-                            this.serviceRate);
-                    workUsersOnServer.get(i).setCurrentProcessingWorkOnServer(false);
-                    workUsersOnServer.get((i + 1) % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
-                    break;
+                    //если работа не переносится и готова к обслуживанию
+                    if (workUsersOnServer.get(i).transferStatus == false) {
+                        double coeffUdalennost = 1;
+                        workUsersOnServer.get(i).increaseWorkProcessing(coeffUdalennost *
+                                this.serviceRate);
+                        workUsersOnServer.get(i).setCurrentProcessingWorkOnServer(false);
+                        workUsersOnServer.get((i + 1) % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
+                        break;
+                    } else { //если работа пока переносится
+                        workUsersOnServer.get(i).decreaseTransferTime();
+                        if (workUsersOnServer.get(i).timeToTransfer == 0)
+                            workUsersOnServer.get(i).transferStatus = false;
+                    }
                 }
             }
             for (int i = 0; i < workUsersOnServer.size(); i++) {

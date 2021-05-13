@@ -7,12 +7,16 @@ public class WorkUser {
     public boolean statusFinishedOrUnfinished;// true работа выполнена, false ещё не выполнена
     public int userLocation;
     public int workLocation;
-    public boolean statusOfProcessing;//показывает получает ли работа обслуживание(true) или
-    // она переносится и не обрабатывается(false)
+    public boolean statusOfProcessing;//показывает данную работу вообще начинали обслуживать(true) или
+    // её ещё вообще не обрабатывали(false)
     public boolean statusOfBeginingCount;//true работа уже начала выполняться
     //на сервере , false ещё не начала
+    public boolean transferStatus; //показывает данная работа сейчас в состоянии переноса(true) или
+    //данная работа уже находится на сервере и готова к обработке(false)
     public int timeInCurrentLocation; //показывает сколько времени проведёт в данной области
     //если время достигло 0, то пользователь выбирает новую область для перехода
+    public int timeToTransfer;//показывает сколько времени данная работа будет переноситься
+    // с одних серверов на другие
     public double d;
     public double sizeOfQuant;
     public double delay;
@@ -30,6 +34,7 @@ public class WorkUser {
         this.statusOfProcessing = true;
         this.statusOfBeginingCount = false;
         this.currentProcessingWorkOnServer = false;
+        this.transferStatus = false;
         this.delay = 0;
         this.d = dIn;
         this.sizeOfQuant = sizeOfQuant;
@@ -76,6 +81,16 @@ public class WorkUser {
 
     public void setStatusOfBeginingCount(boolean status) {
         this.statusOfBeginingCount = status;
+    }
+
+    public void transfer() {
+        this.transferStatus = true;
+        this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) /
+                this.sizeOfQuant);
+    }
+
+    public void decreaseTransferTime() {
+        this.timeToTransfer--;
     }
 
     public void countTimeInNewLocation() {

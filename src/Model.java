@@ -30,7 +30,7 @@ public class Model {
         this.d = d;
         this.N = 0;
         this.mD = 0;
-        this.mDTheoretical = 1 / (1 - lyambda);
+        //this.mDTheoretical = 1 / (1 - lyambda);
         this.lyambda_out = 0;
         this.mediumSizeOfWork = 0;
 
@@ -116,13 +116,14 @@ public class Model {
                     }
                     //в этом случае меняем положение пользователя
                     if (tmpWorkUser.userLocation == tmpWorkUser.workLocation) {
+                        tmpWorkUser.changeUserLocation(nextLocation);
                         //в случае, если случайное значение больше заданного значения
                         //вероятности, тогда пользователь решает перенести свою работу с одних серверов на другие
                         if (probabilityToSwitch > this.a) {
                             tmpServer.removeJobToSwitchServer(tmpWorkUser);
                             locations.get(nextLocation).server.addNewJob(tmpWorkUser);
                             tmpWorkUser.changeWorkLocation(nextLocation);
-                            tmpWorkUser.changeUserLocation(nextLocation);
+                            tmpWorkUser.transfer();
 
                         }
                     }

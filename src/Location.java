@@ -17,6 +17,7 @@ public class Location {
         server = new Server(this.numberOfThisLocation);
         inputStream = new ArrayList<>();
         this.q = q;
+        this.d = d;
         this.sizeOfQuant = quant;
         this.lengthOfAllWorks = 0;
         this.numberOfRequests = 0;
