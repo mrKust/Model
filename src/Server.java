@@ -19,27 +19,29 @@ public class Server {
     public void getService(double currentTime) {
         if (workUsersOnServer.size() != 0) {
             for (int i = 0; i < workUsersOnServer.size(); i++) {
-                if ((workUsersOnServer.get(i).statusOfProcessing == true &&
-                        (workUsersOnServer.get(i).currentProcessingWorkOnServer == true))) {
+                WorkUser tmpWorkUser = workUsersOnServer.get(i);
+                if ((tmpWorkUser.statusOfProcessing == true &&
+                        (tmpWorkUser.currentProcessingWorkOnServer == true))) {
                     //если работа не переносится и готова к обслуживанию
-                    if (workUsersOnServer.get(i).transferStatus == false) {
+                    if (tmpWorkUser.transferStatus == false) {
                         double coeffUdalennost = 1;
-                        workUsersOnServer.get(i).increaseWorkProcessing(coeffUdalennost *
+                        tmpWorkUser.increaseWorkProcessing(coeffUdalennost *
                                 this.serviceRate);
-                        workUsersOnServer.get(i).setCurrentProcessingWorkOnServer(false);
+                        tmpWorkUser.setCurrentProcessingWorkOnServer(false);
                         workUsersOnServer.get((i + 1) % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
                         break;
                     } else { //если работа пока переносится
-                        workUsersOnServer.get(i).decreaseTransferTime();
-                        if (workUsersOnServer.get(i).timeToTransfer == 0)
-                            workUsersOnServer.get(i).transferStatus = false;
+                        tmpWorkUser.decreaseTransferTime();
+                        if (tmpWorkUser.timeToTransfer == 0)
+                            tmpWorkUser.transferStatus = false;
                     }
                 }
             }
             for (int i = 0; i < workUsersOnServer.size(); i++) {
-                if (workUsersOnServer.get(i).statusFinishedOrUnfinished == true) {
-                    workUsersOnServer.get(i).statusOfProcessing = false;
-                    this.removeJob(workUsersOnServer.get(i), currentTime);
+                WorkUser tmpWorkUser = workUsersOnServer.get(i);
+                if (tmpWorkUser.statusFinishedOrUnfinished == true) {
+                    tmpWorkUser.statusOfProcessing = false;
+                    this.removeJob(tmpWorkUser, currentTime);
                     continue;
                 }
             }
@@ -52,14 +54,12 @@ public class Server {
         tmp.setStatusOfBeginingCount(true);
         this.numberOfJobs++;
         this.workUsersOnServer.add(tmp);
-        this.countServiceRate();
         System.out.println("Work added to server. User number " + tmp.userNumber);
     }
 
     public void removeJob(WorkUser tmp, double currentTime) {
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
-        this.countServiceRate();
         tmp.delay = currentTime - tmp.workInfo.windowIn;
         System.out.println("Work removed from server. User number " + tmp.userNumber);
     }
@@ -67,15 +67,7 @@ public class Server {
     public void removeJobToSwitchServer(WorkUser tmp) {
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
-        this.countServiceRate();
         System.out.println("Work removed to change server. User number " + tmp.userNumber);
     }
 
-    public void countServiceRate() {
-        int numberOfActiveWorks = 0;
-        for (int i = 0; i < this.workUsersOnServer.size(); i++) {
-            if (this.workUsersOnServer.get(i).statusOfProcessing == true)
-                numberOfActiveWorks++;
-        }
-    }
 }
