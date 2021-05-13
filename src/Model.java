@@ -30,7 +30,7 @@ public class Model {
         this.d = d;
         this.N = 0;
         this.mD = 0;
-        //this.mDTheoretical = 1 / (1 - lyambda);
+        this.mDTheoretical = 1 / (1 - lyambda);
         this.lyambda_out = 0;
         this.mediumSizeOfWork = 0;
 
@@ -81,11 +81,10 @@ public class Model {
         for (int i = 0; i < locations.size(); i++) {
             Location tmpLocation = locations.get(i);
             Server tmpServer = tmpLocation.server;
-            Random random = new Random();
             for (int k = 0; k < tmpServer.workUsersOnServer.size(); k++) {
                 WorkUser tmpWorkUser = tmpServer.workUsersOnServer.get(k);
                 if (tmpWorkUser.timeInCurrentLocation == 0) {
-                    double probabilityToSwitch = random.nextDouble();
+                    double probabilityToSwitch = Math.random();
                     ArrayList<Pair> timeToNextLocation = new ArrayList<>();
                     for (int j = 0; j < locations.size(); j++) {
                         if (j == tmpWorkUser.userLocation)
@@ -107,6 +106,7 @@ public class Model {
                         }
                     }
 
+                    //Alarm в этот блок кода мы не заходим
                     //случай, когда задача пользователя уже находится отдельно от пользователя
                     //в случае симметричной системы, мы не переносим задачу, а только перемещаем
                     //пользователя
@@ -123,7 +123,6 @@ public class Model {
                             locations.get(nextLocation).server.addNewJob(tmpWorkUser);
                             tmpWorkUser.changeWorkLocation(nextLocation);
                             tmpWorkUser.changeUserLocation(nextLocation);
-                            tmpWorkUser.transferWork();
 
                         }
                     }

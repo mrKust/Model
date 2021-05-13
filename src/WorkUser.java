@@ -13,7 +13,6 @@ public class WorkUser {
     //на сервере , false ещё не начала
     public int timeInCurrentLocation; //показывает сколько времени проведёт в данной области
     //если время достигло 0, то пользователь выбирает новую область для перехода
-    public int timeToTransfer;
     public double d;
     public double sizeOfQuant;
     public double delay;
@@ -43,17 +42,9 @@ public class WorkUser {
     }
 
     public void increaseWorkProcessing(double serviceRate) {
-        boolean status = this.checkWorkForTransferProcess();
-        if (status == true) {
-            this.workProcessingValue += serviceRate;
-            this.decreaseTimeInCurrentLocation();
-            this.checkWorkStatus();
-        } else {
-            this.timeToTransfer--;
-            if (this.timeToTransfer == 0)
-                this.statusOfProcessing = true;
-
-        }
+        this.workProcessingValue += serviceRate;
+        this.decreaseTimeInCurrentLocation();
+        this.checkWorkStatus();
     }
 
     public void changeUserLocation(int newLocation) {
@@ -85,22 +76,6 @@ public class WorkUser {
 
     public void setStatusOfBeginingCount(boolean status) {
         this.statusOfBeginingCount = status;
-    }
-
-    //возвращает true - если работа не переносится и может обрабатываться
-    //           false - если работа переносится и не может получить обслуживание
-    public boolean checkWorkForTransferProcess() {
-        if (this.statusOfProcessing = true) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void transferWork() {
-        this.statusOfProcessing = false;
-        this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) /
-                this.sizeOfQuant);
     }
 
     public void countTimeInNewLocation() {
