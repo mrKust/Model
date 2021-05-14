@@ -119,7 +119,7 @@ public class Model {
                         tmpWorkUser.changeUserLocation(nextLocation);
                         //в случае, если случайное значение больше заданного значения
                         //вероятности, тогда пользователь решает перенести свою работу с одних серверов на другие
-                        if (probabilityToSwitch > this.a) {
+                        if (probabilityToSwitch < this.a) {
                             tmpServer.removeJobToSwitchServer(tmpWorkUser);
                             locations.get(nextLocation).server.addNewJob(tmpWorkUser);
                             tmpWorkUser.changeWorkLocation(nextLocation);
