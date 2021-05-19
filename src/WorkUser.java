@@ -85,8 +85,8 @@ public class WorkUser {
 
     public void transfer() {
         this.transferStatus = true;
-        this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) /
-                this.sizeOfQuant);
+        //this.timeToTransfer = 0;
+        this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) / this.sizeOfQuant);
     }
 
     public void decreaseTransferTime() {

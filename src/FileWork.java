@@ -45,6 +45,17 @@ public class FileWork {
         writer.flush();
     }
 
+    public void write(float one, double two, double three, double four) {
+        writer.print(one);
+        writer.write(" ");
+        writer.print(two);
+        writer.write(" ");
+        writer.print(three);
+        writer.write(" ");
+        writer.println(four);
+        writer.flush();
+    }
+
     public void write(float one, double two, double three, double four, double five) {
         writer.print(one);
         writer.write(" ");

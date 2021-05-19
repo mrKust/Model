@@ -33,6 +33,7 @@ public class Location {
                 this.q, this.sizeOfQuant));*/
 
         int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
+        //int tmpSize = 100;
         double tmpWindowIn = - (Math.log(Math.random()) / lyambda);
         this.lengthOfAllWorks += tmpSize;
         int userNumber = 0;

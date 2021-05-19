@@ -30,7 +30,7 @@ public class Model {
         this.d = d;
         this.N = 0;
         this.mD = 0;
-        //this.mDTheoretical = 1 / (1 - lyambda);
+        this.mDTheoretical = 1 / (1 - lyambda);
         this.lyambda_out = 0;
         this.mediumSizeOfWork = 0;
 
@@ -106,7 +106,6 @@ public class Model {
                         }
                     }
 
-                    //Alarm в этот блок кода мы не заходим
                     //случай, когда задача пользователя уже находится отдельно от пользователя
                     //в случае симметричной системы, мы не переносим задачу, а только перемещаем
                     //пользователя
@@ -121,7 +120,7 @@ public class Model {
                         //вероятности, тогда пользователь решает перенести свою работу с одних серверов на другие
                         if (probabilityToSwitch < this.a) {
                             tmpServer.removeJobToSwitchServer(tmpWorkUser);
-                            locations.get(nextLocation).server.addNewJob(tmpWorkUser);
+                            locations.get(nextLocation).server.addNewTransferJob(tmpWorkUser);
                             tmpWorkUser.changeWorkLocation(nextLocation);
                             tmpWorkUser.transfer();
 

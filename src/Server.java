@@ -7,6 +7,7 @@ public class Server {
     int numberOfJobs;
     int defaultServiceRate;
     ArrayList<WorkUser> workUsersOnServer;
+    ArrayList<WorkUser> transferWorks;
 
     public Server(int i) {
         this.defaultServiceRate = 1;
@@ -14,6 +15,7 @@ public class Server {
         this.numberOfJobs = 0;
         this.serviceRate = this.defaultServiceRate;
         workUsersOnServer = new ArrayList<>();
+        transferWorks = new ArrayList<>();
     }
 
     public void getService(double currentTime) {
@@ -22,19 +24,12 @@ public class Server {
                 WorkUser tmpWorkUser = workUsersOnServer.get(i);
                 if ((tmpWorkUser.statusOfProcessing == true &&
                         (tmpWorkUser.currentProcessingWorkOnServer == true))) {
-                    //если работа не переносится и готова к обслуживанию
-                    if (tmpWorkUser.transferStatus == false) {
-                        double coeffUdalennost = 1;
-                        tmpWorkUser.increaseWorkProcessing(coeffUdalennost *
-                                this.serviceRate);
-                        tmpWorkUser.setCurrentProcessingWorkOnServer(false);
-                        workUsersOnServer.get((i + 1) % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
-                        break;
-                    } else { //если работа пока переносится
-                        tmpWorkUser.decreaseTransferTime();
-                        if (tmpWorkUser.timeToTransfer == 0)
-                            tmpWorkUser.transferStatus = false;
-                    }
+                     double coeffUdalennost = 1;
+                     tmpWorkUser.increaseWorkProcessing(coeffUdalennost *
+                             this.serviceRate);
+                     tmpWorkUser.setCurrentProcessingWorkOnServer(false);
+                     workUsersOnServer.get((i + 1) % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
+                     break;
                 }
             }
             for (int i = 0; i < workUsersOnServer.size(); i++) {
@@ -43,6 +38,19 @@ public class Server {
                     tmpWorkUser.statusOfProcessing = false;
                     this.removeJob(tmpWorkUser, currentTime);
                     continue;
+                }
+            }
+
+            for (int i = 0; i < transferWorks.size(); i++) {
+                WorkUser tmp = transferWorks.get(i);
+                if (tmp.transferStatus == true) {
+                    tmp.decreaseTransferTime();
+                    if (tmp.timeToTransfer == 0) {
+                        tmp.transferStatus = false;
+                        this.workUsersOnServer.add(tmp);
+                        this.transferWorks.remove(tmp);
+                        this.numberOfJobs++;
+                    }
                 }
             }
         }
@@ -55,6 +63,11 @@ public class Server {
         this.numberOfJobs++;
         this.workUsersOnServer.add(tmp);
         System.out.println("Work added to server. User number " + tmp.userNumber);
+    }
+
+    public void addNewTransferJob(WorkUser tmp) {
+        this.transferWorks.add(tmp);
+        System.out.println("Work added to server transfer list. User number " + tmp.userNumber);
     }
 
     public void removeJob(WorkUser tmp, double currentTime) {
