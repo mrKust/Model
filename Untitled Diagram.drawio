@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-05-25T14:18:44.975Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36" etag="QXj8jTb026AfNPgd6MEE" version="14.7.1" type="github">
+<mxfile host="app.diagrams.net" modified="2021-05-25T14:21:44.944Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36" etag="-FFyniZr8joXxBo-14jQ" version="14.7.1" type="github">
   <diagram id="OqSuWVzTt75mdJxpegzV" name="Page-1">
     <mxGraphModel dx="677" dy="363" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -144,14 +144,8 @@
         </mxCell>
         <mxCell id="48Upjjoi4N_PVufpQmXR-39" value="" style="endArrow=classic;html=1;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="100" y="600" as="sourcePoint" />
+            <mxPoint x="100" y="570" as="sourcePoint" />
             <mxPoint x="100" y="540" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="48Upjjoi4N_PVufpQmXR-40" value="" style="endArrow=classic;html=1;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="80" y="640" as="sourcePoint" />
-            <mxPoint x="80" y="550" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="48Upjjoi4N_PVufpQmXR-41" value="" style="endArrow=classic;html=1;" edge="1" parent="1">
@@ -260,7 +254,16 @@
           <mxGeometry x="122.5" y="380" width="330" height="20" as="geometry" />
         </mxCell>
         <mxCell id="48Upjjoi4N_PVufpQmXR-72" value="Начало отсчёта, эквивалентно 0" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Times New Roman;" vertex="1" parent="1">
-          <mxGeometry x="37" y="625" width="90" height="56" as="geometry" />
+          <mxGeometry x="37" y="660" width="90" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="48Upjjoi4N_PVufpQmXR-73" value="Момент после одного кванта, еквивалентно 0,25" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="82" y="585" width="70" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="48Upjjoi4N_PVufpQmXR-75" value="" style="endArrow=classic;html=1;fontFamily=Times New Roman;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="80" y="660" as="sourcePoint" />
+            <mxPoint x="80" y="550" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
