@@ -2,18 +2,24 @@ import java.util.ArrayList;
 
 public class Server {
 
+    /** Данное поле хранит номер локации, которую обслуживает сервер*/
     int numberOfLocation;
+    /** Данное поле хранит значение интенсивности, с которой сервер обрабатывает задачи
+     * пользователей*/
     double serviceRate;
+    /** Данное поле показывает количество задач, готовых к обслуживанию, хранящихся на данном сервере*/
     int numberOfJobs;
-    int defaultServiceRate;
+    /** Данное поле хранит список пар пользователь - задача, которые, в текущий момент, храняться
+     * на данном сервере и готовы к получению обслуживания*/
     ArrayList<WorkUser> workUsersOnServer;
+    /** Данное поле хранит список пар пользователь - задача, которые, в текущий момент, переносятся
+     * на данный сервер */
     ArrayList<WorkUser> transferWorks;
 
-    public Server(int i) {
-        this.defaultServiceRate = 1;
+    public Server(int i, double serviceRate) {
         this.numberOfLocation = i;
         this.numberOfJobs = 0;
-        this.serviceRate = this.defaultServiceRate;
+        this.serviceRate = serviceRate;
         workUsersOnServer = new ArrayList<>();
         transferWorks = new ArrayList<>();
     }

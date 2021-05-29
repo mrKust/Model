@@ -1,34 +1,56 @@
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * В данном классе создаются объекты областей, а так же происходит управление перемещениями
+ * пользователей и подсчёт среднего значения задержки, выходной интенсвности, среднего размера работы,
+ * по всем областям
+ */
 public class Model {
 
-    int numberOfLocations = 5;//64
-    ArrayList<Location> locations;
+    /** В данном поле храниться количество областей в системе */
+    public int numberOfLocations;
+    /** В данном листе храняться объекты отвечающие за области*/
+    public ArrayList<Location> locations;
     Random random;
-    double a;
-    double q;
+    /** Данное поле хранит вероятность, с которой пользователь, при перемещении в
+     * следующую область, решит перенести свою задачу на сервера следующей области */
+    public double a;
+    /** Данное поле хранит значение для рассчёта времени перемещения пользователя
+     * до следующей локации. Для симметричной модели значение этого параметра всегда равно 1*/
+    public double q;
+    /** Данное поле хранит значение для рассчёта времени необходимого для перемещения
+     * задачи пользователя с серверов одной области на сервера другой области*/
     public double d;
-    private float T = 1000;//10000
-    public int N;
+    /** Данное поле хранит условное количество единиц времени производится
+     * моделирование*/
+    private float T;
+    /** Данное поле хранит среднее (по облостям) значение задержки задачи в системе*/
     public double mD;
+    /***/
     public double mDTheoretical;
+    /** Данное поле хранит среднее (по облостям) значение выходной интенсивности в системе*/
     public double lyambda_out;
+    /** Данное поле хранит размер кванта, то есть размер шага с которым мы двигаемся по
+     * временной шкале каждой локации*/
     public double sizeOfQuant;
+    /** Данное поле хранит среднее (по облостям) значение размера задачи в системе*/
     public double mediumSizeOfWork;
 
-    public Model(float lyambda, double a, double q, double d, double quant) {
+    public Model(float lyambda, double a, double q, double d, double quant, int numberOfLocations,
+                 float T, double serviceRate) {
 
         locations = new ArrayList<>();
         random = new Random();
         this.sizeOfQuant = quant;
         for (int i = 0; i < numberOfLocations; i++) {
-            locations.add(new Location(lyambda, T, q, i, quant, d));
+            locations.add(new Location(lyambda, T, q, i, quant, d, serviceRate));
         }
         this.a = a;
         this.q = q;
         this.d = d;
-        this.N = 0;
+        this.numberOfLocations = numberOfLocations;
+        this.T = T;
         this.mD = 0;
         this.mDTheoretical = 1 / (1 - lyambda);
         this.lyambda_out = 0;

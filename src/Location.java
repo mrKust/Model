@@ -1,9 +1,17 @@
 import java.util.ArrayList;
 
+/**
+ * Данные класс отвечает за области. В данном классе храниться сервер, закрепленной за данной
+ * областью, временная шкала данной области. Так же в данном классе осуществляется подсчёт средних
+ * значений задержки, выходной интенсивности, размера работы
+ */
 public class Location {
 
+    /** Данное поле хранит номер данной локации*/
     public int numberOfThisLocation;
+    /** Данное поле хранит сервер, который обслуживает задачи в данной области*/
     public Server server;
+    /** Данное поле хранит размер задач и расписание того, когда они попадают в систему*/
     public ArrayList<WorkUser> inputStream;
     public double q;
     public double d;
@@ -12,9 +20,9 @@ public class Location {
     public int numberOfRequests;
 
     public Location(float lyambda, double time, double q, int numberOfThisLocation, double quant,
-                    double d) {
+                    double d, double serviceRate) {
         this.numberOfThisLocation = numberOfThisLocation;
-        server = new Server(this.numberOfThisLocation);
+        server = new Server(this.numberOfThisLocation, serviceRate);
         inputStream = new ArrayList<>();
         this.q = q;
         this.d = d;
