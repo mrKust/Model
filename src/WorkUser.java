@@ -48,8 +48,13 @@ public class WorkUser {
      * области*/
     public int timeToTransfer;//показывает сколько времени данная работа будет переноситься
     // с одних серверов на другие
+    /** Данное поле хранит значение коэффициента необходимого при рассчёте времени необходимого
+     * для перемещения задачи пользователя с серверов одной области на сервера другой области */
     public double d;
+    /** Данное поле хранит в себе размер одного кванта времени*/
     public double sizeOfQuant;
+    /** В данное поле записывается то сколько времени заявка провела в системе, в том случае
+     * если задача будет успешна выполнена системой */
     public double delay;
     /** Данное поле показывает должна ли в данный момент времени обслуживаться задача сервером
      * области или же нет
@@ -58,6 +63,17 @@ public class WorkUser {
     public boolean currentProcessingWorkOnServer;//показывает обрабатывается работа
     //сервером на данном кванте или нет false не обрабатывается, true обрабатывается
 
+    /**
+     * Данный конструктор создаёт заявку и записывает в неё необходимые данные, ат так же
+     * выставляет флаги в необходимые позиции
+     * @param i Номер пользователя
+     * @param numberOfLocation Номер начальной области пользователя и его задачи
+     * @param windowIn Время появления заявки в системе
+     * @param workSize Размер задачи
+     * @param sizeOfQuant Размер кванта
+     * @param dIn Коэффициент для рассчёта времени необходимого для перемещения задачи
+     *            пользователя с серверов одной области на сервера другой области
+     */
     public WorkUser(int i, int numberOfLocation, double windowIn, double workSize, double sizeOfQuant,
                     double dIn) {
 
@@ -81,25 +97,46 @@ public class WorkUser {
 
     }
 
+    /**
+     * Данный метод увеличивает значение текущего прогресса задачи пользователя на значение
+     * интенсивности обработки задач сервером
+     * @param serviceRate Значение интенсивности, с которой сервер обрабатывает задачу
+     */
     public void increaseWorkProcessing(double serviceRate) {
         this.workProcessingValue += serviceRate;
         this.decreaseTimeInCurrentLocation();
         this.checkWorkStatus();
     }
 
+    /**
+     * Данный метод изменяет текущее положение пользователя на новое
+     * @param newLocation Номер новой области, в которую переместился пользователь
+     */
     public void changeUserLocation(int newLocation) {
         this.userLocation = newLocation;
         this.countTimeInNewLocation();
     }
 
+    /**
+     * Данный метод изменяет текущее положение задачи пользователя на новое
+     * @param newLocation Номер новой области, на сервера которой пользователь решил перенести
+     *                    свою задачу
+     */
     public void changeWorkLocation(int newLocation) {
         this.workLocation = newLocation;
     }
 
+    /**
+     * Данный метод уменьшает время пребывания пользователя в текущей локации
+     */
     public void decreaseTimeInCurrentLocation() {
         this.timeInCurrentLocation--;
     }
 
+    /**
+     * Данный метод проверяет была ли задача полностью решена, после последнего обращения сервера к
+     * ней или ей ещё требуется дополнительное обслуживание
+     */
     public void checkWorkStatus() {
         if (workProcessingValue >= workInfo.workSize) {// если работа выполнена
             this.statusFinishedOrUnfinished = true;
@@ -114,24 +151,46 @@ public class WorkUser {
         }
     }
 
+    /**
+     * Данный метод обновляет специальное поле статуса заявки, в случае если система приступила к
+     * её обработке
+     * @param status Значение нового статуса
+     */
     public void setStatusOfBeginingCount(boolean status) {
         this.statusOfBeginingCount = status;
     }
 
+    /**
+     * Данный метод устанавливает для заявки специальный статус и рассчитывает время необходимое для
+     * переноса заявки на сервера новой области, в случае, если пользователь решит перенести свою
+     * задачу
+     */
     public void transfer() {
         this.transferStatus = true;
         //this.timeToTransfer = 0;
         this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) / this.sizeOfQuant);
     }
 
+    /**
+     * Данный метод уменьшает время необходимое на перемещение задачи с серверов одной области на
+     * сервера другой области
+     */
     public void decreaseTransferTime() {
         this.timeToTransfer--;
     }
 
+    /**
+     * Данный метод рассчитывает какое количество времени проведёт пользователь в новой области
+     */
     public void countTimeInNewLocation() {
         this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / 1) / sizeOfQuant);
     }
 
+    /**
+     * Данный метод устанавливает статус, который показывает будет ли сервер в текущий момент
+     * времени обслуживать данную заявку или же нет
+     * @param status Значение статуса заявки в данный момент времени
+     */
     public void setCurrentProcessingWorkOnServer(boolean status) {
         this.currentProcessingWorkOnServer = status;
     }

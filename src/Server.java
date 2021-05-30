@@ -16,6 +16,11 @@ public class Server {
      * на данный сервер */
     ArrayList<WorkUser> transferWorks;
 
+    /**
+     * Данный конструктор создаёт объект, который обслуживает и перемщает задачи пользователей
+     * @param i Номер текущего сервера
+     * @param serviceRate Интенсивность обслуживания задач текущим сервером
+     */
     public Server(int i, double serviceRate) {
         this.numberOfLocation = i;
         this.numberOfJobs = 0;
@@ -24,6 +29,11 @@ public class Server {
         transferWorks = new ArrayList<>();
     }
 
+    /**
+     * Данный метод обслуживает задачи в соответсвии с их очерёдностью, а так отвечает за перенос
+     * задач с других серверов на текущий
+     * @param currentTime Текущий момент времени
+     */
     public void getService(double currentTime) {
         if (workUsersOnServer.size() != 0) {
             for (int i = 0; i < workUsersOnServer.size(); i++) {
@@ -62,6 +72,10 @@ public class Server {
         }
     }
 
+    /**
+     * Данный метод добавляет на сервер новую задачу
+     * @param tmp Новая задача
+     */
     public void addNewJob(WorkUser tmp) {
         if (this.numberOfJobs == 0)
             tmp.setCurrentProcessingWorkOnServer(true);
@@ -71,11 +85,21 @@ public class Server {
         System.out.println("Work added to server. User number " + tmp.userNumber);
     }
 
+    /**
+     * Данный метод добавляет на сервер новую задачу с другого сервера. Данная задача помещается
+     * в список переносящихся задач
+     * @param tmp Новая задача, которая только переноситься на текущий сервер
+     */
     public void addNewTransferJob(WorkUser tmp) {
         this.transferWorks.add(tmp);
         System.out.println("Work added to server transfer list. User number " + tmp.userNumber);
     }
 
+    /**
+     * Данный метод удаляет выполненную задачу с сервера, и записывает данной задаче значение задержки
+     * @param tmp Выполненная задача
+     * @param currentTime Текущий момент времени
+     */
     public void removeJob(WorkUser tmp, double currentTime) {
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
@@ -83,6 +107,11 @@ public class Server {
         System.out.println("Work removed from server. User number " + tmp.userNumber);
     }
 
+    /**
+     * Данный метод удаляет задачу с данного сервера для того, что бы перенести данную задачу на
+     * другой сервер
+     * @param tmp Задача, которая переносится на другой сервер
+     */
     public void removeJobToSwitchServer(WorkUser tmp) {
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);

@@ -1,6 +1,9 @@
 import java.io.*;
 import java.util.LinkedList;
 
+/**
+ * Данный класс является вспомогательным и осуществляет запись полученных значений в txt файл
+ */
 public class FileWork {
     protected String nameOfFile;
     PrintWriter writer;
