@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/**
+ * Данный класс отвечает за обработку задач на той области, за которой закреплён сервер
+ */
 public class Server {
 
     /** Данное поле хранит номер локации, которую обслуживает сервер*/
@@ -38,6 +41,7 @@ public class Server {
         if (workUsersOnServer.size() != 0) {
             for (int i = 0; i < workUsersOnServer.size(); i++) {
                 WorkUser tmpWorkUser = workUsersOnServer.get(i);
+                //tmpWorkUser.decreaseTimeInCurrentLocation();
                 if ((tmpWorkUser.statusOfProcessing == true &&
                         (tmpWorkUser.currentProcessingWorkOnServer == true))) {
                      double coeffUdalennost = 1;

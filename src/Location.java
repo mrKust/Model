@@ -102,6 +102,11 @@ public class Location {
                     (inputStream.get(i).statusOfBeginingCount == false)) {
                 server.addNewJob(inputStream.get(i));
             }
+
+            if ((time >= inputStream.get(i).workInfo.windowIn) &&
+                    (inputStream.get(i).statusOfBeginingCount == true)) {
+                inputStream.get(i).decreaseTimeInCurrentLocation();
+            }
         }
         System.out.println("Out t = " + time);
     }
