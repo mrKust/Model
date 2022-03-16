@@ -6,18 +6,18 @@ import java.util.ArrayList;
 public class Server {
 
     /** Данное поле хранит номер локации, которую обслуживает сервер*/
-    int numberOfLocation;
+    public int numberOfLocation;
     /** Данное поле хранит значение интенсивности, с которой сервер обрабатывает задачи
      * пользователей*/
-    double serviceRate;
+    public double serviceRate;
     /** Данное поле показывает количество задач, готовых к обслуживанию, хранящихся на данном сервере*/
-    int numberOfJobs;
+    public int numberOfJobs;
     /** Данное поле хранит список пар пользователь - задача, которые, в текущий момент, храняться
      * на данном сервере и готовы к получению обслуживания*/
-    ArrayList<WorkUser> workUsersOnServer;
+    public ArrayList<WorkUser> workUsersOnServer;
     /** Данное поле хранит список пар пользователь - задача, которые, в текущий момент, переносятся
      * на данный сервер */
-    ArrayList<WorkUser> transferWorks;
+    public ArrayList<WorkUser> transferWorks;
 
     /**
      * Данный конструктор создаёт объект, который обслуживает и перемщает задачи пользователей
@@ -38,7 +38,7 @@ public class Server {
      * @param currentTime Текущий момент времени
      */
     public void getService(double currentTime) {
-        if (workUsersOnServer.size() != 0) {
+        if  ( (workUsersOnServer.size() != 0) || (transferWorks.size() != 0) ) {
             for (int i = 0; i < workUsersOnServer.size(); i++) {
                 WorkUser tmpWorkUser = workUsersOnServer.get(i);
                 //tmpWorkUser.decreaseTimeInCurrentLocation();
@@ -86,7 +86,7 @@ public class Server {
         tmp.setStatusOfBeginingCount(true);
         this.numberOfJobs++;
         this.workUsersOnServer.add(tmp);
-        System.out.println("Work added to server. User number " + tmp.userNumber);
+        //System.out.println("Work added to server. User number " + tmp.userNumber);
     }
 
     /**
@@ -96,7 +96,7 @@ public class Server {
      */
     public void addNewTransferJob(WorkUser tmp) {
         this.transferWorks.add(tmp);
-        System.out.println("Work added to server transfer list. User number " + tmp.userNumber);
+        //System.out.println("Work added to server transfer list. User number " + tmp.userNumber);
     }
 
     /**
@@ -108,7 +108,7 @@ public class Server {
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
         tmp.delay = currentTime - tmp.workInfo.windowIn;
-        System.out.println("Work removed from server. User number " + tmp.userNumber);
+        //System.out.println("Work removed from server. User number " + tmp.userNumber);
     }
 
     /**
@@ -119,7 +119,7 @@ public class Server {
     public void removeJobToSwitchServer(WorkUser tmp) {
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
-        System.out.println("Work removed to change server. User number " + tmp.userNumber);
+        //System.out.println("Work removed to change server. User number " + tmp.userNumber);
     }
 
 }

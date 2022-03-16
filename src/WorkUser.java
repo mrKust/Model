@@ -92,8 +92,8 @@ public class WorkUser {
         this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / 1) /
                 this.sizeOfQuant);
         workInfo = new Pair(windowIn, workSize);
-        System.out.println("User №" + this.userNumber + " from area " + this.userLocation +
-                " have work size = " + this.workInfo.workSize + " windowIn = " + workInfo.windowIn);
+        /*System.out.println("User №" + this.userNumber + " from area " + this.userLocation +
+                " have work size = " + this.workInfo.workSize + " windowIn = " + workInfo.windowIn);*/
 
     }
 
@@ -140,14 +140,14 @@ public class WorkUser {
     public void checkWorkStatus() {
         if (workProcessingValue >= workInfo.workSize) {// если работа выполнена
             this.statusFinishedOrUnfinished = true;
-            System.out.println("User's №" + this.userNumber + " from area " + this.workLocation +
+            /*System.out.println("User's №" + this.userNumber + " from area " + this.workLocation +
                     " have done his job with rating " + this.workProcessingValue +
-                    " from " + this.workInfo.workSize + " windowIn = " + workInfo.windowIn);
+                    " from " + this.workInfo.workSize + " windowIn = " + workInfo.windowIn);*/
         } else {// если работа ещё не выполнена
             this.statusFinishedOrUnfinished = false;
-            System.out.println("User's №" + this.userNumber + " from area " + this.workLocation +
+            /*System.out.println("User's №" + this.userNumber + " from area " + this.workLocation +
                     " have progress " + this.workProcessingValue +
-                    " from " + this.workInfo.workSize + " windowIn = " + workInfo.windowIn);
+                    " from " + this.workInfo.workSize + " windowIn = " + workInfo.windowIn);*/
         }
     }
 

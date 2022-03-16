@@ -72,6 +72,21 @@ public class FileWork {
         writer.flush();
     }
 
+    public void write(float one, double two, double three, double four, double five, double six) {
+        writer.print(one);
+        writer.write(" ");
+        writer.print(two);
+        writer.write(" ");
+        writer.print(three);
+        writer.write(" ");
+        writer.print(four);
+        writer.write(" ");
+        writer.print(five);
+        writer.write(" ");
+        writer.println(six);
+        writer.flush();
+    }
+
     public void writeInColumns(String[] text) {
         String[] tmp = text[0].split(" ");
         System.out.println(tmp.length);
