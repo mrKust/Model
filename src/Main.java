@@ -21,7 +21,7 @@ public class Main {
     public static int numberOfLocations = 48;
     /** Данный параметр означает какое условное количество единиц времени производится
      * моделирование*/
-    public static float T = 100;
+    public static float T = 300;
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
 
@@ -42,7 +42,8 @@ public class Main {
         System.out.println("lambda = low" + " M[D] = " + modelLowIntensity.mD + " lambda_out = " +
                 modelLowIntensity.lyambda_out + "\n");
 
-        for (float lyambda = (float) 0.1; lyambda < 0.8; lyambda += 0.1) {
+        //for (float lyambda = (float) 0.2; lyambda < 0.3; lyambda += 0.1) {
+        for (float lyambda = (float) 0.1; lyambda < 1.5; lyambda += 0.1) {
             System.out.println("lyambda = " + lyambda);
 
             Model model = new Model(lyambda, a, q, d, quant, numberOfLocations, T, serviceRate);

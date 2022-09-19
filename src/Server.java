@@ -42,8 +42,7 @@ public class Server {
             for (int i = 0; i < workUsersOnServer.size(); i++) {
                 WorkUser tmpWorkUser = workUsersOnServer.get(i);
                 //tmpWorkUser.decreaseTimeInCurrentLocation();
-                if ((tmpWorkUser.statusOfProcessing == true &&
-                        (tmpWorkUser.currentProcessingWorkOnServer == true))) {
+                if ((tmpWorkUser.statusOfProcessing && tmpWorkUser.currentProcessingWorkOnServer)) {
                      double coeffUdalennost = 1;
                      tmpWorkUser.increaseWorkProcessing(coeffUdalennost *
                              this.serviceRate);
@@ -54,23 +53,24 @@ public class Server {
             }
             for (int i = 0; i < workUsersOnServer.size(); i++) {
                 WorkUser tmpWorkUser = workUsersOnServer.get(i);
-                if (tmpWorkUser.statusFinishedOrUnfinished == true) {
+                if (tmpWorkUser.statusFinishedOrUnfinished) {
                     tmpWorkUser.statusOfProcessing = false;
                     this.removeJob(tmpWorkUser, currentTime);
-                    continue;
                 }
             }
 
             for (int i = 0; i < transferWorks.size(); i++) {
                 WorkUser tmp = transferWorks.get(i);
-                if (tmp.transferStatus == true) {
+                if (tmp.transferStatus) {
                     tmp.decreaseTransferTime();
                     if (tmp.timeToTransfer == 0) {
                         tmp.transferStatus = false;
-                        this.workUsersOnServer.add(tmp);
                         this.transferWorks.remove(tmp);
-                        this.numberOfJobs++;
+                        addNewJob(tmp);
+                        /*this.workUsersOnServer.add(tmp);
+                        this.numberOfJobs++;*/
                     }
+                    //System.out.println("Size of transfer list = " + transferWorks.size() + " location " + numberOfLocation);
                 }
             }
         }

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -194,7 +195,7 @@ public class Model {
                 WorkUser tmpWorkUser = tmpServer.workUsersOnServer.get(k);
                 if (tmpWorkUser.timeInCurrentLocation == 0) {
                     double probabilityToSwitch = Math.random();
-                    ArrayList<Pair> timeToNextLocation = new ArrayList<>();
+                    List<Pair> timeToNextLocation = new ArrayList<>();
                     for (int j = 0; j < locations.size(); j++) {
                         if (j == tmpWorkUser.userLocation)
                             continue;
@@ -220,10 +221,10 @@ public class Model {
                     //пользователя
                     if (tmpWorkUser.userLocation != tmpWorkUser.workLocation) {
                         tmpWorkUser.userLocation = nextLocation;
-                        continue;
-                    }
-                    //в этом случае меняем положение пользователя
-                    if (tmpWorkUser.userLocation == tmpWorkUser.workLocation) {
+
+                    } else {
+                        //когда пользователь и задача находятся в одной области
+                        //в этом случае меняем положение пользователя
                         tmpWorkUser.changeUserLocation(nextLocation);
                         //в случае, если случайное значение больше заданного значения
                         //вероятности, тогда пользователь решает перенести свою работу с одних серверов на другие
