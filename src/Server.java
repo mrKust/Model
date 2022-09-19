@@ -108,6 +108,9 @@ public class Server {
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
         tmp.delay = currentTime - tmp.workInfo.windowIn;
+        Model.numberOfExitedWorks++;
+        Model.summaryLengthOfWorks += tmp.workInfo.workSize;
+        Model.summaryDelay += tmp.delay;
         //System.out.println("Work removed from server. User number " + tmp.userNumber);
     }
 

@@ -80,15 +80,8 @@ public class Location {
      * @param time длина временной линии
      */
     public void createInputStream(float lyambda, double time) {
-        /*inputStream.add(new WorkUser(1, numberOfThisLocation, 0.0289, 14,
-                this.q, this.sizeOfQuant));
-        inputStream.add(new WorkUser(2, numberOfThisLocation, 0.03, 2,
-                this.q, this.sizeOfQuant));
-        inputStream.add(new WorkUser(3, numberOfThisLocation, 0.05, 5,
-                this.q, this.sizeOfQuant));*/
 
         int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
-        //int tmpSize = 100;
         double tmpWindowIn = - (Math.log(Math.random()) / lyambda);
         this.lengthOfAllWorks += tmpSize;
         int userNumber = 0;
@@ -142,71 +135,7 @@ public class Location {
                     (inputStream.get(i).statusOfBeginingCount == false)) {
                 server.addNewJob(inputStream.get(i));
             }
-
-            if ((time >= inputStream.get(i).workInfo.windowIn) &&
-                    (inputStream.get(i).statusOfBeginingCount == true)) {
-                //inputStream.get(i).decreaseTimeInCurrentLocation();
-            }
         }
-        //System.out.println("Out t = " + time);
-    }
-
-
-    /**
-     * Данный метод рассчитывает среднее значение объёма задачи для данной области
-     * @return Возвращает среднее значение объёма задачи для данной области
-     */
-    public double countMediumLengthOfWork() {
-        return (double) this.lengthOfAllWorks / this.inputStream.size();
-    }
-
-    /**
-     * Данный метод подсчитывает количество задач, которые были полностью просчитаны серверами
-     * @return Количество задач, которые были полностью просчитаны серверами
-     */
-    public int countN() {
-        int finishedWorks = 0;
-        for (int k = 0; k < inputStream.size(); k++) {
-            if (inputStream.get(k).statusFinishedOrUnfinished == true)
-                finishedWorks++;
-        }
-        //System.out.println("N = " + finishedWorks);
-        int N = finishedWorks;
-        return N;
-    }
-
-    /**
-     * Данный метод рассчитывает среднее значение задержки для задач, которые были полностью
-     * проссчитаны серверами
-     * @param N Количество задач, которые были полностью просчитаны серверами
-     * @return Среднее значение задержки для задач, которые были полностью проссчитаны серверами
-     */
-    public double countMd(int N) {
-        double commonDelay = 0;
-        for (int k = 0; k < inputStream.size(); k++) {
-            if (inputStream.get(k).statusFinishedOrUnfinished == true) {
-                commonDelay += inputStream.get(k).delay;
-                continue;
-            }
-        }
-        if (N == 0) {
-            //System.out.println("M[D] can't be counted because N = 0");
-            return 0;
-        } else {
-            //System.out.println("M[D] = " + commonDelay / N);
-            return commonDelay / N;
-        }
-    }
-
-    /**
-     * Данный метод подсчитывает значение выходной интенсивности в данной области
-     * @param N Количество задач, которые были полностью просчитаны серверами
-     * @param time Длина временной линии
-     * @return Значение выходной интенсивности системы
-     */
-    public double countLyambda_out(int N, double time) {
-        double lyambda_out = (double)N / time;
-        return lyambda_out;
     }
 
 }

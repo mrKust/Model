@@ -92,8 +92,6 @@ public class WorkUser {
         this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / 1) /
                 this.sizeOfQuant);
         workInfo = new Pair(windowIn, workSize);
-        /*System.out.println("User №" + this.userNumber + " from area " + this.userLocation +
-                " have work size = " + this.workInfo.workSize + " windowIn = " + workInfo.windowIn);*/
 
     }
 

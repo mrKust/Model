@@ -25,19 +25,24 @@ public class Model {
     /** Данное поле хранит условное количество единиц времени производится
      * моделирование*/
     private float T;
-    /** Данное поле хранит среднее (по областям) значение задержки задачи в системе*/
+    /** Данное поле хранит среднее значение задержки задачи в системе*/
     public double mD;
     /***/
     public double mDTheoretical;
-    /** Данное поле хранит среднее (по областям) значение выходной интенсивности в системе*/
+    /** Данное поле хранит среднее значение выходной интенсивности в системе*/
     public double lyambda_out;
     /** Данное поле хранит размер кванта, то есть размер шага с которым мы двигаемся по
      * временной шкале каждой локации*/
     public double sizeOfQuant;
-    /** Данное поле хранит среднее (по областям) значение размера задачи в системе*/
+    /** Данное поле хранит среднее значение размера задачи в системе*/
     public double mediumSizeOfWork;
-    /** Данное поле хранит среднее (по областям) кол-во задач в системе*/
-    public double averageNumberOfWorks;
+
+    /** Данное поле хранит количество завершённых работ*/
+    public static int numberOfExitedWorks;
+    /** Данное поле хранит суммарную задержку всех завершённых работ*/
+    public static double summaryDelay;
+    /** Данное поле хранит суммарный объём всех завершённых работ*/
+    public static double summaryLengthOfWorks;
 
     /**
      * В данном конструкторе задаются все параметры необходимые для работы модели
@@ -75,7 +80,10 @@ public class Model {
         this.mDTheoretical = 1 / (1 - lyambda);
         this.lyambda_out = 0;
         this.mediumSizeOfWork = 0;
-        this.averageNumberOfWorks = 0;
+
+        numberOfExitedWorks = 0;
+        summaryDelay = 0;
+        summaryLengthOfWorks = 0;
 
     }
 
@@ -98,7 +106,10 @@ public class Model {
         this.T = T;
         this.lyambda_out = 0;
         this.mediumSizeOfWork = 0;
-        this.averageNumberOfWorks = 0;
+
+        numberOfExitedWorks = 0;
+        summaryDelay = 0;
+        summaryLengthOfWorks = 0;
 
     }
 
@@ -119,22 +130,9 @@ public class Model {
             }
         }
 
-        ArrayList<Double> mDAtEachLocation = new ArrayList<>();
-        ArrayList<Double> lyambdaOutAtEachLocation = new ArrayList<>();
-        ArrayList<Double> mediumSizeOfWorkAtEachLocation = new ArrayList<>();
-        ArrayList<Double> numberOfWorksAtEachLocation = new ArrayList<>();
-        for (int i = 0; i < locations.size(); i++) {
-            int tmpN = locations.get(i).countN();////считаем количество пользователей
-            // выполнивших задачу за данное время в i локации
-            mDAtEachLocation.add(locations.get(i).countMd(tmpN));
-            lyambdaOutAtEachLocation.add(locations.get(i).countLyambda_out(tmpN, this.T));
-            mediumSizeOfWorkAtEachLocation.add(locations.get(i).countMediumLengthOfWork());
-            numberOfWorksAtEachLocation.add((double)locations.get(i).numberOfWorksInLocation);
-        }
-        this.mD = countMdAverage(mDAtEachLocation); // считаем среднюю задержку
-        this.lyambda_out = countLyambda_outAverage(lyambdaOutAtEachLocation); //считаем выходную интенсивность
-        this.mediumSizeOfWork = countAverage(mediumSizeOfWorkAtEachLocation);
-        this.averageNumberOfWorks = countAverage(numberOfWorksAtEachLocation);
+        this.lyambda_out = (double) numberOfExitedWorks / (T * numberOfLocations) ;
+        this.mediumSizeOfWork = summaryLengthOfWorks / numberOfExitedWorks;
+        this.mD = summaryDelay / numberOfExitedWorks;
 
         System.out.println("Summary");
         //по каждому пользователю
@@ -146,14 +144,11 @@ public class Model {
             }
         }
 
-        //System.out.println("End of modeling");
-
     }
 
     public void getModelingForLowIntensity() {
 
         for (double t = 0; t < this.T; t += sizeOfQuant) {
-            //System.out.println("In t = " + t);
 
             for (int i = 0; i < locations.size(); i++) {
                 locations.get(i).processingAtLocation(t);
@@ -168,23 +163,9 @@ public class Model {
 
         }
 
-        double numberOfWorks = 0;
-        double numberOfFinishedWorks = 0;
-        double sizeOfAllWorks = 0;
-        double summaryMD = 0;
-
-        for (int i = 0; i < locations.get(0).inputStream.size(); i++) {
-            WorkUser tmp = locations.get(0).inputStream.get(i);
-            numberOfWorks++;
-            if (tmp.statusFinishedOrUnfinished) {
-                numberOfFinishedWorks++;
-                sizeOfAllWorks += tmp.workInfo.workSize;
-                summaryMD += tmp.delay;
-            }
-        }
-        this.lyambda_out = numberOfFinishedWorks / numberOfWorks;
-        this.mediumSizeOfWork = sizeOfAllWorks / numberOfWorks;
-        this.mD = summaryMD / numberOfWorks;
+        this.lyambda_out = (double) numberOfExitedWorks / T;
+        this.mediumSizeOfWork = summaryLengthOfWorks / numberOfExitedWorks;
+        this.mD = summaryDelay / numberOfExitedWorks;
         this.mDTheoretical = 1 / (1 - this.lyambda_out);
 
         System.out.println("Summary");
@@ -258,51 +239,4 @@ public class Model {
             }
         }
     }
-
-    /**
-     * В данном методе осуществляется подсчёт среднего значения задержки по всем областям
-     * @param locationsData список, содержащий в себе среднее значение задержки для каждой области
-     * @return Возвращает среднее значение задержки по всем областям
-     */
-    public double countMdAverage(ArrayList<Double> locationsData) {
-        double tmp = 0;
-        //System.out.println("Info about delay's length in new location");
-        for (int i = 0; i < locationsData.size(); i++) {
-            tmp += locationsData.get(i);
-            //System.out.println("Delay " + locationsData.get(i));
-        }
-        return tmp / locationsData.size();
-    }
-
-    /**
-     * В данном методе осуществляется подсчёт среднего значения выходной интенсивности
-     * по всем областям
-     * @param locationsData список, содержащий в себе среднее значение выходной интенсивности
-     *                     для каждой области
-     * @return Возвращает среднее значение выходной интенсивности по всем областям
-     */
-    public double countLyambda_outAverage(ArrayList<Double> locationsData) {
-        double tmp = 0;
-        for (int i = 0; i < locationsData.size(); i++) {
-            tmp += locationsData.get(i);
-        }
-        return tmp / locationsData.size();
-    }
-
-    /**
-     * В данном методе осуществляется подсчёт среднего значения выходной интенсивности
-     * по всем областям
-     * @param locationsData список, содержащий в себе среднее значение объёма задачи
-     *                     для каждой области
-     * @return Возвращает среднее значение объёма задачи по всем областям
-     */
-    public double countAverage(ArrayList<Double> locationsData) {
-        double tmp = 0;
-        for (int i = 0; i < locationsData.size(); i++) {
-            tmp += locationsData.get(i);
-        }
-        return tmp / locationsData.size();
-    }
-
-
 }
