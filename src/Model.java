@@ -135,15 +135,8 @@ public class Model {
         this.mediumSizeOfWork = summaryLengthOfWorks / numberOfExitedWorks;
         this.mD = summaryDelay / numberOfExitedWorks;
 
-        System.out.println("Summary");
-        //по каждому пользователю
-        for (int i = 0; i < locations.size(); i++) {
-            ArrayList<WorkUser> tmpLocationInputStream = locations.get(i).inputStream;
-            for (int k = 0; k < tmpLocationInputStream.size(); k++) {
-                System.out.println("User  do " + tmpLocationInputStream.get(k).workProcessingValue +
-                        " from his job. Full size = " + tmpLocationInputStream.get(k).workInfo.workSize);
-            }
-        }
+        if (Main.SHOW_LOCATION_SUMMARY)
+            showLocationsSummary();
 
     }
 
@@ -169,15 +162,9 @@ public class Model {
         this.mD = summaryDelay / numberOfExitedWorks;
         this.mDTheoretical = 1 / (1 - this.lyambda_out);
 
-        System.out.println("Summary");
-        //по каждому пользователю
-        for (int i = 0; i < locations.size(); i++) {
-            ArrayList<WorkUser> tmpLocationInputStream = locations.get(i).inputStream;
-            for (int k = 0; k < tmpLocationInputStream.size(); k++) {
-                System.out.println("User  do " + tmpLocationInputStream.get(k).workProcessingValue +
-                        " from his job. Full size = " + tmpLocationInputStream.get(k).workInfo.workSize);
-            }
-        }
+        if (Main.SHOW_LOCATION_SUMMARY)
+            showLocationsSummary();
+
     }
 
     /**
@@ -237,6 +224,18 @@ public class Model {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    public void showLocationsSummary() {
+        System.out.println("Summary");
+        //по каждому пользователю
+        for (int i = 0; i < locations.size(); i++) {
+            ArrayList<WorkUser> tmpLocationInputStream = locations.get(i).inputStream;
+            for (int k = 0; k < tmpLocationInputStream.size(); k++) {
+                System.out.println("User  do " + tmpLocationInputStream.get(k).workProcessingValue +
+                        " from his job. Full size = " + tmpLocationInputStream.get(k).workInfo.workSize);
             }
         }
     }

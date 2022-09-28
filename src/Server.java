@@ -95,6 +95,7 @@ public class Server {
      * @param tmp Новая задача, которая только переноситься на текущий сервер
      */
     public void addNewTransferJob(WorkUser tmp) {
+        Main.usersLeaveUnfinished++;
         this.transferWorks.add(tmp);
         //System.out.println("Work added to server transfer list. User number " + tmp.userNumber);
     }
@@ -111,6 +112,7 @@ public class Server {
         Model.numberOfExitedWorks++;
         Model.summaryLengthOfWorks += tmp.workInfo.workSize;
         Model.summaryDelay += tmp.delay;
+        Main.allUsers++;
         //System.out.println("Work removed from server. User number " + tmp.userNumber);
     }
 

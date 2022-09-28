@@ -21,9 +21,15 @@ public class Main {
     public static int numberOfLocations = 48;
     /** Данный параметр означает какое условное количество единиц времени производится
      * моделирование*/
-    public static float T = 300;
+    public static float T = 1000;
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
+
+    public static int usersLeaveUnfinished = 0;
+
+    public static int allUsers = 0;
+
+    public static final boolean SHOW_LOCATION_SUMMARY = false;
 
     /**
      * В данном методе производиться заупкск моделирования с заданным значениями параметров, а так
@@ -40,10 +46,14 @@ public class Main {
         fileUbuntu.write(0, modelLowIntensity.lyambda_out, modelLowIntensity.mediumSizeOfWork, modelLowIntensity.mD,
                     modelLowIntensity.mDTheoretical);
         System.out.println("lambda = low" + " M[D] = " + modelLowIntensity.mD + " lambda_out = " +
-                modelLowIntensity.lyambda_out + "\n");
+                modelLowIntensity.lyambda_out);
+        System.out.println(usersLeaveUnfinished + " / " + allUsers + " = " +
+                (double)usersLeaveUnfinished/allUsers + "\n");
 
         //for (float lyambda = (float) 0.2; lyambda < 0.3; lyambda += 0.1) {
         for (float lyambda = (float) 0.1; lyambda < 1.5; lyambda += 0.1) {
+            usersLeaveUnfinished = 0;
+            allUsers = 0;
             System.out.println("lyambda = " + lyambda);
 
             Model model = new Model(lyambda, a, q, d, quant, numberOfLocations, T, serviceRate);
@@ -59,7 +69,9 @@ public class Main {
                 //fileMac.write(lyambda, model.lyambda_out, model.mediumSizeOfWork);
             }
             System.out.println("lambda = " + lyambda + " M[D] = " + model.mD + " lambda_out = " +
-                    model.lyambda_out + "\n");
+                    model.lyambda_out);
+            System.out.println(usersLeaveUnfinished + " / " + allUsers + " = " +
+                    (double)usersLeaveUnfinished/allUsers + "\n");
         }
 
     }
