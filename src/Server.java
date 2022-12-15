@@ -41,7 +41,6 @@ public class Server {
         if  ( (workUsersOnServer.size() != 0) || (transferWorks.size() != 0) ) {
             for (int i = 0; i < workUsersOnServer.size(); i++) {
                 WorkUser tmpWorkUser = workUsersOnServer.get(i);
-                //tmpWorkUser.decreaseTimeInCurrentLocation();
                 if ((tmpWorkUser.statusOfProcessing && tmpWorkUser.currentProcessingWorkOnServer)) {
                      double coeffUdalennost = 1;
                      tmpWorkUser.increaseWorkProcessing(coeffUdalennost *
@@ -62,15 +61,13 @@ public class Server {
             for (int i = 0; i < transferWorks.size(); i++) {
                 WorkUser tmp = transferWorks.get(i);
                 if (tmp.transferStatus) {
-                    tmp.decreaseTransferTime();
                     if (tmp.timeToTransfer == 0) {
                         tmp.transferStatus = false;
                         this.transferWorks.remove(tmp);
                         addNewJob(tmp);
-                        /*this.workUsersOnServer.add(tmp);
-                        this.numberOfJobs++;*/
+                        continue;
                     }
-                    //System.out.println("Size of transfer list = " + transferWorks.size() + " location " + numberOfLocation);
+                    tmp.decreaseTransferTime();
                 }
             }
         }
@@ -86,7 +83,6 @@ public class Server {
         tmp.setStatusOfBeginingCount(true);
         this.numberOfJobs++;
         this.workUsersOnServer.add(tmp);
-        //System.out.println("Work added to server. User number " + tmp.userNumber);
     }
 
     /**
@@ -95,9 +91,7 @@ public class Server {
      * @param tmp Новая задача, которая только переноситься на текущий сервер
      */
     public void addNewTransferJob(WorkUser tmp) {
-        Main.usersLeaveUnfinished++;
         this.transferWorks.add(tmp);
-        //System.out.println("Work added to server transfer list. User number " + tmp.userNumber);
     }
 
     /**
@@ -112,8 +106,7 @@ public class Server {
         Model.numberOfExitedWorks++;
         Model.summaryLengthOfWorks += tmp.workInfo.workSize;
         Model.summaryDelay += tmp.delay;
-        Main.allUsers++;
-        //System.out.println("Work removed from server. User number " + tmp.userNumber);
+        Main.allFinishedWorks++;
     }
 
     /**
@@ -122,9 +115,9 @@ public class Server {
      * @param tmp Задача, которая переносится на другой сервер
      */
     public void removeJobToSwitchServer(WorkUser tmp) {
+        Main.usersLeaveUnfinished++;
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
-        //System.out.println("Work removed to change server. User number " + tmp.userNumber);
     }
 
 }

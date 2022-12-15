@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * В данном классе создаются объекты областей, а так же происходит управление перемещениями
@@ -25,7 +23,7 @@ public class Model {
     public double d;
     /** Данное поле хранит условное количество единиц времени производится
      * моделирование*/
-    private float T;
+    private final float T;
     /** Данное поле хранит среднее значение задержки задачи в системе*/
     public double mD;
     /***/
@@ -120,10 +118,8 @@ public class Model {
      *  по всем областям
      */
     public void getModeling() {
-        //System.out.println("Start of modeling");
 
         for (double t = 0; t < this.T; t += sizeOfQuant) {
-            //System.out.println("In t = " + t);
 
             for (int i = 0; i < locations.size(); i++) {
                 locations.get(i).processingAtLocation(t);
@@ -175,55 +171,72 @@ public class Model {
      * список задач нового сервера
      */
     public void userSwitchLocation() {
+        if (numberOfLocations == 1) {
+            return;
+        }
         for (int i = 0; i < locations.size(); i++) {
             Location tmpLocation = locations.get(i);
             Server tmpServer = tmpLocation.server;
             for (int k = 0; k < tmpServer.workUsersOnServer.size(); k++) {
                 WorkUser tmpWorkUser = tmpServer.workUsersOnServer.get(k);
-                if (tmpWorkUser.timeInCurrentLocation == 0) {
-                    double probabilityToSwitch = Math.random();
-                    List<Pair> timeToNextLocation = new ArrayList<>();
-                    for (int j = 0; j < locations.size(); j++) {
-                        if (j == tmpWorkUser.userLocation)
-                            continue;
-                        //добавляем пару с значениями
-                        //1 - Номер локации
-                        //2 - Путь до данной локации (значение распределённое по экспоненциальному
-                        // закону с параметром q)
-                        timeToNextLocation.add(new Pair(j,
-                                (int) Math.ceil(- (Math.log(Math.random()) / this.q) / this.sizeOfQuant)));
-                    }
-
-                    int nextLocation = (int) timeToNextLocation.get(0).windowIn;
-                    double tmpClosetPath = timeToNextLocation.get(0).workSize;
-                    for (int j = 0; j < timeToNextLocation.size(); j++) {
-                        if (tmpClosetPath > timeToNextLocation.get(j).workSize) {
-                            tmpClosetPath = timeToNextLocation.get(j).workSize;
-                            nextLocation = (int) timeToNextLocation.get(j).windowIn;
-                        }
-                    }
-
-                    //случай, когда задача пользователя уже находится отдельно от пользователя
-                    //в случае симметричной системы, мы не переносим задачу, а только перемещаем
-                    //пользователя
-                    if (tmpWorkUser.userLocation != tmpWorkUser.workLocation) {
-                        tmpWorkUser.userLocation = nextLocation;
-
-                    } else {
-                        //когда пользователь и задача находятся в одной области
-                        //в этом случае меняем положение пользователя
-                        tmpWorkUser.changeUserLocation(nextLocation);
-                        //в случае, если случайное значение больше заданного значения
-                        //вероятности, тогда пользователь решает перенести свою работу с одних серверов на другие
-                        if (probabilityToSwitch < this.a) {
-                            tmpServer.removeJobToSwitchServer(tmpWorkUser);
-                            locations.get(nextLocation).server.addNewTransferJob(tmpWorkUser);
-                            tmpWorkUser.changeWorkLocation(nextLocation);
-                            tmpWorkUser.transfer();
-
-                        }
+                if (tmpWorkUser.timeInCurrentLocation != 0) {
+                    continue;
+                }
+                /*
+                    В эту map добавляем пару значений о необходимых для выбора следующей области для пользователя
+                    Ключ - номер области
+                    Значение - Время необходимое на путь до данной области (время это
+                    значение распределённое по экспоненциальному закону с параметром q)
+                 */
+                Map<Integer, Integer> nextLocationsData = new HashMap<>();
+                int currentClosestLocation = 0;
+                int timeToCurrentClosestLocation = 0;
+                for (int locationTmpNumber = 0; locationTmpNumber < locations.size(); locationTmpNumber++) {
+                    if (locationTmpNumber == tmpWorkUser.userLocation)
+                        continue;
+                    int timeToTmpLocation = (int) Math.ceil(- (Math.log(Math.random()) / this.q) / this.sizeOfQuant);
+                    nextLocationsData.put(locationTmpNumber, timeToTmpLocation);
+                    if (nextLocationsData.size() == 1) {
+                        currentClosestLocation = locationTmpNumber;
+                        timeToCurrentClosestLocation = timeToTmpLocation;
                     }
                 }
+
+                for (Map.Entry<Integer, Integer> entry : nextLocationsData.entrySet()) {
+                    if (entry.getValue() < timeToCurrentClosestLocation) {
+                        currentClosestLocation = entry.getKey();
+                        timeToCurrentClosestLocation = entry.getValue();
+                    }
+                }
+
+                /*
+                    Для симметричной модели
+                    В случае, если пользователь и его задача уже находится отдельно друг от друга
+                    то, мы не переносим задачу (оставляем её в той же области в которой она уже находится).
+                    Мы только перемещаем пользователя в новую (ближайшую область)
+                */
+                if (tmpWorkUser.userLocation != tmpWorkUser.workLocation) {
+                    tmpWorkUser.userLocation = currentClosestLocation;
+                    continue;
+                }
+
+                /*
+                    Для симметричной модели
+                    В случае, если пользователь и его задача находятся вместе в текущей области
+                    то, мы перемещаем пользователя в новую область.
+                    Задачу пользователя мы перемещаем с вероятностью a.
+                    В случае перемещения задачи пользователя, для задачи вычисляется время
+                    необходимое для переноса с одного сервера на другой (на трансфер)
+                 */
+                tmpWorkUser.changeUserLocation(currentClosestLocation);
+                double probabilityToSwitchWorkServer = Math.random();
+                if (probabilityToSwitchWorkServer < this.a) {
+                    tmpServer.removeJobToSwitchServer(tmpWorkUser);
+                    locations.get(currentClosestLocation).server.addNewTransferJob(tmpWorkUser);
+                    tmpWorkUser.changeWorkLocation(currentClosestLocation);
+                    tmpWorkUser.transfer();
+                }
+
             }
         }
     }

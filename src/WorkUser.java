@@ -91,6 +91,7 @@ public class WorkUser {
         this.sizeOfQuant = sizeOfQuant;
         this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / 1) /
                 this.sizeOfQuant);
+        //this.timeInCurrentLocation = 1;
         workInfo = new Pair(windowIn, workSize);
 
     }
@@ -138,14 +139,8 @@ public class WorkUser {
     public void checkWorkStatus() {
         if (workProcessingValue >= workInfo.workSize) {// если работа выполнена
             this.statusFinishedOrUnfinished = true;
-            /*System.out.println("User's №" + this.userNumber + " from area " + this.workLocation +
-                    " have done his job with rating " + this.workProcessingValue +
-                    " from " + this.workInfo.workSize + " windowIn = " + workInfo.windowIn);*/
         } else {// если работа ещё не выполнена
             this.statusFinishedOrUnfinished = false;
-            /*System.out.println("User's №" + this.userNumber + " from area " + this.workLocation +
-                    " have progress " + this.workProcessingValue +
-                    " from " + this.workInfo.workSize + " windowIn = " + workInfo.windowIn);*/
         }
     }
 
@@ -164,7 +159,7 @@ public class WorkUser {
      * задачу
      */
     public void transfer() {
-        Main.allUsersTransfers++;
+        Main.countOfWorkTransfers++;
         this.transferStatus = true;
         if (Main.TRANSFER_MODE) {
             this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) / this.sizeOfQuant);

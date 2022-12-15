@@ -81,8 +81,14 @@ public class Location {
      */
     public void createInputStream(float lyambda, double time) {
 
-        int tmpSize = (int) Math.ceil(1 / this.sizeOfQuant);
-        //int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
+        /*if (numberOfThisLocation == 0)
+            inputStream.add(new WorkUser(1, numberOfThisLocation, 0.00, 6, this.sizeOfQuant, this.d));
+        inputStream.add(new WorkUser(2, numberOfThisLocation, 0.01, 3,
+              this.sizeOfQuant, this.d));
+*/
+        //int tmpSize = (int) Math.ceil(1 / this.sizeOfQuant);
+        int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
+
         /*int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 2) / this.sizeOfQuant) +
                 (int) Math.ceil(- (Math.log(Math.random()) / 2) / this.sizeOfQuant);*/
 
@@ -96,8 +102,8 @@ public class Location {
 
         while (inputStream.get(userNumber - 1).workInfo.windowIn <= time) {
 
-            tmpSize = (int) Math.ceil(1 / this.sizeOfQuant);
-            //tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
+            //tmpSize = (int) Math.ceil(1 / this.sizeOfQuant);
+            tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
 
             /*int val1 = (int) Math.ceil(- (Math.log(Math.random()) / 2) / this.sizeOfQuant);
             int val2 = (int) Math.ceil(- (Math.log(Math.random()) / 2) / this.sizeOfQuant);
@@ -123,8 +129,8 @@ public class Location {
         if (this.numberOfThisLocation != 0)
             return;
 
-        int tmpSize = (int) Math.ceil(1 / this.sizeOfQuant);
-        //int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
+        //int tmpSize = (int) Math.ceil(1 / this.sizeOfQuant);
+        int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
         //int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 2) / this.sizeOfQuant) +
         //        (int) Math.ceil(- (Math.log(Math.random()) / 2) / this.sizeOfQuant);
 
