@@ -164,9 +164,13 @@ public class WorkUser {
      * задачу
      */
     public void transfer() {
+        Main.allUsersTransfers++;
         this.transferStatus = true;
-        //this.timeToTransfer = 0;
-        this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) / this.sizeOfQuant);
+        if (Main.TRANSFER_MODE) {
+            this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) / this.sizeOfQuant);
+        } else {
+            this.timeToTransfer = 0;
+        }
     }
 
     /**

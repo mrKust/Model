@@ -81,7 +81,11 @@ public class Location {
      */
     public void createInputStream(float lyambda, double time) {
 
-        int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
+        int tmpSize = (int) Math.ceil(1 / this.sizeOfQuant);
+        //int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
+        /*int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 2) / this.sizeOfQuant) +
+                (int) Math.ceil(- (Math.log(Math.random()) / 2) / this.sizeOfQuant);*/
+
         double tmpWindowIn = - (Math.log(Math.random()) / lyambda);
         this.lengthOfAllWorks += tmpSize;
         int userNumber = 0;
@@ -91,7 +95,15 @@ public class Location {
         userNumber++;
 
         while (inputStream.get(userNumber - 1).workInfo.windowIn <= time) {
-            tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
+
+            tmpSize = (int) Math.ceil(1 / this.sizeOfQuant);
+            //tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
+
+            /*int val1 = (int) Math.ceil(- (Math.log(Math.random()) / 2) / this.sizeOfQuant);
+            int val2 = (int) Math.ceil(- (Math.log(Math.random()) / 2) / this.sizeOfQuant);
+            tmpSize = val1 + val2;*/
+
+
             tmpWindowIn = - (Math.log(Math.random()) / lyambda);
             inputStream.add(new WorkUser(userNumber, numberOfThisLocation,
                     inputStream.get(userNumber - 1).workInfo.windowIn + tmpWindowIn, tmpSize,
@@ -110,8 +122,12 @@ public class Location {
 
         if (this.numberOfThisLocation != 0)
             return;
-        int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
-        //int tmpSize = 100;
+
+        int tmpSize = (int) Math.ceil(1 / this.sizeOfQuant);
+        //int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
+        //int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 2) / this.sizeOfQuant) +
+        //        (int) Math.ceil(- (Math.log(Math.random()) / 2) / this.sizeOfQuant);
+
         double tmpWindowIn = timeIn + this.sizeOfQuant;
         this.lengthOfAllWorks += tmpSize;
         int userNumber = 0;
