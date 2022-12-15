@@ -47,10 +47,10 @@ public class Main {
         Model modelLowIntensity = new Model(a, q, d, quant, numberOfLocations, T, serviceRate);
         //modelLowIntensity.getModelingForLowIntensity();
         double transfersPerTime = (double) countOfWorkTransfers / T;
-        fileUbuntu.write(0, modelLowIntensity.lambda_out, modelLowIntensity.mediumSizeOfWork,
+        fileUbuntu.write(0, modelLowIntensity.lyambda_out, modelLowIntensity.mediumSizeOfWork,
                 transfersPerTime, modelLowIntensity.mD, 0.0);
         System.out.println("lambda = low" + " M[D] = " + modelLowIntensity.mD + " lambda_out = " +
-                modelLowIntensity.lambda_out);
+                modelLowIntensity.lyambda_out);
         System.out.println(usersLeaveUnfinished + " / " + allFinishedWorks + " = " +
                 (double)usersLeaveUnfinished/ allFinishedWorks);
         System.out.println("Average transfers number " + transfersPerTime + "\n");
@@ -65,13 +65,13 @@ public class Main {
             model.getModeling();
             //double dPoLittle = model.averageNumberOfWorks / lyambda;
             if (lyambda < 1.0) {
-                fileUbuntu.write(lyambda, model.lambda_out, model.mediumSizeOfWork, transfersPerTime, model.mD,
+                fileUbuntu.write(lyambda, model.lyambda_out, model.mediumSizeOfWork, transfersPerTime, model.mD,
                         model.mDTheoretical);
             } else {
-                fileUbuntu.write(lyambda, model.lambda_out, model.mediumSizeOfWork, transfersPerTime);
+                fileUbuntu.write(lyambda, model.lyambda_out, model.mediumSizeOfWork, transfersPerTime);
             }
             System.out.println("lambda = " + lyambda + " M[D] = " + model.mD + " lambda_out = " +
-                    model.lambda_out);
+                    model.lyambda_out);
             System.out.println("Part of transferred works from finished works " + usersLeaveUnfinished + " / " + allFinishedWorks + " = " +
                     (double)usersLeaveUnfinished/ allFinishedWorks);
             transfersPerTime = (double) countOfWorkTransfers / T;
