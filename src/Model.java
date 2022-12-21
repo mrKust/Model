@@ -29,10 +29,10 @@ public class Model {
     /***/
     public double mDTheoretical;
     /** Данное поле хранит среднее значение выходной интенсивности в системе*/
-    public double lyambda_out;
+    public double lambda_out;
     /** Данное поле хранит размер кванта, то есть размер шага с которым мы двигаемся по
      * временной шкале каждой локации*/
-    public double sizeOfQuant;
+    public double sizeOfQuantum;
     /** Данное поле хранит среднее значение размера задачи в системе*/
     public double mediumSizeOfWork;
 
@@ -45,14 +45,14 @@ public class Model {
 
     /**
      * В данном конструкторе задаются все параметры необходимые для работы модели
-     * @param lyambda Текущее значение входной интенсивности
+     * @param lambda Текущее значение входной интенсивности
      * @param a  Вероятность, с которой пользователь, при перемещении в
      *           следующую область, решит перенести свою задачу на сервера следующей области
      * @param q  Коэффициент для рассчёта времени перемещения пользователя
      *           до следующей локации
      * @param d  Коэффициент для рассчёта времени необходимого для перемещения
      *           задачи пользователя с серверов одной области на сервера другой области
-     * @param quant Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
+     * @param quantum Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
      *              временной шкале каждой локации
      * @param numberOfLocations Данный параметр означает количество областей с которыми производиться
      *                          моделирование
@@ -61,14 +61,14 @@ public class Model {
      * @param serviceRate Данный параметр означает, с какой интенсивностью серевер обрабатывает
      *                    задачи пользователей
      */
-    public Model(float lyambda, double a, double q, double d, double quant, int numberOfLocations,
+    public Model(float lambda, double a, double q, double d, double quantum, int numberOfLocations,
                  float T, double serviceRate) {
 
         locations = new ArrayList<>();
         random = new Random();
-        this.sizeOfQuant = quant;
+        this.sizeOfQuantum = quantum;
         for (int i = 0; i < numberOfLocations; i++) {
-            locations.add(new Location(lyambda, T, q, i, quant, d, serviceRate));
+            locations.add(new Location(lambda, T, q, i, quantum, d, serviceRate));
         }
         this.a = a;
         this.q = q;
@@ -76,8 +76,8 @@ public class Model {
         this.numberOfLocations = numberOfLocations;
         this.T = T;
         this.mD = 0;
-        this.mDTheoretical = 1 / (1 - lyambda);
-        this.lyambda_out = 0;
+        this.mDTheoretical = 1 / (1 - lambda);
+        this.lambda_out = 0;
         this.mediumSizeOfWork = 0;
 
         numberOfExitedWorks = 0;
@@ -89,21 +89,21 @@ public class Model {
     /**
      * Данный конструктор используется для моделирования работы случаев, когда входная интенсивность меньше 1
      */
-    public Model(double a, double q, double d, double quant, int numberOfLocations,
+    public Model(double a, double q, double d, double quantum, int numberOfLocations,
                  float T, double serviceRate) {
 
         locations = new ArrayList<>();
         random = new Random();
-        this.sizeOfQuant = quant;
+        this.sizeOfQuantum = quantum;
         for (int i = 0; i < numberOfLocations; i++) {
-            locations.add(new Location(T, q, i, quant, d, serviceRate));
+            locations.add(new Location(T, q, i, quantum, d, serviceRate));
         }
         this.a = a;
         this.q = q;
         this.d = d;
         this.numberOfLocations = numberOfLocations;
         this.T = T;
-        this.lyambda_out = 0;
+        this.lambda_out = 0;
         this.mediumSizeOfWork = 0;
 
         numberOfExitedWorks = 0;
@@ -119,15 +119,15 @@ public class Model {
      */
     public void getModeling() {
 
-        for (double t = 0; t < this.T; t += sizeOfQuant) {
+        for (double t = 0; t < this.T; t += sizeOfQuantum) {
 
-            for (int i = 0; i < locations.size(); i++) {
-                locations.get(i).processingAtLocation(t);
+            for (Location currentLocation : locations) {
+                currentLocation.processingAtLocation(t);
                 this.userSwitchLocation();
             }
         }
 
-        this.lyambda_out = (double) numberOfExitedWorks / (T * numberOfLocations) ;
+        this.lambda_out = (double) numberOfExitedWorks / (T * numberOfLocations) ;
         this.mediumSizeOfWork = summaryLengthOfWorks / numberOfExitedWorks;
         this.mD = summaryDelay / numberOfExitedWorks;
 
@@ -138,25 +138,25 @@ public class Model {
 
     public void getModelingForLowIntensity() {
 
-        for (double t = 0; t < this.T; t += sizeOfQuant) {
+        for (double t = 0; t < this.T; t += sizeOfQuantum) {
 
-            for (int i = 0; i < locations.size(); i++) {
-                locations.get(i).processingAtLocation(t);
+            for (Location currentLocation : locations) {
+                currentLocation.processingAtLocation(t);
                 this.userSwitchLocation();
-                int numberOfLastElement = locations.get(i).inputStream.size() - 1;
-                if ((locations.get(i).numberOfWorksInLocation != 0) &&
-                (locations.get(i).inputStream.get(numberOfLastElement).statusFinishedOrUnfinished)) {
-                    locations.get(0).createInputStream(t);
+                int numberOfLastElement = currentLocation.inputStream.size() - 1;
+                if ((currentLocation.numberOfWorksInLocation != 0) &&
+                (currentLocation.inputStream.get(numberOfLastElement).statusFinishedOrUnfinished)) {
+                    currentLocation.createInputStream(t);
                 }
             }
 
 
         }
 
-        this.lyambda_out = (double) numberOfExitedWorks / T;
+        this.lambda_out = (double) numberOfExitedWorks / T;
         this.mediumSizeOfWork = summaryLengthOfWorks / numberOfExitedWorks;
         this.mD = summaryDelay / numberOfExitedWorks;
-        this.mDTheoretical = 1 / (1 - this.lyambda_out);
+        this.mDTheoretical = 1 / (1 - this.lambda_out);
 
         if (Main.SHOW_LOCATION_SUMMARY)
             showLocationsSummary();
@@ -174,11 +174,10 @@ public class Model {
         if (numberOfLocations == 1) {
             return;
         }
-        for (int i = 0; i < locations.size(); i++) {
-            Location tmpLocation = locations.get(i);
+
+        for (Location tmpLocation : locations) {
             Server tmpServer = tmpLocation.server;
-            for (int k = 0; k < tmpServer.workUsersOnServer.size(); k++) {
-                WorkUser tmpWorkUser = tmpServer.workUsersOnServer.get(k);
+            for (WorkUser tmpWorkUser : tmpServer.workUsersOnServer) {
                 if (tmpWorkUser.timeInCurrentLocation != 0) {
                     continue;
                 }
@@ -194,7 +193,7 @@ public class Model {
                 for (int locationTmpNumber = 0; locationTmpNumber < locations.size(); locationTmpNumber++) {
                     if (locationTmpNumber == tmpWorkUser.userLocation)
                         continue;
-                    int timeToTmpLocation = (int) Math.ceil(- (Math.log(Math.random()) / this.q) / this.sizeOfQuant);
+                    int timeToTmpLocation = (int) Math.ceil(- (Math.log(Math.random()) / this.q) / this.sizeOfQuantum);
                     nextLocationsData.put(locationTmpNumber, timeToTmpLocation);
                     if (nextLocationsData.size() == 1) {
                         currentClosestLocation = locationTmpNumber;
@@ -240,15 +239,17 @@ public class Model {
             }
         }
     }
-
+    /**
+     * Данный метод выводит в консоль данные о всех пользователях, в каждой области, и их задачах.
+     * Данные выходят в формате (сколько выполнено задачи)/(полный объём задачи)
+     */
     public void showLocationsSummary() {
         System.out.println("Summary");
-        //по каждому пользователю
-        for (int i = 0; i < locations.size(); i++) {
-            ArrayList<WorkUser> tmpLocationInputStream = locations.get(i).inputStream;
-            for (int k = 0; k < tmpLocationInputStream.size(); k++) {
-                System.out.println("User  do " + tmpLocationInputStream.get(k).workProcessingValue +
-                        " from his job. Full size = " + tmpLocationInputStream.get(k).workInfo.workSize);
+        for (Location tmpLocation : locations) {
+            ArrayList<WorkUser> tmpLocationInputStream = tmpLocation.inputStream;
+            for (WorkUser tmpWorkUser : tmpLocationInputStream) {
+                System.out.println("User  do " + tmpWorkUser.workProcessingValue +
+                        " from his job. Full size = " + tmpWorkUser.workInfo.workSize);
             }
         }
     }
