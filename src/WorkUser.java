@@ -161,7 +161,7 @@ public class WorkUser {
     public void transfer() {
         Main.countOfWorkTransfers++;
         this.transferStatus = true;
-        if (Main.TRANSFER_MODE) {
+        if (Main.ADD_TRANSFER_TIME) {
             this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) / this.sizeOfQuant);
         } else {
             this.timeToTransfer = 0;

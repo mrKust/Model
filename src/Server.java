@@ -38,6 +38,13 @@ public class Server {
      * @param currentTime Текущий момент времени
      */
     public void getService(double currentTime) {
+
+        if (Main.currentLambda == Main.LAMBDA_TRACK_AVERAGE_NUMBER_OF_WORKS) {
+            int currentVal2 = Main.averageNumberOfWorksInEachLocation.get(numberOfLocation);
+            currentVal2 += workUsersOnServer.size();
+            Main.averageNumberOfWorksInEachLocation.put(numberOfLocation, currentVal2);
+        }
+
         if  ( (workUsersOnServer.size() != 0) || (transferWorks.size() != 0) ) {
             for (int i = 0; i < workUsersOnServer.size(); i++) {
                 WorkUser tmpWorkUser = workUsersOnServer.get(i);

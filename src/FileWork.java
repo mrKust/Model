@@ -25,7 +25,7 @@ public class FileWork {
         writer.flush();
     }
 
-    public void write(int one, double two) throws IOException {
+    public void write(int one, double two) {
         writer.print(one);
         writer.write(" ");
         writer.println(two);
@@ -40,6 +40,15 @@ public class FileWork {
     }
 
     public void write(float one, double two, double three) {
+        writer.print(one);
+        writer.write(" ");
+        writer.print(two);
+        writer.write(" ");
+        writer.println(three);
+        writer.flush();
+    }
+
+    public void write(float one, int two, double three) {
         writer.print(one);
         writer.write(" ");
         writer.print(two);
