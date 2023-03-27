@@ -1,0 +1,266 @@
+C:\Users\dimva\.jdks\openjdk-19.0.2\bin\java.exe "-javaagent:D:\installed programs\JetBrains\IntelliJ IDEA Community Edition 2022.3.1\lib\idea_rt.jar=65252:D:\installed programs\JetBrains\IntelliJ IDEA Community Edition 2022.3.1\bin" -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath D:\Pereezd\Labs\Научка\Model\out\production\Model Main
+lambda = 0.0 M[D] = 0.0 lambda_out = 0.0
+Average number of transfers for each work NaN
+Average transfers number of users with completed tasks NaN
+Part of transferred works from finished works 0 / 0 = NaN
+Average transfers number in one window 0.0
+M[D] by Little = NaN
+Number of tasks with transfer numbers
+
+lambda = 0.1
+lambda = 0.1 M[D] = 1.1186844621174783 lambda_out = 0.100275
+Average number of transfers for each work 0.7706307653951633
+Average transfers number of users with completed tasks 0.9710795312889554
+Part of transferred works from finished works 1739 / 4011 = 0.4335577162802294
+Average transfers number in one window 0.15455
+Location 0 average number of works = 0.1129225
+Location 1 average number of works = 0.109497
+M[D] by Little = 1.112097483428456
+Number of tasks with transfer numbers
+With transfer num equals 0 was 2272 works probability to make n transfers is 0.5664422837197707
+With transfer num equals 1 was 976 works probability to make n transfers is 0.24333084018947893
+With transfer num equals 2 was 433 works probability to make n transfers is 0.10795312889553728
+With transfer num equals 3 was 178 works probability to make n transfers is 0.0443779606083271
+With transfer num equals 4 was 91 works probability to make n transfers is 0.02268760907504363
+With transfer num equals 5 was 36 works probability to make n transfers is 0.008975317875841436
+With transfer num equals 6 was 14 works probability to make n transfers is 0.0034904013961605585
+With transfer num equals 7 was 2 works probability to make n transfers is 4.986287708800798E-4
+With transfer num equals 8 was 8 works probability to make n transfers is 0.0019945150835203192
+With transfer num equals 9 was 1 works probability to make n transfers is 2.493143854400399E-4
+
+lambda = 0.2
+lambda = 0.2 M[D] = 1.35529253086735 lambda_out = 0.1993
+Average number of transfers for each work 0.7942799799297542
+Average transfers number of users with completed tasks 0.9947315604616157
+Part of transferred works from finished works 3551 / 7972 = 0.4454340190667336
+Average transfers number in one window 0.3166
+Location 0 average number of works = 0.261257
+Location 1 average number of works = 0.275178
+M[D] by Little = 1.3410874800162393
+Number of tasks with transfer numbers
+With transfer num equals 0 was 4422 works probability to make n transfers is 0.5546914199698947
+With transfer num equals 1 was 1968 works probability to make n transfers is 0.24686402408429503
+With transfer num equals 2 was 900 works probability to make n transfers is 0.11289513296537883
+With transfer num equals 3 was 392 works probability to make n transfers is 0.04917210235825389
+With transfer num equals 4 was 161 works probability to make n transfers is 0.02019568489713999
+With transfer num equals 5 was 68 works probability to make n transfers is 0.008529854490717512
+With transfer num equals 6 was 41 works probability to make n transfers is 0.005143000501756146
+With transfer num equals 7 was 8 works probability to make n transfers is 0.0010035122930255895
+With transfer num equals 8 was 8 works probability to make n transfers is 0.0010035122930255895
+With transfer num equals 9 was 2 works probability to make n transfers is 2.508780732563974E-4
+With transfer num equals 10 was 2 works probability to make n transfers is 2.508780732563974E-4
+
+lambda = 0.3
+lambda = 0.3 M[D] = 1.4863231647717046 lambda_out = 0.301
+Average number of transfers for each work 0.8021594684385382
+Average transfers number of users with completed tasks 0.9994186046511628
+Part of transferred works from finished works 5314 / 12040 = 0.4413621262458472
+Average transfers number in one window 0.4829
+Location 0 average number of works = 0.440063
+Location 1 average number of works = 0.44881
+M[D] by Little = 1.4814549411322697
+Number of tasks with transfer numbers
+With transfer num equals 0 was 6727 works probability to make n transfers is 0.5587209302325581
+With transfer num equals 1 was 2892 works probability to make n transfers is 0.24019933554817277
+With transfer num equals 2 was 1338 works probability to make n transfers is 0.11112956810631229
+With transfer num equals 3 was 610 works probability to make n transfers is 0.050664451827242524
+With transfer num equals 4 was 273 works probability to make n transfers is 0.022674418604651164
+With transfer num equals 5 was 104 works probability to make n transfers is 0.008637873754152824
+With transfer num equals 6 was 57 works probability to make n transfers is 0.00473421926910299
+With transfer num equals 7 was 22 works probability to make n transfers is 0.0018272425249169434
+With transfer num equals 8 was 6 works probability to make n transfers is 4.983388704318936E-4
+With transfer num equals 9 was 7 works probability to make n transfers is 5.813953488372093E-4
+With transfer num equals 10 was 3 works probability to make n transfers is 2.491694352159468E-4
+With transfer num equals 11 was 1 works probability to make n transfers is 8.305647840531562E-5
+
+lambda = 0.4
+lambda = 0.4 M[D] = 1.7085403413907907 lambda_out = 0.3987
+Average number of transfers for each work 0.7948959117130675
+Average transfers number of users with completed tasks 0.986267870579383
+Part of transferred works from finished works 7046 / 15948 = 0.4418108853774768
+Average transfers number in one window 0.63385
+Location 0 average number of works = 0.65886
+Location 1 average number of works = 0.695704
+M[D] by Little = 1.6932049747692797
+Number of tasks with transfer numbers
+With transfer num equals 0 was 8902 works probability to make n transfers is 0.5581891146225232
+With transfer num equals 1 was 3951 works probability to make n transfers is 0.24774266365688488
+With transfer num equals 2 was 1668 works probability to make n transfers is 0.10458991723100075
+With transfer num equals 3 was 811 works probability to make n transfers is 0.050852771507399044
+With transfer num equals 4 was 338 works probability to make n transfers is 0.021193880110358665
+With transfer num equals 5 was 164 works probability to make n transfers is 0.010283421118635566
+With transfer num equals 6 was 54 works probability to make n transfers is 0.003386004514672686
+With transfer num equals 7 was 33 works probability to make n transfers is 0.002069224981188864
+With transfer num equals 8 was 19 works probability to make n transfers is 0.0011913719588663154
+With transfer num equals 9 was 4 works probability to make n transfers is 2.5081514923501377E-4
+With transfer num equals 10 was 2 works probability to make n transfers is 1.2540757461750688E-4
+With transfer num equals 11 was 2 works probability to make n transfers is 1.2540757461750688E-4
+
+lambda = 0.5
+lambda = 0.5 M[D] = 2.240889072643725 lambda_out = 0.5024
+Average number of transfers for each work 0.7848328025477707
+Average transfers number of users with completed tasks 0.980593152866242
+Part of transferred works from finished works 8769 / 20096 = 0.43635549363057324
+Average transfers number in one window 0.7886
+Location 0 average number of works = 1.1510695
+Location 1 average number of works = 1.090831
+M[D] by Little = 2.2419005
+Number of tasks with transfer numbers
+With transfer num equals 0 was 11327 works probability to make n transfers is 0.5636445063694268
+With transfer num equals 1 was 4871 works probability to make n transfers is 0.24238654458598727
+With transfer num equals 2 was 2157 works probability to make n transfers is 0.10733479299363058
+With transfer num equals 3 was 972 works probability to make n transfers is 0.04836783439490446
+With transfer num equals 4 was 442 works probability to make n transfers is 0.021994426751592355
+With transfer num equals 5 was 177 works probability to make n transfers is 0.008807722929936306
+With transfer num equals 6 was 81 works probability to make n transfers is 0.004030652866242038
+With transfer num equals 7 was 45 works probability to make n transfers is 0.002239251592356688
+With transfer num equals 8 was 11 works probability to make n transfers is 5.473726114649681E-4
+With transfer num equals 9 was 7 works probability to make n transfers is 3.48328025477707E-4
+With transfer num equals 10 was 1 works probability to make n transfers is 4.976114649681529E-5
+With transfer num equals 11 was 4 works probability to make n transfers is 1.9904458598726116E-4
+With transfer num equals 12 was 1 works probability to make n transfers is 4.976114649681529E-5
+
+lambda = 0.6
+lambda = 0.6 M[D] = 2.7484062001233984 lambda_out = 0.60275
+Average number of transfers for each work 0.7955205309000415
+Average transfers number of users with completed tasks 0.9978017420157611
+Part of transferred works from finished works 10629 / 24110 = 0.44085441725425134
+Average transfers number in one window 0.959
+Location 0 average number of works = 1.6004485
+Location 1 average number of works = 1.701062
+M[D] by Little = 2.751258640674804
+Number of tasks with transfer numbers
+With transfer num equals 0 was 13481 works probability to make n transfers is 0.5591455827457487
+With transfer num equals 1 was 5886 works probability to make n transfers is 0.24413106594773953
+With transfer num equals 2 was 2621 works probability to make n transfers is 0.10871007880547491
+With transfer num equals 3 was 1191 works probability to make n transfers is 0.04939858979676483
+With transfer num equals 4 was 518 works probability to make n transfers is 0.02148486105350477
+With transfer num equals 5 was 227 works probability to make n transfers is 0.00941518042306097
+With transfer num equals 6 was 103 works probability to make n transfers is 0.00427208627125674
+With transfer num equals 7 was 51 works probability to make n transfers is 0.0021153048527581915
+With transfer num equals 8 was 13 works probability to make n transfers is 5.391953546246371E-4
+With transfer num equals 9 was 6 works probability to make n transfers is 2.488593944421402E-4
+With transfer num equals 10 was 5 works probability to make n transfers is 2.0738282870178348E-4
+With transfer num equals 11 was 7 works probability to make n transfers is 2.903359601824969E-4
+With transfer num equals 12 was 1 works probability to make n transfers is 4.1476565740356696E-5
+
+lambda = 0.70000005
+lambda = 0.70000005 M[D] = 3.885542960119609 lambda_out = 0.69805
+Average number of transfers for each work 0.7912040684764702
+Average transfers number of users with completed tasks 0.9869278704963828
+Part of transferred works from finished works 12393 / 27922 = 0.4438435642145978
+Average transfers number in one window 1.1046
+Location 0 average number of works = 2.8231965
+Location 1 average number of works = 2.6087185
+M[D] by Little = 3.879939021414415
+Number of tasks with transfer numbers
+With transfer num equals 0 was 15546 works probability to make n transfers is 0.5567652746937899
+With transfer num equals 1 was 6928 works probability to make n transfers is 0.2481197621946852
+With transfer num equals 2 was 3039 works probability to make n transfers is 0.10883890838765131
+With transfer num equals 3 was 1341 works probability to make n transfers is 0.04802664565575532
+With transfer num equals 4 was 599 works probability to make n transfers is 0.02145261800730607
+With transfer num equals 5 was 272 works probability to make n transfers is 0.009741422534202421
+With transfer num equals 6 was 116 works probability to make n transfers is 0.004154430198409856
+With transfer num equals 7 was 53 works probability to make n transfers is 0.0018981448320320893
+With transfer num equals 8 was 15 works probability to make n transfers is 5.372108015185158E-4
+With transfer num equals 9 was 10 works probability to make n transfers is 3.5814053434567725E-4
+With transfer num equals 10 was 3 works probability to make n transfers is 1.0744216030370318E-4
+
+lambda = 0.8000001
+lambda = 0.8000001 M[D] = 8.719359874098018 lambda_out = 0.806975
+Average number of transfers for each work 0.8022243563927012
+Average transfers number of users with completed tasks 1.0017968338548282
+Part of transferred works from finished works 14361 / 32279 = 0.44490225843427617
+Average transfers number in one window 1.29475
+Location 0 average number of works = 7.3082075
+Location 1 average number of works = 6.777339
+M[D] by Little = 8.803465775408824
+Number of tasks with transfer numbers
+With transfer num equals 0 was 17932 works probability to make n transfers is 0.5555314600824065
+With transfer num equals 1 was 7923 works probability to make n transfers is 0.24545370054834412
+With transfer num equals 2 was 3565 works probability to make n transfers is 0.11044332228383778
+With transfer num equals 3 was 1566 works probability to make n transfers is 0.048514514080361844
+With transfer num equals 4 was 741 works probability to make n transfers is 0.022956101490132903
+With transfer num equals 5 was 317 works probability to make n transfers is 0.009820626413457666
+With transfer num equals 6 was 129 works probability to make n transfers is 0.003996406332290344
+With transfer num equals 7 was 60 works probability to make n transfers is 0.0018587936429257412
+With transfer num equals 8 was 26 works probability to make n transfers is 8.054772452678212E-4
+With transfer num equals 9 was 12 works probability to make n transfers is 3.7175872858514824E-4
+With transfer num equals 10 was 5 works probability to make n transfers is 1.5489947024381175E-4
+With transfer num equals 11 was 1 works probability to make n transfers is 3.0979894048762353E-5
+With transfer num equals 12 was 2 works probability to make n transfers is 6.195978809752471E-5
+
+lambda = 0.9000001
+lambda = 0.9000001 M[D] = 21.836173062544272 lambda_out = 0.902075
+Average number of transfers for each work 0.7883490840562037
+Average transfers number of users with completed tasks 0.9865864811684173
+Part of transferred works from finished works 15908 / 36083 = 0.44087243300169054
+Average transfers number in one window 1.4223
+Location 0 average number of works = 16.860851
+Location 1 average number of works = 22.562296
+M[D] by Little = 21.901746012540816
+Number of tasks with transfer numbers
+With transfer num equals 0 was 20191 works probability to make n transfers is 0.5595709891084444
+With transfer num equals 1 was 8994 works probability to make n transfers is 0.2492586536596181
+With transfer num equals 2 was 3831 works probability to make n transfers is 0.10617188149544107
+With transfer num equals 3 was 1672 works probability to make n transfers is 0.04633761050910401
+With transfer num equals 4 was 766 works probability to make n transfers is 0.021228833522711526
+With transfer num equals 5 was 324 works probability to make n transfers is 0.008979297730233074
+With transfer num equals 6 was 163 works probability to make n transfers is 0.004517362746999972
+With transfer num equals 7 was 77 works probability to make n transfers is 0.0021339689050245267
+With transfer num equals 8 was 34 works probability to make n transfers is 9.42271984036804E-4
+With transfer num equals 9 was 17 works probability to make n transfers is 4.71135992018402E-4
+With transfer num equals 10 was 9 works probability to make n transfers is 2.494249369509187E-4
+With transfer num equals 11 was 3 works probability to make n transfers is 8.314164565030623E-5
+With transfer num equals 12 was 1 works probability to make n transfers is 2.7713881883435412E-5
+With transfer num equals 13 was 1 works probability to make n transfers is 2.7713881883435412E-5
+
+lambda = 1.0000001
+lambda = 1.0000001 M[D] = 183.42082999508582 lambda_out = 0.9708
+Average number of transfers for each work 0.7646786155747837
+Average transfers number of users with completed tasks 0.9573032550473836
+Part of transferred works from finished works 17333 / 38832 = 0.44635867325916767
+Average transfers number in one window 1.4847
+Location 0 average number of works = 318.068568
+Location 1 average number of works = 79.239621
+M[D] by Little = 198.65407081858936
+Number of tasks with transfer numbers
+With transfer num equals 0 was 21991 works probability to make n transfers is 0.566311289658014
+With transfer num equals 1 was 9507 works probability to make n transfers is 0.2448238566131026
+With transfer num equals 2 was 4188 works probability to make n transfers is 0.10784919653893696
+With transfer num equals 3 was 1816 works probability to make n transfers is 0.04676555418211784
+With transfer num equals 4 was 743 works probability to make n transfers is 0.019133704161516274
+With transfer num equals 5 was 316 works probability to make n transfers is 0.008137618459002884
+With transfer num equals 6 was 160 works probability to make n transfers is 0.004120313143798929
+With transfer num equals 7 was 65 works probability to make n transfers is 0.0016738772146683149
+With transfer num equals 8 was 30 works probability to make n transfers is 7.725587144622991E-4
+With transfer num equals 9 was 9 works probability to make n transfers is 2.3176761433868975E-4
+With transfer num equals 10 was 4 works probability to make n transfers is 1.0300782859497322E-4
+With transfer num equals 11 was 1 works probability to make n transfers is 2.5751957148743305E-5
+With transfer num equals 12 was 2 works probability to make n transfers is 5.150391429748661E-5
+
+lambda = 1.1000001
+lambda = 1.1000001 M[D] = 896.7229828619172 lambda_out = 0.99985
+Average number of transfers for each work 0.7111566735010252
+Average transfers number of users with completed tasks 0.887983197479622
+Part of transferred works from finished works 18448 / 39994 = 0.4612691903785568
+Average transfers number in one window 1.4221
+Location 0 average number of works = 1132.185911
+Location 1 average number of works = 1061.092853
+M[D] by Little = 996.9447630780979
+Number of tasks with transfer numbers
+With transfer num equals 0 was 23343 works probability to make n transfers is 0.5836625493824074
+With transfer num equals 1 was 9762 works probability to make n transfers is 0.24408661299194878
+With transfer num equals 2 was 4025 works probability to make n transfers is 0.10064009601440216
+With transfer num equals 3 was 1696 works probability to make n transfers is 0.04240636095414312
+With transfer num equals 4 was 663 works probability to make n transfers is 0.016577486622993447
+With transfer num equals 5 was 304 works probability to make n transfers is 0.007601140171025654
+With transfer num equals 6 was 108 works probability to make n transfers is 0.002700405060759114
+With transfer num equals 7 was 51 works probability to make n transfers is 0.0012751912786918037
+With transfer num equals 8 was 23 works probability to make n transfers is 5.750862629394409E-4
+With transfer num equals 9 was 11 works probability to make n transfers is 2.750412561884283E-4
+With transfer num equals 10 was 6 works probability to make n transfers is 1.5002250337550632E-4
+With transfer num equals 11 was 2 works probability to make n transfers is 5.000750112516878E-5
+
+
+Process finished with exit code 0

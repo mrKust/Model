@@ -25,7 +25,7 @@ def lineplotMD(x_data, y_data, y2_data, x_label="", y_label="", title=""):
     for x in x_data:
         if (x <= 1) :
             x2_data.append(x)
-#    ax.plot(x2_data, y2_data, 'g', lw=4, label=('Теоретические значения'))
+    ax.plot(x2_data, y2_data, 'g', lw=4, label=('Теоретические значения'))
     ax.plot(x2_data, y_data, 'b--', lw=4, label=('Практические значения'))
     ax.set_title(title)
     ax.set_xlabel(x_label)

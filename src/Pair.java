@@ -10,12 +10,4 @@ public class Pair {
         this.windowIn = tmp1;
         this.workSize = tmp2;
     }
-
-    public double getWindowIn() {
-        return windowIn;
-    }
-
-    public double getWorkSize() {
-        return workSize;
-    }
 }

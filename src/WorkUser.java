@@ -26,13 +26,11 @@ public class WorkUser {
      * или же она переноситься/готова и обслуживание данной пары не производится
      * Значение true обозначает, что данная пара обслуживется системой в текущий момент
      * Значение false обозначает, что даннвя пара не обслуживается системой в текущий момент*/
-    public boolean statusOfProcessing;//показывает данную работу вообще начинали обслуживать(true) или
-    // её ещё вообще не обрабатывали(false)
+    public boolean statusOfProcessing;
     /** Данное поле показывает данная пара пользователь - задача уже попала в систему или ещё нет
      * Значение true обозначает, что данная пара уже начала обслуживаться системой
      * Значение false обозначает, что даннвя пара ещё не начинала обслуживаться системой*/
-    public boolean statusOfBeginingCount;//true работа уже начала выполняться
-    //на сервере , false ещё не начала
+    public boolean statusOfBeginingCount;
     /** Данное поле показывает данная пара пользователь - задача в данный момент переносит
      * данные на другой сервер и не получает обслуживание, или получает обслуживание в штатном режиме
      * Значение true обозначает, что данная пара нахожится в состоянии переноса данных и не получает
@@ -48,6 +46,7 @@ public class WorkUser {
      * области*/
     public int timeToTransfer;//показывает сколько времени данная работа будет переноситься
     // с одних серверов на другие
+    public boolean haveBeenEverTransfered;
     /** Данное поле хранит значение коэффициента необходимого при рассчёте времени необходимого
      * для перемещения задачи пользователя с серверов одной области на сервера другой области */
     public double d;
@@ -62,6 +61,10 @@ public class WorkUser {
      * Значение false обозначает, что даннвя пара не обслуживается сервером в текущий момент*/
     public boolean currentProcessingWorkOnServer;//показывает обрабатывается работа
     //сервером на данном кванте или нет false не обрабатывается, true обрабатывается
+
+    public int numberOfWorkTransfers;
+
+    public int numberOfUserTransfers;
 
     /**
      * Данный конструктор создаёт заявку и записывает в неё необходимые данные, ат так же
@@ -93,6 +96,9 @@ public class WorkUser {
                 this.sizeOfQuant);
         //this.timeInCurrentLocation = 1;
         workInfo = new Pair(windowIn, workSize);
+        this.numberOfWorkTransfers = 0;
+        this.numberOfUserTransfers = 0;
+        this.haveBeenEverTransfered = false;
 
     }
 
@@ -112,6 +118,7 @@ public class WorkUser {
      * @param newLocation Номер новой области, в которую переместился пользователь
      */
     public void changeUserLocation(int newLocation) {
+        this.numberOfUserTransfers++;
         this.userLocation = newLocation;
         this.countTimeInNewLocation();
     }
@@ -123,6 +130,11 @@ public class WorkUser {
      */
     public void changeWorkLocation(int newLocation) {
         this.workLocation = newLocation;
+        this.numberOfWorkTransfers++;
+        if (!this.haveBeenEverTransfered) {
+            Main.finishedWorksWhichWereTransferedMoreThanOneTime++;
+            this.haveBeenEverTransfered = true;
+        }
     }
 
     /**
@@ -159,7 +171,6 @@ public class WorkUser {
      * задачу
      */
     public void transfer() {
-        Main.countOfWorkTransfers++;
         this.transferStatus = true;
         if (Main.ADD_TRANSFER_TIME) {
             this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) / this.sizeOfQuant);

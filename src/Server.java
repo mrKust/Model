@@ -40,7 +40,7 @@ public class Server {
     public void getService(double currentTime) {
 
         if (Main.currentLambda == Main.LAMBDA_TRACK_AVERAGE_NUMBER_OF_WORKS) {
-            int currentVal2 = Main.averageNumberOfWorksInEachLocation.get(numberOfLocation);
+            long currentVal2 = Main.averageNumberOfWorksInEachLocation.get(numberOfLocation);
             currentVal2 += workUsersOnServer.size();
             Main.averageNumberOfWorksInEachLocation.put(numberOfLocation, currentVal2);
         }
@@ -114,6 +114,15 @@ public class Server {
         Model.summaryLengthOfWorks += tmp.workInfo.workSize;
         Model.summaryDelay += tmp.delay;
         Main.allFinishedWorks++;
+        Main.allNumberOfTransfersOfEachFinishedWork += tmp.numberOfWorkTransfers;
+        Main.numberOfUserWithCompletedTasksTransfers += tmp.numberOfUserTransfers;
+        if (Main.numberOfTransfersOfCompletedWorks.get(tmp.numberOfWorkTransfers) == null) {
+            Main.numberOfTransfersOfCompletedWorks.put(tmp.numberOfWorkTransfers, 1L);
+        } else {
+            long val = Main.numberOfTransfersOfCompletedWorks.get(tmp.numberOfWorkTransfers);
+            val++;
+            Main.numberOfTransfersOfCompletedWorks.put(tmp.numberOfWorkTransfers, val);
+        }
     }
 
     /**
@@ -122,7 +131,6 @@ public class Server {
      * @param tmp Задача, которая переносится на другой сервер
      */
     public void removeJobToSwitchServer(WorkUser tmp) {
-        Main.usersLeaveUnfinished++;
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
     }
