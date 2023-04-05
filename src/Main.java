@@ -18,7 +18,7 @@ public class Main {
     public static double d = 1;
     /** Данный параметр означает вероятность, с которой пользователь, при перемещении в
      * следующую область, решит перенести свою задачу на сервера следующей области */
-    public static double a = 0.8;
+    public static double a = 0.5;
     /** Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
      * временной шкале каждой локации*/
     public static double quant = 0.01;
@@ -26,7 +26,7 @@ public class Main {
     public static int numberOfLocations = 2;
     /** Данный параметр означает какое условное количество единиц времени производится
      * моделирование*/
-    public static float T = 200;
+    public static float T = 2000;
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
     /** Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование */
@@ -51,17 +51,52 @@ public class Main {
      * true - выводятся данные в формате номер области - номер задачи - объём выполненной работы - общий объём задачи
      * false - данные о задачах в области не выводятся*/
     public static final boolean SHOW_LOCATION_SUMMARY = false;
-    /** Данный параметр хранит значение необходимое для изменения работы с временем переноса
-     * true - при переносе задачи с одного сервера на другой требуется дополнительное время, на перенос с одного
-     * сервера на другой. Время вычисляется, как exp(1).
-     * false - при переносе задачи с одного сервера на другой дополнительное время не требуется, оно приравнивается к 0
+    /** Данная коллекция хранит среднее кол-во задач в каждый квант времени для каждой области */
+    public static Map<Integer, Long> averageNumberOfWorksInEachLocation = new HashMap<>();
+    /**
+     * Данная коллекция хранит в себе значения пары
+     * Кол-во раз (n), котораое перемещалась задача - Кол-во завершённых задач, перемещавшихся n раз
+     */
+    public static Map<Integer, Long> numberOfTransfersOfCompletedWorks = new HashMap<>();
+    /**
+     * Данная коллекция хранит в себе значения пары
+     * Кол-во раз (n), котораое перемешялся пользователь - Кол-во пользователей,
+     * обладающих завершёнными задачами, и перемещавшихся (сам пользователь) n раз
+     */
+    public static Map<Integer, Long> numberOfTransfersOfUsersWithCompletedWorks = new HashMap<>();
+
+    /**
+     * Данное поле хранит в себе суммарное количество трансферов пользователей, чьи задачи были
+     * выполненны
+     */
+    public static Long allNumberOfUserWithCompletedTasksTransfers = 0L;
+    /**
+     * Данный флаг устанавливает такой параметр системы, как добавления трансферного времени,
+     * при переносе задачи с одного сервера на другой
+     * Значение true - означает что, при переносе задачи на её перенос потребуется exp(d) времени,
+     * в течение которого задача не будет выполняться
+     * Значение false - означает, что при переносе задачи на её перенос не потребуется дополнительного
+     * времени
      */
     public static final boolean ADD_TRANSFER_TIME = false;
-    /** Данное поле хранит среднее значение задач в каждый квант времени для каждой области */
-    public static Map<Integer, Long> averageNumberOfWorksInEachLocation = new HashMap<>();
-    public static Map<Integer, Long> numberOfTransfersOfCompletedWorks = new HashMap<>();
-
-    public static Long numberOfUserWithCompletedTasksTransfers = 0L;
+    /**
+     * Данный флаг устанавливает такой параметр системы, как вывод в консоль данных о вероятности
+     * n-ого переноса задачи
+     * Значение true - означает что, в консоль выведется кол-во переходов задачи и вероятнсоть такого
+     * события
+     * Значение false - означает, что в консоль не выведется кол-во переходов задачи и вероятнсоть
+     * такого события
+     */
+    public static final boolean SHOW_WORKS_TRANSFER_PROBABILITY = false;
+    /**
+     * Данный флаг устанавливает такой параметр системы, как вывод в консоль данных о вероятности
+     * n-ого перехода пользователя
+     * Значение true - означает что, в консоль выведется кол-во переходов пользователя и вероятнсоть
+     * такого события
+     * Значение false - означает, что в консоль не выведется кол-во переходов пользователя и вероятнсоть
+     * такого события
+     */
+    public static final boolean SHOW_USERS_TRANSFER_PROBABILITY = true;
     /**
      * В данном методе производиться заупкск моделирования с заданным значениями параметров, а так
      * же изменение параметра входной интенсивности. Так же данный метод осуществляет запись полученных
@@ -94,7 +129,7 @@ public class Main {
             finishedWorksWhichWereTransferedMoreThanOneTime = 0;
             allFinishedWorks = 0;
             allNumberOfTransfersOfEachFinishedWork = 0;
-            numberOfUserWithCompletedTasksTransfers = 0L;
+            allNumberOfUserWithCompletedTasksTransfers = 0L;
 
             Model model = new Model(lyambda, a, q, d, quant, numberOfLocations, T, serviceRate);
             model.getModeling();
@@ -110,8 +145,13 @@ public class Main {
         System.out.println("lambda = " + lambda + " M[D] = " + model.mD + " lambda_out = " + model.lyambda_out);
         double averageNumberOfWorkTransfers = ((double)allNumberOfTransfersOfEachFinishedWork / allFinishedWorks);
         System.out.println("Average number of transfers for each work " + averageNumberOfWorkTransfers);
-        double averageNumberOfUserTransfers = ((double)numberOfUserWithCompletedTasksTransfers / allFinishedWorks);
+
+        double averageNumberOfUserTransfers = ((double)allNumberOfUserWithCompletedTasksTransfers / allFinishedWorks);
+        //double averageNumberOfUserTransfers = ((double)allNumberOfUserWithCompletedTasksTransfers / T);
         System.out.println("Average transfers number of users with completed tasks " + averageNumberOfUserTransfers);
+        System.out.println(allNumberOfUserWithCompletedTasksTransfers);
+        System.out.println(allFinishedWorks);
+
         System.out.println("Part of transferred works from finished works " + finishedWorksWhichWereTransferedMoreThanOneTime + " / " + allFinishedWorks + " = " +
                 (double) finishedWorksWhichWereTransferedMoreThanOneTime / allFinishedWorks);
         double transfersPerTime = (double) allNumberOfTransfersOfEachFinishedWork / T;
@@ -142,11 +182,27 @@ public class Main {
         System.out.println("M[D] by Little = " + dPoLittle);
         System.out.println("Number of tasks with transfer numbers");
         Map<Integer, Double> outputData = new LinkedHashMap<>();
-        for (Map.Entry<Integer, Long> numberOfTransfers : numberOfTransfersOfCompletedWorks.entrySet()) {
-            double probabilityToNTransfers = (double) numberOfTransfers.getValue() / allFinishedWorks;
-            System.out.println("With transfer num equals " + numberOfTransfers.getKey() + " was " + numberOfTransfers.getValue() + " works probability to make n transfers is "
-            + probabilityToNTransfers);
-            outputData.put(numberOfTransfers.getKey(), probabilityToNTransfers);
+        List<Integer> numberTransfersOfWorks = numberOfTransfersOfCompletedWorks.keySet().stream().sorted().toList();
+        for (Integer currentKey : numberTransfersOfWorks) {
+            long currentValue = numberOfTransfersOfCompletedWorks.get(currentKey);
+            double probabilityToNTransfers = (double) currentValue / allFinishedWorks;
+            outputData.put(currentKey, probabilityToNTransfers);
+            if (SHOW_WORKS_TRANSFER_PROBABILITY) {
+                System.out.println("With transfer num equals " + currentKey + " was " + currentValue + " works probability to make n transfers is "
+                        + probabilityToNTransfers);
+            }
+        }
+        System.out.println();
+
+        List<Integer> numberTransfersOfUsers = numberOfTransfersOfUsersWithCompletedWorks.keySet().stream().sorted().toList();
+        System.out.println("Number of users with transfer numbers");
+        for (Integer currentKey : numberTransfersOfUsers) {
+            long currentValue = numberOfTransfersOfUsersWithCompletedWorks.get(currentKey);
+            double probabilityToNTransfers = (double) currentValue / allFinishedWorks;
+            if (SHOW_WORKS_TRANSFER_PROBABILITY) {
+                System.out.println("With transfer num equals " + currentKey + " was " + currentValue + " works probability to make n transfers is "
+                        + probabilityToNTransfers);
+            }
         }
         System.out.println();
 

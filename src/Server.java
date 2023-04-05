@@ -115,7 +115,16 @@ public class Server {
         Model.summaryDelay += tmp.delay;
         Main.allFinishedWorks++;
         Main.allNumberOfTransfersOfEachFinishedWork += tmp.numberOfWorkTransfers;
-        Main.numberOfUserWithCompletedTasksTransfers += tmp.numberOfUserTransfers;
+        Main.allNumberOfUserWithCompletedTasksTransfers += tmp.numberOfUserTransfers;
+
+        if (Main.numberOfTransfersOfUsersWithCompletedWorks.get(tmp.numberOfUserTransfers) == null) {
+            Main.numberOfTransfersOfUsersWithCompletedWorks.put(tmp.numberOfUserTransfers, 1L);
+        } else {
+            long val = Main.numberOfTransfersOfUsersWithCompletedWorks.get(tmp.numberOfUserTransfers);
+            val++;
+            Main.numberOfTransfersOfUsersWithCompletedWorks.put(tmp.numberOfUserTransfers, val);
+        }
+
         if (Main.numberOfTransfersOfCompletedWorks.get(tmp.numberOfWorkTransfers) == null) {
             Main.numberOfTransfersOfCompletedWorks.put(tmp.numberOfWorkTransfers, 1L);
         } else {
