@@ -96,7 +96,7 @@ public class Main {
      * Значение false - означает, что в консоль не выведется кол-во переходов пользователя и вероятнсоть
      * такого события
      */
-    public static final boolean SHOW_USERS_TRANSFER_PROBABILITY = true;
+    public static final boolean SHOW_USERS_TRANSFER_PROBABILITY = false;
     /**
      * В данном методе производиться заупкск моделирования с заданным значениями параметров, а так
      * же изменение параметра входной интенсивности. Так же данный метод осуществляет запись полученных
@@ -146,8 +146,13 @@ public class Main {
         double averageNumberOfWorkTransfers = ((double)allNumberOfTransfersOfEachFinishedWork / allFinishedWorks);
         System.out.println("Average number of transfers for each work " + averageNumberOfWorkTransfers);
 
-        double averageNumberOfUserTransfers = ((double)allNumberOfUserWithCompletedTasksTransfers / allFinishedWorks);
-        //double averageNumberOfUserTransfers = ((double)allNumberOfUserWithCompletedTasksTransfers / T);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //double averageNumberOfUserTransfers = ((double)allNumberOfUserWithCompletedTasksTransfers / allFinishedWorks);
+        double averageNumberOfUserTransfers = ((double)allNumberOfUserWithCompletedTasksTransfers / (T / model.sizeOfQuant));
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         System.out.println("Average transfers number of users with completed tasks " + averageNumberOfUserTransfers);
         System.out.println(allNumberOfUserWithCompletedTasksTransfers);
         System.out.println(allFinishedWorks);
@@ -188,7 +193,7 @@ public class Main {
             double probabilityToNTransfers = (double) currentValue / allFinishedWorks;
             outputData.put(currentKey, probabilityToNTransfers);
             if (SHOW_WORKS_TRANSFER_PROBABILITY) {
-                System.out.println("With transfer num equals " + currentKey + " was " + currentValue + " works probability to make n transfers is "
+                System.out.println("With transfer num equals " + currentKey + " was " + currentValue + " works. Probability to make n transfers is "
                         + probabilityToNTransfers);
             }
         }
@@ -199,8 +204,8 @@ public class Main {
         for (Integer currentKey : numberTransfersOfUsers) {
             long currentValue = numberOfTransfersOfUsersWithCompletedWorks.get(currentKey);
             double probabilityToNTransfers = (double) currentValue / allFinishedWorks;
-            if (SHOW_WORKS_TRANSFER_PROBABILITY) {
-                System.out.println("With transfer num equals " + currentKey + " was " + currentValue + " works probability to make n transfers is "
+            if (SHOW_USERS_TRANSFER_PROBABILITY) {
+                System.out.println("With transfer num equals " + currentKey + " was " + currentValue + " users. Probability to make n transfers is "
                         + probabilityToNTransfers);
             }
         }
