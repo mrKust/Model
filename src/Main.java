@@ -2,6 +2,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * В данном классе задаются все параметры необходимые для моделирования системы. Так же
@@ -18,7 +19,7 @@ public class Main {
     public static double d = 1;
     /** Данный параметр означает вероятность, с которой пользователь, при перемещении в
      * следующую область, решит перенести свою задачу на сервера следующей области */
-    public static double a = 0.5;
+    public static double a = 0.9;
     /** Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
      * временной шкале каждой локации*/
     public static double quant = 0.01;
@@ -26,13 +27,13 @@ public class Main {
     public static int numberOfLocations = 2;
     /** Данный параметр означает какое условное количество единиц времени производится
      * моделирование*/
-    public static float T = 2000;
+    public static float T = 100_000;
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
     /** Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование */
     public static final float LAMBDA_IN_START = 0.1F;
     /** Данный параметр задаёт финальную входную интенсивность, при достижении которой моделирование заканчивается */
-    public static final float LAMBDA_IN_FINISH = 1.15F;
+    public static final float LAMBDA_IN_FINISH = 0.15F;
     /** Данный параметр определяет входную интенсивность, для которой будет посчитано среднее значение кол-ва задач
      * в один квант времени для каждой области */
     public static float LAMBDA_TRACK_AVERAGE_NUMBER_OF_WORKS = 0.5F;
@@ -87,7 +88,7 @@ public class Main {
      * Значение false - означает, что в консоль не выведется кол-во переходов задачи и вероятнсоть
      * такого события
      */
-    public static final boolean SHOW_WORKS_TRANSFER_PROBABILITY = false;
+    public static final boolean SHOW_WORKS_TRANSFER_PROBABILITY = true;
     /**
      * Данный флаг устанавливает такой параметр системы, как вывод в консоль данных о вероятности
      * n-ого перехода пользователя
@@ -148,8 +149,8 @@ public class Main {
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        //double averageNumberOfUserTransfers = ((double)allNumberOfUserWithCompletedTasksTransfers / allFinishedWorks);
-        double averageNumberOfUserTransfers = ((double)allNumberOfUserWithCompletedTasksTransfers / (T / model.sizeOfQuant));
+        double averageNumberOfUserTransfers = ((double)allNumberOfUserWithCompletedTasksTransfers / allFinishedWorks);
+        //double averageNumberOfUserTransfers = ((double)allNumberOfUserWithCompletedTasksTransfers / (T / model.sizeOfQuant));
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -187,7 +188,7 @@ public class Main {
         System.out.println("M[D] by Little = " + dPoLittle);
         System.out.println("Number of tasks with transfer numbers");
         Map<Integer, Double> outputData = new LinkedHashMap<>();
-        List<Integer> numberTransfersOfWorks = numberOfTransfersOfCompletedWorks.keySet().stream().sorted().toList();
+        List<Integer> numberTransfersOfWorks = numberOfTransfersOfCompletedWorks.keySet().stream().sorted().collect(Collectors.toList());
         for (Integer currentKey : numberTransfersOfWorks) {
             long currentValue = numberOfTransfersOfCompletedWorks.get(currentKey);
             double probabilityToNTransfers = (double) currentValue / allFinishedWorks;
@@ -199,7 +200,7 @@ public class Main {
         }
         System.out.println();
 
-        List<Integer> numberTransfersOfUsers = numberOfTransfersOfUsersWithCompletedWorks.keySet().stream().sorted().toList();
+        List<Integer> numberTransfersOfUsers = numberOfTransfersOfUsersWithCompletedWorks.keySet().stream().sorted().collect(Collectors.toList());
         System.out.println("Number of users with transfer numbers");
         for (Integer currentKey : numberTransfersOfUsers) {
             long currentValue = numberOfTransfersOfUsersWithCompletedWorks.get(currentKey);

@@ -65,6 +65,7 @@ public class WorkUser {
     public int numberOfWorkTransfers;
 
     public int numberOfUserTransfers;
+    public boolean isEverAbandoned;
 
     /**
      * Данный конструктор создаёт заявку и записывает в неё необходимые данные, ат так же
@@ -99,6 +100,7 @@ public class WorkUser {
         this.numberOfWorkTransfers = 0;
         this.numberOfUserTransfers = 0;
         this.haveBeenEverTransfered = false;
+        this.isEverAbandoned = false;
 
     }
 

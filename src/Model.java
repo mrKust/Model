@@ -215,12 +215,10 @@ public class Model {
                     то, мы не переносим задачу (оставляем её в той же области в которой она уже находится).
                     Мы только перемещаем пользователя в новую (ближайшую область)
                 */
-                if (tmpWorkUser.userLocation != tmpWorkUser.workLocation) {
-                    tmpWorkUser.userLocation = currentClosestLocation;
-                    continue;
-                }
-
-                /*
+                if (tmpWorkUser.isEverAbandoned) {
+                    tmpWorkUser.changeUserLocation(currentClosestLocation);
+                } else {
+                    /*
                     Для симметричной модели
                     В случае, если пользователь и его задача находятся вместе в текущей области
                     то, мы перемещаем пользователя в новую область.
@@ -228,15 +226,15 @@ public class Model {
                     В случае перемещения задачи пользователя, для задачи вычисляется время
                     необходимое для переноса с одного сервера на другой (на трансфер)
                  */
-                tmpWorkUser.changeUserLocation(currentClosestLocation);
-                double probabilityToSwitchWorkServer = Math.random();
-                if (probabilityToSwitchWorkServer < this.a) {
-                    tmpServer.removeJobToSwitchServer(tmpWorkUser);
-                    locations.get(currentClosestLocation).server.addNewTransferJob(tmpWorkUser);
-                    tmpWorkUser.changeWorkLocation(currentClosestLocation);
-                    tmpWorkUser.transfer();
+                    tmpWorkUser.changeUserLocation(currentClosestLocation);
+                    double probabilityToSwitchWorkServer = Math.random();
+                    if (probabilityToSwitchWorkServer < this.a) {
+                        tmpServer.removeJobToSwitchServer(tmpWorkUser);
+                        locations.get(currentClosestLocation).server.addNewTransferJob(tmpWorkUser);
+                        tmpWorkUser.changeWorkLocation(currentClosestLocation);
+                        tmpWorkUser.transfer();
+                    } else tmpWorkUser.isEverAbandoned = true;
                 }
-
             }
         }
     }

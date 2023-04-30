@@ -80,7 +80,6 @@ public class Location {
      * @param time длина временной линии
      */
     public void createInputStream(float lyambda, double time) {
-
         int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
 
         double tmpWindowIn = - (Math.log(Math.random()) / lyambda);
