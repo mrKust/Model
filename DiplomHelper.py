@@ -25,7 +25,7 @@ def lineplotMD(x_data, y_data, y2_data, x_label="", y_label="", title=""):
     for x in x_data:
         if (x <= 1) :
             x2_data.append(x)
-    ax.plot(x2_data, y2_data, 'g', lw=4, label=('Теоретические значения'))
+#    ax.plot(x2_data, y2_data, 'g', lw=4, label=('Теоретические значения'))
     ax.plot(x2_data, y_data, 'b--', lw=4, label=('Практические значения'))
     ax.set_title(title)
     ax.set_xlabel(x_label)
@@ -33,7 +33,7 @@ def lineplotMD(x_data, y_data, y2_data, x_label="", y_label="", title=""):
 
 def main():
     data = []
-    with open("D:\Pereezd\Labs\Научка\Model\model.txt") as f:
+    with open("/Users/da.vasilyev/Desktop/Projects/Model/model.txt") as f:
         for line in f:
             data.append([float(x) for x in line.split()])
 

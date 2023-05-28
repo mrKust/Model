@@ -87,32 +87,6 @@ public class Model {
     }
 
     /**
-     * Данный конструктор используется для моделирования работы случаев, когда входная интенсивность меньше 1
-     */
-    public Model(double a, double q, double d, double quant, int numberOfLocations,
-                 float T, double serviceRate) {
-
-        locations = new ArrayList<>();
-        random = new Random();
-        this.sizeOfQuant = quant;
-        for (int i = 0; i < numberOfLocations; i++) {
-            locations.add(new Location(T, q, i, quant, d, serviceRate));
-        }
-        this.a = a;
-        this.q = q;
-        this.d = d;
-        this.numberOfLocations = numberOfLocations;
-        this.T = T;
-        this.lyambda_out = 0;
-        this.mediumSizeOfWork = 0;
-
-        numberOfExitedWorks = 0;
-        summaryDelay = 0;
-        summaryLengthOfWorks = 0;
-
-    }
-
-    /**
      * В данном методе организуется перемещение программы по линии времени в каждой локации, а
      * так же расчёт итоговых средних значений задержки, выходной интенсвности, среднего размера работы,
      *  по всем областям
@@ -130,33 +104,6 @@ public class Model {
         this.lyambda_out = (double) numberOfExitedWorks / (T * numberOfLocations) ;
         this.mediumSizeOfWork = summaryLengthOfWorks / numberOfExitedWorks;
         this.mD = summaryDelay / numberOfExitedWorks;
-
-        if (Main.SHOW_LOCATION_SUMMARY)
-            showLocationsSummary();
-
-    }
-
-    public void getModelingForLowIntensity() {
-
-        for (double t = 0; t < this.T; t += sizeOfQuant) {
-
-            for (int i = 0; i < locations.size(); i++) {
-                locations.get(i).processingAtLocation(t);
-                this.userSwitchLocation();
-                int numberOfLastElement = locations.get(i).inputStream.size() - 1;
-                if ((locations.get(i).numberOfWorksInLocation != 0) &&
-                (locations.get(i).inputStream.get(numberOfLastElement).statusFinishedOrUnfinished)) {
-                    locations.get(0).createInputStream(t);
-                }
-            }
-
-
-        }
-
-        this.lyambda_out = (double) numberOfExitedWorks / T;
-        this.mediumSizeOfWork = summaryLengthOfWorks / numberOfExitedWorks;
-        this.mD = summaryDelay / numberOfExitedWorks;
-        this.mDTheoretical = 1 / (1 - this.lyambda_out);
 
         if (Main.SHOW_LOCATION_SUMMARY)
             showLocationsSummary();
@@ -239,6 +186,11 @@ public class Model {
         }
     }
 
+    /**
+     * Данный метод выводит в консоль информацию о каждой работе из каждой области.
+     * Информация выводится в виде "количество кванотов времени на её полноценное выполнение -
+     * количество кванотов времени потраченных на выполнение задачи"
+     */
     public void showLocationsSummary() {
         System.out.println("Summary");
         //по каждому пользователю

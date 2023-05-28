@@ -59,22 +59,6 @@ public class Location {
     }
 
     /**
-     * Коструктор используется при моделировании, когда значение входной интенсивности потока меньше 1
-     */
-    public Location(double time, double q, int numberOfThisLocation, double quant,
-                    double d, double serviceRate) {
-        this.numberOfThisLocation = numberOfThisLocation;
-        server = new Server(this.numberOfThisLocation, serviceRate);
-        inputStream = new ArrayList<>();
-        this.q = q;
-        this.d = d;
-        this.sizeOfQuant = quant;
-        this.lengthOfAllWorks = 0;
-        createInputStream(0);
-        this.numberOfWorksInLocation = inputStream.size();
-    }
-
-    /**
      * Данный метод формирует входную очередь с заданной интенсивностью
      * @param lyambda значение входной интенсивности
      * @param time длина временной линии
@@ -100,26 +84,6 @@ public class Location {
             this.lengthOfAllWorks += tmpSize;
             userNumber++;
         }
-
-    }
-
-    /**
-     * Данный метод формирует входную очередь для случаев с очень низкой интенсивностью
-     * @param timeIn момент добавления заявки в систему
-     */
-    public void createInputStream(double timeIn) {
-
-        if (this.numberOfThisLocation != 0)
-            return;
-
-        int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
-        double tmpWindowIn = timeIn + this.sizeOfQuant;
-        this.lengthOfAllWorks += tmpSize;
-        int userNumber = 0;
-
-        inputStream.add(new WorkUser(userNumber, numberOfThisLocation, tmpWindowIn, tmpSize,
-                this.sizeOfQuant, this.d));
-        userNumber++;
 
     }
 

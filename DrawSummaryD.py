@@ -12,7 +12,7 @@ def lineplotMD(x_data, y_data, y2_data, y3_data, x_label="", y_label="", title="
 
 def main():
     data = []
-    with open("D:\Pereezd\Labs\Научка\Model\AverageNumberWorkTransfers.txt") as f:
+    with open("/Users/da.vasilyev/Desktop/Projects/Model/AverageNumberWorkTransfers.txt") as f:
         num = 0
         for line in f:
             if num == 0:

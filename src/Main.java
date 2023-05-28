@@ -19,7 +19,7 @@ public class Main {
     public static double d = 1;
     /** Данный параметр означает вероятность, с которой пользователь, при перемещении в
      * следующую область, решит перенести свою задачу на сервера следующей области */
-    public static double a = 0.9;
+    public static double a = 0.8;
     /** Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
      * временной шкале каждой локации*/
     public static double quant = 0.01;
@@ -27,13 +27,13 @@ public class Main {
     public static int numberOfLocations = 2;
     /** Данный параметр означает какое условное количество единиц времени производится
      * моделирование*/
-    public static float T = 100_000;
+    public static float T = 2_000;
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
     /** Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование */
     public static final float LAMBDA_IN_START = 0.1F;
     /** Данный параметр задаёт финальную входную интенсивность, при достижении которой моделирование заканчивается */
-    public static final float LAMBDA_IN_FINISH = 0.15F;
+    public static final float LAMBDA_IN_FINISH = 1.15F;
     /** Данный параметр определяет входную интенсивность, для которой будет посчитано среднее значение кол-ва задач
      * в один квант времени для каждой области */
     public static float LAMBDA_TRACK_AVERAGE_NUMBER_OF_WORKS = 0.5F;
@@ -97,7 +97,7 @@ public class Main {
      * Значение false - означает, что в консоль не выведется кол-во переходов пользователя и вероятнсоть
      * такого события
      */
-    public static final boolean SHOW_USERS_TRANSFER_PROBABILITY = false;
+    public static final boolean SHOW_USERS_TRANSFER_PROBABILITY = true;
     /**
      * В данном методе производиться заупкск моделирования с заданным значениями параметров, а так
      * же изменение параметра входной интенсивности. Так же данный метод осуществляет запись полученных
@@ -114,10 +114,6 @@ public class Main {
             System.err.println("Problems with output files");
             throw new RuntimeException(e);
         }
-
-        Model modelLowIntensity = new Model(a, q, d, quant, numberOfLocations, T, serviceRate);
-        //modelLowIntensity.getModelingForLowIntensity();
-        printOutSummary(0, modelLowIntensity, outputFile, fileLoc);
 
         for (float lyambda = LAMBDA_IN_START; lyambda <= LAMBDA_IN_FINISH; lyambda += 0.1) {
 
@@ -146,18 +142,8 @@ public class Main {
         System.out.println("lambda = " + lambda + " M[D] = " + model.mD + " lambda_out = " + model.lyambda_out);
         double averageNumberOfWorkTransfers = ((double)allNumberOfTransfersOfEachFinishedWork / allFinishedWorks);
         System.out.println("Average number of transfers for each work " + averageNumberOfWorkTransfers);
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
         double averageNumberOfUserTransfers = ((double)allNumberOfUserWithCompletedTasksTransfers / allFinishedWorks);
-        //double averageNumberOfUserTransfers = ((double)allNumberOfUserWithCompletedTasksTransfers / (T / model.sizeOfQuant));
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
         System.out.println("Average transfers number of users with completed tasks " + averageNumberOfUserTransfers);
-        System.out.println(allNumberOfUserWithCompletedTasksTransfers);
-        System.out.println(allFinishedWorks);
-
         System.out.println("Part of transferred works from finished works " + finishedWorksWhichWereTransferedMoreThanOneTime + " / " + allFinishedWorks + " = " +
                 (double) finishedWorksWhichWereTransferedMoreThanOneTime / allFinishedWorks);
         double transfersPerTime = (double) allNumberOfTransfersOfEachFinishedWork / T;
@@ -215,7 +201,7 @@ public class Main {
         try {
             StringBuilder outputText = new StringBuilder();
 
-            outputText.append("Start lambda ").append(lambda).append("\n");
+            /*outputText.append("Start lambda ").append(lambda).append("\n");
             for (Map.Entry<Integer, Double> probabilityToTransfer : outputData.entrySet()) {
                 outputText.append(probabilityToTransfer.getKey()).append(" ").append(probabilityToTransfer.getValue()).append("\n");
             }
@@ -223,19 +209,19 @@ public class Main {
             outputText.append(averageNumberOfUserTransfers).append("\n");
             outputText.append(model.mD).append("\n");
             outputText.append(avarageNumberOfTasksInOneQuant).append("\n");
-            outputText.append("End lambda ").append(lambda).append("\n");
+            outputText.append("End lambda ").append(lambda).append("\n")*/;
 
-        /*if (lambda < 1.0) {
+        if (lambda < 1.0) {
             outputText.append(lambda).append(" ").append(model.lyambda_out).append(" ").append(model.mediumSizeOfWork)
                     .append(" ").append(transfersPerTime).append(" ").append(model.mD).append(" ")
                     .append(dPoLittle).append("\n");
-            *//*outputText.append(lambda).append(" ").append(model.lyambda_out).append(" ").append(model.mediumSizeOfWork)
+            outputText.append(lambda).append(" ").append(model.lyambda_out).append(" ").append(model.mediumSizeOfWork)
                     .append(" ").append(transfersPerTime).append(" ").append(model.mD).append(" ")
-                    .append(model.mDTheoretical).append("\n");*//*
+                    .append(model.mDTheoretical).append("\n");
         } else {
             outputText.append(lambda).append(" ").append(model.lyambda_out).append(" ").append(model.mediumSizeOfWork)
                     .append(" ").append(transfersPerTime).append(" ").append("\n");
-        }*/
+        }
 
             outputFile.write(outputText.toString());
             outputFile.flush();
