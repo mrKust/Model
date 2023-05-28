@@ -193,7 +193,6 @@ public class Model {
      */
     public void showLocationsSummary() {
         System.out.println("Summary");
-        //по каждому пользователю
         for (int i = 0; i < locations.size(); i++) {
             ArrayList<WorkUser> tmpLocationInputStream = locations.get(i).inputStream;
             for (int k = 0; k < tmpLocationInputStream.size(); k++) {
