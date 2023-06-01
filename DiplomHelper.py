@@ -33,7 +33,7 @@ def lineplotMD(x_data, y_data, y2_data, x_label="", y_label="", title=""):
 
 def main():
     data = []
-    with open("/Users/da.vasilyev/Desktop/Projects/Model/model.txt") as f:
+    with open("D:\Pereezd\Labs\Научка\Model\model.txt") as f:
         for line in f:
             data.append([float(x) for x in line.split()])
 

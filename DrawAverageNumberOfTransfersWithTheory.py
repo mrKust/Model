@@ -3,12 +3,13 @@ import matplotlib.pyplot as plt
 def lineplotMD(x_data, y_data, x_label="", y_label="", title=""):
     _, ax = plt.subplots()
     y2_data = []
-    a = 0.8
+    a = 0.2
     for x in x_data:
-        if (x == 0):
-            y2_data.append(1 - 0.5*a)
-        else:
-            y2_data.append(pow(0.5*a, x)*(1 - 0.5*a))
+        y2_data.append(pow(0.5, x+1))
+#        if (x == 0):
+#            y2_data.append(1 - 0.5*a)
+#        else:
+#            y2_data.append(pow(0.5*a, x)*(1 - 0.5*a))
 
     print(y2_data)
     ax.plot(x_data, y2_data, 'g', lw=4, label=('Теоретические значения'))
@@ -35,7 +36,7 @@ def main():
     print(dataX)
     print(dataY)
 
-    lineplotMD(dataX, dataY, "Кол-во передач", "Среднее кол-во переходов задач", "Среднее кол-во переходов задач")
+    lineplotMD(dataX, dataY, "Кол-во передач", "Среднее кол-во переходов пользователя", "Среднее кол-во переходов пользователя")
     plt.legend()
 
     plt.show()

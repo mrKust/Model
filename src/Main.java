@@ -19,7 +19,7 @@ public class Main {
     public static double d = 1;
     /** Данный параметр означает вероятность, с которой пользователь, при перемещении в
      * следующую область, решит перенести свою задачу на сервера следующей области */
-    public static double a = 0.8;
+    public static double a = 0.5;
     /** Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
      * временной шкале каждой локации*/
     public static double quant = 0.01;
@@ -27,7 +27,7 @@ public class Main {
     public static int numberOfLocations = 2;
     /** Данный параметр означает какое условное количество единиц времени производится
      * моделирование*/
-    public static float T = 2_000;
+    public static float T = 20_000;
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
     /** Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование */
@@ -88,7 +88,7 @@ public class Main {
      * Значение false - означает, что в консоль не выведется кол-во переходов задачи и вероятнсоть
      * такого события
      */
-    public static final boolean SHOW_WORKS_TRANSFER_PROBABILITY = true;
+    public static final boolean SHOW_WORKS_TRANSFER_PROBABILITY = false;
     /**
      * Данный флаг устанавливает такой параметр системы, как вывод в консоль данных о вероятности
      * n-ого перехода пользователя
@@ -97,7 +97,7 @@ public class Main {
      * Значение false - означает, что в консоль не выведется кол-во переходов пользователя и вероятнсоть
      * такого события
      */
-    public static final boolean SHOW_USERS_TRANSFER_PROBABILITY = true;
+    public static final boolean SHOW_USERS_TRANSFER_PROBABILITY = false;
     /**
      * В данном методе производиться заупкск моделирования с заданным значениями параметров, а так
      * же изменение параметра входной интенсивности. Так же данный метод осуществляет запись полученных
@@ -209,7 +209,7 @@ public class Main {
             outputText.append(averageNumberOfUserTransfers).append("\n");
             outputText.append(model.mD).append("\n");
             outputText.append(avarageNumberOfTasksInOneQuant).append("\n");
-            outputText.append("End lambda ").append(lambda).append("\n")*/;
+            outputText.append("End lambda ").append(lambda).append("\n");*/
 
         if (lambda < 1.0) {
             outputText.append(lambda).append(" ").append(model.lyambda_out).append(" ").append(model.mediumSizeOfWork)
