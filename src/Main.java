@@ -79,7 +79,7 @@ public class Main {
      * Значение false - означает, что при переносе задачи на её перенос не потребуется дополнительного
      * времени
      */
-    public static final boolean ADD_TRANSFER_TIME = false;
+    public static final boolean ADD_TRANSFER_TIME = true;
     /**
      * Данный флаг устанавливает такой параметр системы, как вывод в консоль данных о вероятности
      * n-ого переноса задачи

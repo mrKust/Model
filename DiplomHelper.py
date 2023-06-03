@@ -13,8 +13,8 @@ def lineplotLambda(x_data, y_data, y2_data, x_label="", y_label="", title=""):
     _, ax = plt.subplots()
     x_data.pop(0)
     y_data.pop(0)
-    ax.plot(x_data, y2_data, 'g', lw=4, label=('Входной поток'))
-    ax.plot(x_data, y_data, 'b--', lw=4,label=('Выходной поток'))
+    ax.plot(x_data, y2_data, 'g', lw=3, label=('Входной поток'))
+    ax.plot(x_data, y_data, 'b--', lw=3,label=('Выходной поток'))
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
@@ -25,8 +25,8 @@ def lineplotMD(x_data, y_data, y2_data, x_label="", y_label="", title=""):
     for x in x_data:
         if (x <= 1) :
             x2_data.append(x)
-#    ax.plot(x2_data, y2_data, 'g', lw=4, label=('Теоретические значения'))
-    ax.plot(x2_data, y_data, 'b--', lw=4, label=('Практические значения'))
+#    ax.plot(x2_data, y2_data, 'g', lw=3, label=('Теоретические значения'))
+    ax.plot(x2_data, y_data, 'b--', lw=3, label=('Практические значения'))
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
@@ -62,9 +62,9 @@ def main():
 
     lineplot(dataX, dataY2, chr(955), "medium length of work", "medium length of work")
     lineplot(dataX, dataY3, chr(955), "transfersNum / T", "transfers per T")
-    lineplotMD(dataX, dataY4, dataY5, chr(955), "D(" + chr(955) + ")", "D(" + chr(955) + ")")
+    lineplotMD(dataX, dataY4, dataY5, "Входная интенсивность, " + chr(955), "Средняя задержка, D, квант", "Среднее значение задержки от входной интенсивности")
     plt.legend()
-    lineplotLambda(dataX, dataY1, dataX, chr(955), chr(955) + " вых",  chr(955) + " вых")
+    lineplotLambda(dataX, dataY1, dataX, "Входная интенсивность, " + chr(955), "Выходная интенсивность, " + chr(955), "Среднее значение выходной интенсивности от входной интенсивности")
     plt.legend()
 
     plt.show()

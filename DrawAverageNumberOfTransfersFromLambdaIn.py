@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 def lineplot(x_data, y_data, y2_data, x_label="", y_label="", title=""):
     _, ax = plt.subplots()
 
-    ax.plot(x_data, y2_data, 'g', lw=4, label=('Среднее количество переносов задачи'))
-    ax.plot(x_data, y_data, 'b--', lw=4, label=('Среднее количество переходов пользователя'))
+    ax.plot(x_data, y2_data, 'g', lw=3, label=('Среднее количество переносов задачи'))
+    ax.plot(x_data, y_data, 'b--', lw=3, label=('Среднее количество переходов пользователя'))
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
@@ -29,7 +29,7 @@ def main():
     print(dataX)
     print(dataY)
 
-    lineplot(dataX, dataY, dataY2, chr(955), "Среднее кол-во перемещений", "Среднее кол-во переходов пользователя")
+    lineplot(dataX, dataY, dataY2, "Входная интенсивность, " + chr(955), "Среднее кол-во перемещений, n, шт", "Среднее кол-во переходов от входной интенсивности")
     plt.legend()
 
     plt.show()
