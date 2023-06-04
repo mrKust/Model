@@ -19,7 +19,7 @@ public class Main {
     public static double d = 1;
     /** Данный параметр означает вероятность, с которой пользователь, при перемещении в
      * следующую область, решит перенести свою задачу на сервера следующей области */
-    public static double a = 0.5;
+    public static double a = 0.8;
     /** Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
      * временной шкале каждой локации*/
     public static double quant = 0.01;
@@ -212,9 +212,9 @@ public class Main {
             outputText.append("End lambda ").append(lambda).append("\n");*/
 
         if (lambda < 1.0) {
-            outputText.append(lambda).append(" ").append(model.lyambda_out).append(" ").append(model.mediumSizeOfWork)
+            /*outputText.append(lambda).append(" ").append(model.lyambda_out).append(" ").append(model.mediumSizeOfWork)
                     .append(" ").append(transfersPerTime).append(" ").append(model.mD).append(" ")
-                    .append(dPoLittle).append("\n");
+                    .append(dPoLittle).append("\n");*/
             outputText.append(lambda).append(" ").append(model.lyambda_out).append(" ").append(model.mediumSizeOfWork)
                     .append(" ").append(transfersPerTime).append(" ").append(model.mD).append(" ")
                     .append(model.mDTheoretical).append("\n");

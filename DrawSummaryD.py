@@ -4,7 +4,7 @@ def lineplotMD(x_data, y_data, y2_data, y3_data, x_label="", y_label="", title="
     _, ax = plt.subplots()
     ax.plot(x_data, y2_data, 'g', lw=4, label=('С доп временем'))
     ax.plot(x_data, y_data, 'b--', lw=4, label=('Без доп времени'))
-    ax.plot(x_data, y3_data, 'r--', lw=4, label=('Без доп времени + время на трансферы'))
+    ax.plot(x_data, y3_data, 'r:', lw=4, label=('Без доп времени + время на трансферы'))
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
