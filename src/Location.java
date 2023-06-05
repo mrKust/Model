@@ -65,7 +65,7 @@ public class Location {
      */
     public void createInputStream(float lyambda, double time) {
         int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant); //экспоненциальное распределение
-        //int tmpSize = (int) Math.ceil( (1 + Math.random()) / this.sizeOfQuant); //равномерное распределение
+        //int tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение
         //int tmpSize = 100; //постоянная
 
         double tmpWindowIn = - (Math.log(Math.random()) / lyambda);
@@ -79,7 +79,7 @@ public class Location {
         while (inputStream.get(userNumber - 1).workInfo.windowIn <= time) {
 
             tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
-            //tmpSize = (int) Math.ceil( (1 + Math.random()) / this.sizeOfQuant);
+            //tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant);
             tmpWindowIn = - (Math.log(Math.random()) / lyambda);
             inputStream.add(new WorkUser(userNumber, numberOfThisLocation,
                     inputStream.get(userNumber - 1).workInfo.windowIn + tmpWindowIn, tmpSize,
