@@ -65,8 +65,8 @@ public class Location {
      */
     public void createInputStream(float lyambda, double time) {
         int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant); //экспоненциальное распределение
-        //int tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение
         //int tmpSize = 100; //постоянная
+        //int tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение
 
         double tmpWindowIn = - (Math.log(Math.random()) / lyambda);
         this.lengthOfAllWorks += tmpSize;
