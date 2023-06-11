@@ -19,7 +19,7 @@ public class Main {
     public static double d = 1;
     /** Данный параметр означает вероятность, с которой пользователь, при перемещении в
      * следующую область, решит перенести свою задачу на сервера следующей области */
-    public static double a = 0.0;
+    public static double a = 0.5;
     /** Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
      * временной шкале каждой локации*/
     public static double quant = 0.01;
@@ -27,13 +27,13 @@ public class Main {
     public static int numberOfLocations = 2;
     /** Данный параметр означает какое условное количество единиц времени производится
      * моделирование*/
-    public static float T = 5_000;
+    public static float T = 100_000;
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
     /** Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование */
-    public static final float LAMBDA_IN_START = 0.1F;
+    public static final float LAMBDA_IN_START = 0.3F;
     /** Данный параметр задаёт финальную входную интенсивность, при достижении которой моделирование заканчивается */
-    public static final float LAMBDA_IN_FINISH = 2.05F;
+    public static final float LAMBDA_IN_FINISH = 0.55F;
     /** Данный параметр определяет входную интенсивность, для которой будет посчитано среднее значение кол-ва задач
      * в один квант времени для каждой области */
     public static float LAMBDA_TRACK_AVERAGE_NUMBER_OF_WORKS = 0.5F;
@@ -79,7 +79,7 @@ public class Main {
      * Значение false - означает, что при переносе задачи на её перенос не потребуется дополнительного
      * времени
      */
-    public static final boolean ADD_TRANSFER_TIME = true;
+    public static final boolean ADD_TRANSFER_TIME = false;
     /**
      * Данный флаг устанавливает такой параметр системы, как вывод в консоль данных о вероятности
      * n-ого переноса задачи
@@ -88,7 +88,7 @@ public class Main {
      * Значение false - означает, что в консоль не выведется кол-во переходов задачи и вероятнсоть
      * такого события
      */
-    public static final boolean SHOW_WORKS_TRANSFER_PROBABILITY = true;
+    public static final boolean SHOW_WORKS_TRANSFER_PROBABILITY = false;
     /**
      * Данный флаг устанавливает такой параметр системы, как вывод в консоль данных о вероятности
      * n-ого перехода пользователя

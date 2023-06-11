@@ -112,7 +112,6 @@ public class WorkUser {
         this.sizeOfQuant = sizeOfQuant;
         this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / 1) /
                 this.sizeOfQuant);
-        //this.timeInCurrentLocation = 1;
         workInfo = new Pair(windowIn, workSize);
         this.numberOfWorkTransfers = 0;
         this.numberOfUserTransfers = 0;
@@ -193,6 +192,7 @@ public class WorkUser {
         this.transferStatus = true;
         if (Main.ADD_TRANSFER_TIME) {
             this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) / this.sizeOfQuant);
+            //this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / 10) / this.sizeOfQuant);
         } else {
             this.timeToTransfer = 0;
         }
