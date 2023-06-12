@@ -64,8 +64,8 @@ public class Location {
      * @param time длина временной линии
      */
     public void createInputStream(float lambda, double time) {
-        int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant); //экспоненциальное распределение
-        //int tmpSize = 100; //постоянная
+        //int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant); //экспоненциальное распределение
+        int tmpSize = 100; //постоянная
         //int tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение
 
         double tmpWindowIn = - (Math.log(Math.random()) / lambda);
@@ -78,7 +78,7 @@ public class Location {
 
         while (inputStream.get(userNumber - 1).workInfo.windowIn <= time) {
 
-            tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
+            //tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
             //tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant);
             tmpWindowIn = - (Math.log(Math.random()) / lambda);
             inputStream.add(new WorkUser(userNumber, numberOfThisLocation,
@@ -87,17 +87,6 @@ public class Location {
             this.lengthOfAllWorks += tmpSize;
             userNumber++;
         }
-
-        /*int userNumber = 0;
-
-        inputStream.add(new WorkUser(userNumber, numberOfThisLocation, 0.15, 100,
-                this.sizeOfQuant, this.d));
-        userNumber++;
-        inputStream.add(new WorkUser(userNumber, numberOfThisLocation, 0.25, 150,
-                this.sizeOfQuant, this.d));
-        userNumber++;
-        inputStream.add(new WorkUser(userNumber, numberOfThisLocation, 1.1, 100000000,
-                this.sizeOfQuant, this.d));*/
     }
 
     /**
@@ -115,5 +104,4 @@ public class Location {
             }
         }
     }
-
 }

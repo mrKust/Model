@@ -3,8 +3,10 @@ import matplotlib.pyplot as plt
 def lineplot(x_data, y_data, y2_data, x_label="", y_label="", title=""):
     _, ax = plt.subplots()
 
-    ax.plot(x_data, y_data, '--bo', lw=3, label=('Exp(1)s'))
-    ax.plot(x_data, y2_data, '--go', lw=3, label=('Fix(1)bez'))
+    ax.plot(x_data, y_data, '--bo', lw=3, label=('Exp(1)'))
+#    ax.plot(x_data, y_data, '--bo', lw=3, label=('With Transfer time'))
+    ax.plot(x_data, y2_data, '--go', lw=3, label=('Fix(1)'))
+#    ax.plot(x_data, y2_data, '--go', lw=3, label=('Without Transfer time'))
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)

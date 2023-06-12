@@ -46,6 +46,9 @@ public class Server {
         serviceTransferWorks();
     }
 
+    /**
+     * Данный метод отвечает за обслуживание текущего списка работ на сервере
+     */
     public void serviceWorksOnServer() {
         for (int i = 0; i < workUsersOnServer.size(); i++) {
             WorkUser tmpWorkUser = workUsersOnServer.get(i);
@@ -59,6 +62,11 @@ public class Server {
             }
         }
     }
+
+    /**
+     * Данный метод занимается уборкой с сервера задач, которые уже были полностью выполненны
+     * @param currentTime Текущий момент времени
+     */
     public void removeFinishedWorks(double currentTime) {
         for (int i = 0; i < workUsersOnServer.size(); i++) {
             WorkUser tmpWorkUser = workUsersOnServer.get(i);
@@ -69,6 +77,9 @@ public class Server {
         }
     }
 
+    /**
+     * Данный метод занимается процессом переноса задач на текущий сервер
+     */
     public void serviceTransferWorks() {
         for (int i = 0; i < transferWorks.size(); i++) {
             WorkUser tmp = transferWorks.get(i);

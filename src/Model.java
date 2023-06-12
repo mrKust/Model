@@ -28,10 +28,12 @@ public class Model implements Callable<OutputData> {
     private final float T;
     /** Данное поле хранит среднее значение задержки задачи в системе*/
     public double mD;
-    /***/
+    /**
+     * Данное поле хранит теоретическое значение, верное для случаев с a = 0.
+     * */
     public double mDTheoretical;
     /** Данное поле хранит среднее значение выходной интенсивности в системе*/
-    public double lyambda_out;
+    public double lambda_out;
     /** Данное поле хранит размер кванта, то есть размер шага с которым мы двигаемся по
      * временной шкале каждой локации*/
     public double sizeOfQuant;
@@ -44,14 +46,20 @@ public class Model implements Callable<OutputData> {
     public double summaryDelay;
     /** Данное поле хранит суммарный объём всех завершённых работ*/
     public double summaryLengthOfWorks;
+    /**
+     * Данное поле хранит суммарное количество трансферов, всех завершённых задач
+     */
     public int allNumberOfTransfersOfEachFinishedWork;
+    /**
+     * Данное поле хранит количество задач, выполнение которых было завершенно до того момента,
+     * как пользователь переместился из исходной области
+     */
+    public int allNumberOfWorksWhichCompleteBeforeUserMoves;
     /**
      * Данное поле хранит в себе суммарное количество трансферов пользователей, чьи задачи были
      * выполненны
      */
     public Long allNumberOfTransfersOfUsersWithCompletedWork = 0L;
-    /** Данная коллекция хранит среднее кол-во задач в каждый квант времени для каждой области */
-    public Map<Integer, Long> averageNumberOfWorksInEachLocation = new HashMap<>();
     /**
      * Данная коллекция хранит в себе значения пары
      * Кол-во раз (n), котораое перемещалась задача - Кол-во завершённых задач, перемещавшихся n раз
@@ -63,6 +71,9 @@ public class Model implements Callable<OutputData> {
      * обладающих завершёнными задачами, и перемещавшихся (сам пользователь) n раз
      */
     public Map<Integer, Long> numberOfTransfersOfUsersWithCompletedWorks = new HashMap<>();
+    /**
+     * Данное поле хранит значение входной интенсивности для модели
+     */
     public float lambda;
 
     /**
@@ -100,11 +111,12 @@ public class Model implements Callable<OutputData> {
         this.T = T;
         this.mD = 0;
         this.mDTheoretical = 1 / (1 - lambda);
-        this.lyambda_out = 0;
+        this.lambda_out = 0;
         this.mediumSizeOfWork = 0;
 
         allNumberOfTransfersOfEachFinishedWork = 0;
         allNumberOfTransfersOfUsersWithCompletedWork = 0L;
+        allNumberOfWorksWhichCompleteBeforeUserMoves = 0;
 
         numberOfExitedWorks = 0;
         summaryDelay = 0;
@@ -120,9 +132,8 @@ public class Model implements Callable<OutputData> {
     }
 
     /**
-     * В данном методе организуется перемещение программы по линии времени в каждой локации, а
-     * так же расчёт итоговых средних значений задержки, выходной интенсвности, среднего размера работы,
-     *  по всем областям
+     * В данном методе организуется запуск метода, производящего вычисления в каждой области, и метода отвечающего
+     * за перемещение пользователей, в каждый рассматриваемый момент времени
      */
     public void getModeling() {
 
@@ -135,8 +146,11 @@ public class Model implements Callable<OutputData> {
 
     }
 
+    /**
+     * В данном методе организиуется рассмотрение всех задач и пользователей созданных системой.
+     * Происходит подсчёт значений, необходимых для вычисления выходных параметров системы
+     */
     public void countModelStatistics() {
-
         for (Location currentLocation: locations) {
             for (WorkUser currentWorkUser: currentLocation.inputStream) {
                 if ( (currentWorkUser.statusWorkFinished) && (currentWorkUser.delay != 0.0) ) {
@@ -145,6 +159,9 @@ public class Model implements Callable<OutputData> {
                     summaryLengthOfWorks += currentWorkUser.workInfo.workSize;
                     allNumberOfTransfersOfEachFinishedWork += currentWorkUser.numberOfWorkTransfers;
                     allNumberOfTransfersOfUsersWithCompletedWork += currentWorkUser.numberOfUserTransfers;
+
+                    if (currentWorkUser.numberOfUserTransfers == 0)
+                        allNumberOfWorksWhichCompleteBeforeUserMoves++;
 
                     if (numberOfTransfersOfUsersWithCompletedWorks.get(currentWorkUser.numberOfUserTransfers) == null) {
                         numberOfTransfersOfUsersWithCompletedWorks.put(currentWorkUser.numberOfUserTransfers, 1L);
@@ -171,7 +188,7 @@ public class Model implements Callable<OutputData> {
             }
         }
 
-        this.lyambda_out = (double) numberOfExitedWorks / (T * numberOfLocations) ;
+        this.lambda_out = (double) numberOfExitedWorks / (T * numberOfLocations) ;
         this.mediumSizeOfWork = summaryLengthOfWorks / numberOfExitedWorks;
         this.mD = summaryDelay / numberOfExitedWorks;
     }
@@ -253,9 +270,16 @@ public class Model implements Callable<OutputData> {
         }
     }
 
+    /**
+     * Данный метод выводит на экран необходимые выходные параметры и возвращает список параметров необходимых
+     * для записи в файл
+     * @return Список выходных параметров, необходимых для построения части графиков
+     */
     public OutputData outputSummary() {
-        System.out.println("lambda = " + lambda + " M[D] = " + mD + " lambda_out = " + lyambda_out);
+        System.out.println("lambda = " + lambda + " M[D] = " + mD + " lambda_out = " + lambda_out);
 
+        double partOfWorksCompletedBeforeUserMoves = ((double)allNumberOfWorksWhichCompleteBeforeUserMoves / numberOfExitedWorks);
+        System.out.println("Part of works which were completed before user moves from start location " + partOfWorksCompletedBeforeUserMoves);
         double averageNumberOfWorkTransfers = ((double)allNumberOfTransfersOfEachFinishedWork / numberOfExitedWorks);
         System.out.println("Average number of transfers for completed works " + averageNumberOfWorkTransfers);
         double averageNumberOfUserTransfers = ((double) allNumberOfTransfersOfUsersWithCompletedWork / numberOfExitedWorks);
@@ -287,11 +311,8 @@ public class Model implements Callable<OutputData> {
         }
         System.out.println();
 
-        OutputData result = null;
         if (lambda < 1)
-            result = new OutputData(lambda, lyambda_out, mediumSizeOfWork, transfersPerTime, mD, mDTheoretical);
-        else result = new OutputData(lambda, lyambda_out, mediumSizeOfWork, transfersPerTime);
-
-        return result;
+            return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime, mD, mDTheoretical);
+        else return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime);
     }
 }
