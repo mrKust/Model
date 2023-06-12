@@ -33,7 +33,7 @@ public class Main {
     public static int numberOfLocations = 2;
     /** Данный параметр означает какое условное количество единиц времени производится
      * моделирование*/
-    public static float T = 10_000;
+    public static float T = 1_000;
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
     /** Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование */
@@ -63,7 +63,7 @@ public class Main {
      * Значение false - означает, что в консоль не выведется кол-во переходов задачи и вероятнсоть
      * такого события
      */
-    public static final boolean SHOW_WORKS_TRANSFER_PROBABILITY = false;
+    public static final boolean SHOW_WORKS_TRANSFER_PROBABILITY = true;
     /**
      * Данный флаг устанавливает такой параметр системы, как вывод в консоль данных о вероятности
      * n-ого перехода пользователя
@@ -72,7 +72,7 @@ public class Main {
      * Значение false - означает, что в консоль не выведется кол-во переходов пользователя и вероятнсоть
      * такого события
      */
-    public static final boolean SHOW_USERS_TRANSFER_PROBABILITY = false;
+    public static final boolean SHOW_USERS_TRANSFER_PROBABILITY = true;
     /**
      * В данном методе производиться заупкск моделирования с заданным значениями параметров, а так
      * же изменение параметра входной интенсивности. Так же данный метод осуществляет запись полученных

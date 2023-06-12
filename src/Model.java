@@ -44,18 +44,12 @@ public class Model implements Callable<OutputData> {
     public double summaryDelay;
     /** Данное поле хранит суммарный объём всех завершённых работ*/
     public double summaryLengthOfWorks;
-    /** Данное поле хранит количество пользователей, которые покидают область до того, как завершился рассчёт их
-     * задачи */
-    public int finishedWorksWhichWereTransferedMoreThanOneTime = 0;
-    /** Данное поле хранит количество пользователей, которые покидают систему после того, как было завершено
-     * вычисление их задачи */
-    public int allFinishedWorks = 0;
     public int allNumberOfTransfersOfEachFinishedWork;
     /**
      * Данное поле хранит в себе суммарное количество трансферов пользователей, чьи задачи были
      * выполненны
      */
-    public Long allNumberOfUserWithCompletedTasksTransfers = 0L;
+    public Long allNumberOfTransfersOfUsersWithCompletedWork = 0L;
     /** Данная коллекция хранит среднее кол-во задач в каждый квант времени для каждой области */
     public Map<Integer, Long> averageNumberOfWorksInEachLocation = new HashMap<>();
     /**
@@ -109,10 +103,8 @@ public class Model implements Callable<OutputData> {
         this.lyambda_out = 0;
         this.mediumSizeOfWork = 0;
 
-        finishedWorksWhichWereTransferedMoreThanOneTime = 0;
-        allFinishedWorks = 0;
         allNumberOfTransfersOfEachFinishedWork = 0;
-        allNumberOfUserWithCompletedTasksTransfers = 0L;
+        allNumberOfTransfersOfUsersWithCompletedWork = 0L;
 
         numberOfExitedWorks = 0;
         summaryDelay = 0;
@@ -151,6 +143,25 @@ public class Model implements Callable<OutputData> {
                     numberOfExitedWorks++;
                     summaryDelay += currentWorkUser.delay;
                     summaryLengthOfWorks += currentWorkUser.workInfo.workSize;
+                    allNumberOfTransfersOfEachFinishedWork += currentWorkUser.numberOfWorkTransfers;
+                    allNumberOfTransfersOfUsersWithCompletedWork += currentWorkUser.numberOfUserTransfers;
+
+                    if (numberOfTransfersOfUsersWithCompletedWorks.get(currentWorkUser.numberOfUserTransfers) == null) {
+                        numberOfTransfersOfUsersWithCompletedWorks.put(currentWorkUser.numberOfUserTransfers, 1L);
+                    } else {
+                        long val = numberOfTransfersOfUsersWithCompletedWorks.get(currentWorkUser.numberOfUserTransfers);
+                        val++;
+                        numberOfTransfersOfUsersWithCompletedWorks.put(currentWorkUser.numberOfUserTransfers, val);
+                    }
+
+                    if (numberOfTransfersOfCompletedWorks.get(currentWorkUser.numberOfWorkTransfers) == null) {
+                        numberOfTransfersOfCompletedWorks.put(currentWorkUser.numberOfWorkTransfers, 1L);
+                    } else {
+                        long val = numberOfTransfersOfCompletedWorks.get(currentWorkUser.numberOfWorkTransfers);
+                        val++;
+                        numberOfTransfersOfCompletedWorks.put(currentWorkUser.numberOfWorkTransfers, val);
+                    }
+
                 }
 
                 if (Main.SHOW_LOCATION_SUMMARY) {
@@ -245,28 +256,18 @@ public class Model implements Callable<OutputData> {
     public OutputData outputSummary() {
         System.out.println("lambda = " + lambda + " M[D] = " + mD + " lambda_out = " + lyambda_out);
 
-        double averageNumberOfWorkTransfers = ((double)allNumberOfTransfersOfEachFinishedWork / allFinishedWorks);
-        System.out.println("Average number of transfers for each work " + averageNumberOfWorkTransfers);
-        double averageNumberOfUserTransfers = ((double)allNumberOfUserWithCompletedTasksTransfers / allFinishedWorks);
-        System.out.println("Average transfers number of users with completed tasks " + averageNumberOfUserTransfers);
-        System.out.println("Part of transferred works from finished works " + finishedWorksWhichWereTransferedMoreThanOneTime + " / " + allFinishedWorks + " = " +
-                (double) finishedWorksWhichWereTransferedMoreThanOneTime / allFinishedWorks);
+        double averageNumberOfWorkTransfers = ((double)allNumberOfTransfersOfEachFinishedWork / numberOfExitedWorks);
+        System.out.println("Average number of transfers for completed works " + averageNumberOfWorkTransfers);
+        double averageNumberOfUserTransfers = ((double) allNumberOfTransfersOfUsersWithCompletedWork / numberOfExitedWorks);
+        System.out.println("Average number of transfers for users with completed tasks " + averageNumberOfUserTransfers);
         double transfersPerTime = (double) allNumberOfTransfersOfEachFinishedWork / T;
         System.out.println("Average transfers number in one window " + transfersPerTime);
 
-        double dPoLittle = 0;
-        double avarageNumberOfTasksInOneQuant = 0;
-
-        avarageNumberOfTasksInOneQuant /= Main.numberOfLocations;
-        dPoLittle = avarageNumberOfTasksInOneQuant / lambda;
-        System.out.println("M[D] by Little = " + dPoLittle);
-        System.out.println("Number of tasks with transfer numbers");
-
-
+        System.out.println("Number of works with transfer numbers");
         List<Integer> numberTransfersOfWorks = numberOfTransfersOfCompletedWorks.keySet().stream().sorted().collect(Collectors.toList());
         for (Integer currentKey : numberTransfersOfWorks) {
             long currentValue = numberOfTransfersOfCompletedWorks.get(currentKey);
-            double probabilityToNTransfers = (double) currentValue / allFinishedWorks;
+            double probabilityToNTransfers = (double) currentValue / numberOfExitedWorks;
             if (Main.SHOW_WORKS_TRANSFER_PROBABILITY) {
                 System.out.println("With transfer num equals " + currentKey + " was " + currentValue + " works. Probability to make n transfers is "
                         + probabilityToNTransfers);
@@ -274,11 +275,11 @@ public class Model implements Callable<OutputData> {
         }
         System.out.println();
 
-        List<Integer> numberTransfersOfUsers = numberOfTransfersOfUsersWithCompletedWorks.keySet().stream().sorted().collect(Collectors.toList());
         System.out.println("Number of users with transfer numbers");
+        List<Integer> numberTransfersOfUsers = numberOfTransfersOfUsersWithCompletedWorks.keySet().stream().sorted().collect(Collectors.toList());
         for (Integer currentKey : numberTransfersOfUsers) {
             long currentValue = numberOfTransfersOfUsersWithCompletedWorks.get(currentKey);
-            double probabilityToNTransfers = (double) currentValue / allFinishedWorks;
+            double probabilityToNTransfers = (double) currentValue / numberOfExitedWorks;
             if (Main.SHOW_USERS_TRANSFER_PROBABILITY) {
                 System.out.println("With transfer num equals " + currentKey + " was " + currentValue + " users. Probability to make n transfers is "
                         + probabilityToNTransfers);
