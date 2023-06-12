@@ -39,43 +39,45 @@ public class Server {
      */
     public void getService(double currentTime) {
 
-        if (Main.currentLambda == Main.LAMBDA_TRACK_AVERAGE_NUMBER_OF_WORKS) {
-            long currentVal2 = Main.averageNumberOfWorksInEachLocation.get(numberOfLocation);
-            currentVal2 += workUsersOnServer.size();
-            Main.averageNumberOfWorksInEachLocation.put(numberOfLocation, currentVal2);
+        if  (workUsersOnServer.size() != 0) {
+            serviceWorksOnServer();
         }
+        removeFinishedWorks(currentTime);
+        serviceTransferWorks();
+    }
 
-        if  ( (workUsersOnServer.size() != 0) || (transferWorks.size() != 0) ) {
-            for (int i = 0; i < workUsersOnServer.size(); i++) {
-                WorkUser tmpWorkUser = workUsersOnServer.get(i);
-                if ((tmpWorkUser.statusOfProcessing && tmpWorkUser.currentProcessingWorkOnServer)) {
-                     double coeffUdalennost = 1;
-                     tmpWorkUser.increaseWorkProcessing(coeffUdalennost *
-                             this.serviceRate);
-                     tmpWorkUser.setCurrentProcessingWorkOnServer(false);
-                     workUsersOnServer.get((i + 1) % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
-                     break;
-                }
+    public void serviceWorksOnServer() {
+        for (int i = 0; i < workUsersOnServer.size(); i++) {
+            WorkUser tmpWorkUser = workUsersOnServer.get(i);
+            if (tmpWorkUser.statusOfProcessing && tmpWorkUser.currentProcessingWorkOnServer) {
+                double coeffUdalennost = 1;
+                tmpWorkUser.increaseWorkProcessing(coeffUdalennost *
+                        this.serviceRate);
+                tmpWorkUser.setCurrentProcessingWorkOnServer(false);
+                workUsersOnServer.get((i + 1) % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
+                break;
             }
-            for (int i = 0; i < workUsersOnServer.size(); i++) {
-                WorkUser tmpWorkUser = workUsersOnServer.get(i);
-                if (tmpWorkUser.statusFinishedOrUnfinished) {
-                    tmpWorkUser.statusOfProcessing = false;
-                    this.removeJob(tmpWorkUser, currentTime);
-                }
+        }
+    }
+    public void removeFinishedWorks(double currentTime) {
+        for (int i = 0; i < workUsersOnServer.size(); i++) {
+            WorkUser tmpWorkUser = workUsersOnServer.get(i);
+            if (tmpWorkUser.statusWorkFinished) {
+                tmpWorkUser.statusOfProcessing = false;
+                this.removeWork(tmpWorkUser, currentTime);
             }
+        }
+    }
 
-            for (int i = 0; i < transferWorks.size(); i++) {
-                WorkUser tmp = transferWorks.get(i);
-                if (tmp.transferStatus) {
-                    if (tmp.timeToTransfer == 0) {
-                        tmp.transferStatus = false;
-                        this.transferWorks.remove(tmp);
-                        addNewJob(tmp);
-                        continue;
-                    }
-                    tmp.decreaseTransferTime();
-                }
+    public void serviceTransferWorks() {
+        for (int i = 0; i < transferWorks.size(); i++) {
+            WorkUser tmp = transferWorks.get(i);
+            if (tmp.transferStatus) {
+                if (tmp.timeToTransfer <= 0) {
+                    tmp.transferStatus = false;
+                    this.transferWorks.remove(tmp);
+                    addNewWork(tmp);
+                } else tmp.decreaseTransferTime();
             }
         }
     }
@@ -84,10 +86,10 @@ public class Server {
      * Данный метод добавляет на сервер новую задачу
      * @param tmp Новая задача
      */
-    public void addNewJob(WorkUser tmp) {
+    public void addNewWork(WorkUser tmp) {
         if (this.numberOfJobs == 0)
             tmp.setCurrentProcessingWorkOnServer(true);
-        tmp.setStatusOfBeginingCount(true);
+        tmp.setBeginCountedStatus();
         this.numberOfJobs++;
         this.workUsersOnServer.add(tmp);
     }
@@ -97,7 +99,7 @@ public class Server {
      * в список переносящихся задач
      * @param tmp Новая задача, которая только переноситься на текущий сервер
      */
-    public void addNewTransferJob(WorkUser tmp) {
+    public void addNewTransferWork(WorkUser tmp) {
         this.transferWorks.add(tmp);
     }
 
@@ -106,32 +108,10 @@ public class Server {
      * @param tmp Выполненная задача
      * @param currentTime Текущий момент времени
      */
-    public void removeJob(WorkUser tmp, double currentTime) {
+    public void removeWork(WorkUser tmp, double currentTime) {
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
         tmp.delay = currentTime - tmp.workInfo.windowIn;
-        Model.numberOfExitedWorks++;
-        Model.summaryLengthOfWorks += tmp.workInfo.workSize;
-        Model.summaryDelay += tmp.delay;
-        Main.allFinishedWorks++;
-        Main.allNumberOfTransfersOfEachFinishedWork += tmp.numberOfWorkTransfers;
-        Main.allNumberOfUserWithCompletedTasksTransfers += tmp.numberOfUserTransfers;
-
-        if (Main.numberOfTransfersOfUsersWithCompletedWorks.get(tmp.numberOfUserTransfers) == null) {
-            Main.numberOfTransfersOfUsersWithCompletedWorks.put(tmp.numberOfUserTransfers, 1L);
-        } else {
-            long val = Main.numberOfTransfersOfUsersWithCompletedWorks.get(tmp.numberOfUserTransfers);
-            val++;
-            Main.numberOfTransfersOfUsersWithCompletedWorks.put(tmp.numberOfUserTransfers, val);
-        }
-
-        if (Main.numberOfTransfersOfCompletedWorks.get(tmp.numberOfWorkTransfers) == null) {
-            Main.numberOfTransfersOfCompletedWorks.put(tmp.numberOfWorkTransfers, 1L);
-        } else {
-            long val = Main.numberOfTransfersOfCompletedWorks.get(tmp.numberOfWorkTransfers);
-            val++;
-            Main.numberOfTransfersOfCompletedWorks.put(tmp.numberOfWorkTransfers, val);
-        }
     }
 
     /**
@@ -139,7 +119,7 @@ public class Server {
      * другой сервер
      * @param tmp Задача, которая переносится на другой сервер
      */
-    public void removeJobToSwitchServer(WorkUser tmp) {
+    public void removeWorkToSwitchServer(WorkUser tmp) {
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
     }

@@ -15,7 +15,7 @@ public class WorkUser {
     /** Данное поле показывает выполнена ли данная задача или нет
      * Значение true обозначает, что работа выполнена до конца
      * Значение false обозначает, что работа не выполнена до конца*/
-    public boolean statusFinishedOrUnfinished;
+    public boolean statusWorkFinished;
     /** Данное поле показывает номер области, в которой располагается сам пользователь в текущий
      * момент*/
     public int userLocation;
@@ -30,7 +30,7 @@ public class WorkUser {
     /** Данное поле показывает данная пара пользователь - задача уже попала в систему или ещё нет
      * Значение true обозначает, что данная пара уже начала обслуживаться системой
      * Значение false обозначает, что даннвя пара ещё не начинала обслуживаться системой*/
-    public boolean statusOfBeginingCount;
+    public boolean statusBeginCount;
     /** Данное поле показывает данная пара пользователь - задача в данный момент переносит
      * данные на другой сервер и не получает обслуживание, или получает обслуживание в штатном режиме
      * Значение true обозначает, что данная пара нахожится в состоянии переноса данных и не получает
@@ -46,12 +46,6 @@ public class WorkUser {
      * области*/
     public int timeToTransfer;//показывает сколько времени данная работа будет переноситься
     // с одних серверов на другие
-    /**
-     * Данный флаг хранит необходим для подсчёта статистики
-     * false - инициализируется в конструкторе
-     * true - устанавливается при переносе задачи в новую область
-     */
-    public boolean haveBeenEverTransfered;
     /** Данное поле хранит значение коэффициента необходимого при рассчёте времени необходимого
      * для перемещения задачи пользователя с серверов одной области на сервера другой области */
     public double d;
@@ -102,9 +96,9 @@ public class WorkUser {
         userLocation = numberOfLocation;
         workLocation = numberOfLocation;
         workProcessingValue = 0;
-        this.statusFinishedOrUnfinished = false;
+        this.statusWorkFinished = false;
         this.statusOfProcessing = true;
-        this.statusOfBeginingCount = false;
+        this.statusBeginCount = false;
         this.currentProcessingWorkOnServer = false;
         this.transferStatus = false;
         this.delay = 0;
@@ -115,7 +109,6 @@ public class WorkUser {
         workInfo = new Pair(windowIn, workSize);
         this.numberOfWorkTransfers = 0;
         this.numberOfUserTransfers = 0;
-        this.haveBeenEverTransfered = false;
         this.isEverAbandoned = false;
 
     }
@@ -127,7 +120,7 @@ public class WorkUser {
      */
     public void increaseWorkProcessing(double serviceRate) {
         this.workProcessingValue += serviceRate;
-        this.decreaseTimeInCurrentLocation();
+        this.timeInCurrentLocation--;
         this.checkWorkStatus();
     }
 
@@ -149,17 +142,7 @@ public class WorkUser {
     public void changeWorkLocation(int newLocation) {
         this.workLocation = newLocation;
         this.numberOfWorkTransfers++;
-        if (!this.haveBeenEverTransfered) {
-            Main.finishedWorksWhichWereTransferedMoreThanOneTime++;
-            this.haveBeenEverTransfered = true;
-        }
-    }
-
-    /**
-     * Данный метод уменьшает время пребывания пользователя в текущей локации
-     */
-    public void decreaseTimeInCurrentLocation() {
-        this.timeInCurrentLocation--;
+        this.transfer();
     }
 
     /**
@@ -168,19 +151,19 @@ public class WorkUser {
      */
     public void checkWorkStatus() {
         if (workProcessingValue >= workInfo.workSize) {// если работа выполнена
-            this.statusFinishedOrUnfinished = true;
+            this.statusWorkFinished = true;
         } else {// если работа ещё не выполнена
-            this.statusFinishedOrUnfinished = false;
+            this.statusWorkFinished = false;
         }
     }
 
     /**
      * Данный метод обновляет специальное поле статуса заявки, в случае если система приступила к
      * её обработке
-     * @param status Значение нового статуса
      */
-    public void setStatusOfBeginingCount(boolean status) {
-        this.statusOfBeginingCount = status;
+    public void setBeginCountedStatus() {
+        if (!statusBeginCount)
+            this.statusBeginCount = true;
     }
 
     /**
@@ -190,12 +173,9 @@ public class WorkUser {
      */
     public void transfer() {
         this.transferStatus = true;
-        if (Main.ADD_TRANSFER_TIME) {
+        if (Main.ADD_TRANSFER_TIME)
             this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) / this.sizeOfQuant);
-            //this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / 10) / this.sizeOfQuant);
-        } else {
-            this.timeToTransfer = 0;
-        }
+        else this.timeToTransfer = 0;
     }
 
     /**

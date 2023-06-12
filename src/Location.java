@@ -60,15 +60,15 @@ public class Location {
 
     /**
      * Данный метод формирует входную очередь с заданной интенсивностью
-     * @param lyambda значение входной интенсивности
+     * @param lambda значение входной интенсивности
      * @param time длина временной линии
      */
-    public void createInputStream(float lyambda, double time) {
+    public void createInputStream(float lambda, double time) {
         int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant); //экспоненциальное распределение
         //int tmpSize = 100; //постоянная
         //int tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение
 
-        double tmpWindowIn = - (Math.log(Math.random()) / lyambda);
+        double tmpWindowIn = - (Math.log(Math.random()) / lambda);
         this.lengthOfAllWorks += tmpSize;
         int userNumber = 0;
 
@@ -80,7 +80,7 @@ public class Location {
 
             tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
             //tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant);
-            tmpWindowIn = - (Math.log(Math.random()) / lyambda);
+            tmpWindowIn = - (Math.log(Math.random()) / lambda);
             inputStream.add(new WorkUser(userNumber, numberOfThisLocation,
                     inputStream.get(userNumber - 1).workInfo.windowIn + tmpWindowIn, tmpSize,
                     this.sizeOfQuant, this.d));
@@ -88,6 +88,16 @@ public class Location {
             userNumber++;
         }
 
+        /*int userNumber = 0;
+
+        inputStream.add(new WorkUser(userNumber, numberOfThisLocation, 0.15, 100,
+                this.sizeOfQuant, this.d));
+        userNumber++;
+        inputStream.add(new WorkUser(userNumber, numberOfThisLocation, 0.25, 150,
+                this.sizeOfQuant, this.d));
+        userNumber++;
+        inputStream.add(new WorkUser(userNumber, numberOfThisLocation, 1.1, 100000000,
+                this.sizeOfQuant, this.d));*/
     }
 
     /**
@@ -100,8 +110,8 @@ public class Location {
         this.server.getService(time);
         for (int i = 0; i < inputStream.size(); i++) {
             if ((time >= inputStream.get(i).workInfo.windowIn) &&
-                    (inputStream.get(i).statusOfBeginingCount == false)) {
-                server.addNewJob(inputStream.get(i));
+                    (inputStream.get(i).statusBeginCount == false)) {
+                server.addNewWork(inputStream.get(i));
             }
         }
     }
