@@ -98,8 +98,7 @@ public class Main {
 
         List<Callable<OutputData>> callablesList = new ArrayList<>();
         for (float lambda = LAMBDA_IN_START; lambda <= LAMBDA_IN_FINISH; lambda += 0.1) {
-            //callablesList.add(new Model(lambda, a, q, d, quant, numberOfLocations, T, serviceRate));
-            callablesList.add(new Model(0.1F, a, q, d, quant, numberOfLocations, T, serviceRate));
+            callablesList.add(new Model(lambda, a, q, d, quant, numberOfLocations, T, serviceRate));
         }
 
         for (Callable<OutputData> callable : callablesList) {
