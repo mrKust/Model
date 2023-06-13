@@ -30,16 +30,16 @@ public class Main {
      * временной шкале каждой локации*/
     public static double quant = 0.01;
     /** Данный параметр означает количество областей с которыми производиться моделирование*/
-    public static int numberOfLocations = 2;
+    public static int numberOfLocations = 8;
     /** Данный параметр означает какое условное количество единиц времени производится
      * моделирование*/
-    public static float T = 50_000;
+    public static float T = 30_000;
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
     /** Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование */
     public static final float LAMBDA_IN_START = 0.1F;
     /** Данный параметр задаёт финальную входную интенсивность, при достижении которой моделирование заканчивается */
-    public static final float LAMBDA_IN_FINISH = 0.85F;
+    public static final float LAMBDA_IN_FINISH = 0.35F;
 
     /**
      * Данный флаг устанавливает такой параметр системы, как добавления трансферного времени,
@@ -79,7 +79,7 @@ public class Main {
      * же изменение параметра входной интенсивности. Так же данный метод осуществляет запись полученных
      * данных в выходной файл
      */
-    public static void main(String[] args) throws InterruptedException, ExecutionException {
+    public static void main(String[] args) throws InterruptedException {
 
         BufferedWriter outputFile = null;
         try {
@@ -91,24 +91,31 @@ public class Main {
 
         long start = System.currentTimeMillis();
 
-        ExecutorService executor = Executors.newFixedThreadPool(4);
+        ExecutorService executor = Executors.newFixedThreadPool(3);
 
         CompletionService<OutputData> service
                 = new ExecutorCompletionService<>(executor);
 
         List<Callable<OutputData>> callablesList = new ArrayList<>();
         for (float lambda = LAMBDA_IN_START; lambda <= LAMBDA_IN_FINISH; lambda += 0.1) {
-            callablesList.add(new Model(lambda, a, q, d, quant, numberOfLocations, T, serviceRate));
+            //callablesList.add(new Model(lambda, a, q, d, quant, numberOfLocations, T, serviceRate));
+            callablesList.add(new Model(0.1F, a, q, d, quant, numberOfLocations, T, serviceRate));
         }
 
         for (Callable<OutputData> callable : callablesList) {
             service.submit(callable);
         }
 
-        Future<OutputData> future = null;
-        for (float lambda = LAMBDA_IN_START; lambda <= LAMBDA_IN_FINISH; lambda += 0.1) {
-            future = service.take();
-            writeInOutputFile(lambda, future.get(), outputFile);
+        try {
+            Future<OutputData> future = null;
+            for (float lambda = LAMBDA_IN_START; lambda <= LAMBDA_IN_FINISH; lambda += 0.1) {
+                future = service.take();
+                writeInOutputFile(lambda, future.get(), outputFile);
+            }
+        } catch (ExecutionException e) {
+            System.err.println("Something went wrong. Check error message");
+            e.printStackTrace();
+            executor.shutdown();
         }
 
         long end = System.currentTimeMillis();

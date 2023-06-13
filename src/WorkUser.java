@@ -77,6 +77,7 @@ public class WorkUser {
      * новую область
      */
     public boolean isEverAbandoned;
+    public double prevTimeUpdate;
 
     /**
      * Данный конструктор создаёт заявку и записывает в неё необходимые данные, ат так же
@@ -111,6 +112,7 @@ public class WorkUser {
         this.numberOfUserTransfers = 0;
         this.isEverAbandoned = false;
 
+        prevTimeUpdate = 0.0;
     }
 
     /**
@@ -142,7 +144,8 @@ public class WorkUser {
     public void changeWorkLocation(int newLocation) {
         this.workLocation = newLocation;
         this.numberOfWorkTransfers++;
-        this.transfer();
+        if (Main.ADD_TRANSFER_TIME)
+            this.transfer();
     }
 
     /**
@@ -173,9 +176,7 @@ public class WorkUser {
      */
     public void transfer() {
         this.transferStatus = true;
-        if (Main.ADD_TRANSFER_TIME)
-            this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) / this.sizeOfQuant);
-        else this.timeToTransfer = 0;
+        this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) / this.sizeOfQuant);
     }
 
     /**

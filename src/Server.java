@@ -40,40 +40,36 @@ public class Server {
     public void getService(double currentTime) {
 
         if  (workUsersOnServer.size() != 0) {
-            serviceWorksOnServer();
+            serviceWorksOnServer(currentTime);
         }
-        removeFinishedWorks(currentTime);
-        serviceTransferWorks();
+        if (transferWorks.size() != 0)
+            serviceTransferWorks();
     }
 
     /**
      * Данный метод отвечает за обслуживание текущего списка работ на сервере
+     * @param currentTime
      */
-    public void serviceWorksOnServer() {
-        for (int i = 0; i < workUsersOnServer.size(); i++) {
+    public void serviceWorksOnServer(double currentTime) {
+        int i = 0;
+        while (i < workUsersOnServer.size()) {
             WorkUser tmpWorkUser = workUsersOnServer.get(i);
-            if (tmpWorkUser.statusOfProcessing && tmpWorkUser.currentProcessingWorkOnServer) {
+            if (tmpWorkUser.currentProcessingWorkOnServer) {
                 double coeffUdalennost = 1;
+                tmpWorkUser.prevTimeUpdate = currentTime;
                 tmpWorkUser.increaseWorkProcessing(coeffUdalennost *
                         this.serviceRate);
                 tmpWorkUser.setCurrentProcessingWorkOnServer(false);
-                workUsersOnServer.get((i + 1) % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
-                break;
+                if (tmpWorkUser.statusWorkFinished) {
+                    this.removeWork(tmpWorkUser, currentTime);
+                    if (workUsersOnServer.size() > 0)
+                        workUsersOnServer.get(i % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
+                } else {
+                    workUsersOnServer.get((i + 1) % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
+                }
+                return;
             }
-        }
-    }
-
-    /**
-     * Данный метод занимается уборкой с сервера задач, которые уже были полностью выполненны
-     * @param currentTime Текущий момент времени
-     */
-    public void removeFinishedWorks(double currentTime) {
-        for (int i = 0; i < workUsersOnServer.size(); i++) {
-            WorkUser tmpWorkUser = workUsersOnServer.get(i);
-            if (tmpWorkUser.statusWorkFinished) {
-                tmpWorkUser.statusOfProcessing = false;
-                this.removeWork(tmpWorkUser, currentTime);
-            }
+            i++;
         }
     }
 
@@ -82,14 +78,16 @@ public class Server {
      */
     public void serviceTransferWorks() {
         for (int i = 0; i < transferWorks.size(); i++) {
+            transferWorks.get(i).decreaseTransferTime();
+        }
+        int i = 0;
+        while (i < transferWorks.size()) {
             WorkUser tmp = transferWorks.get(i);
-            if (tmp.transferStatus) {
-                if (tmp.timeToTransfer <= 0) {
-                    tmp.transferStatus = false;
-                    this.transferWorks.remove(tmp);
-                    addNewWork(tmp);
-                } else tmp.decreaseTransferTime();
-            }
+            if (tmp.timeToTransfer <= 0) {
+                tmp.transferStatus = false;
+                this.transferWorks.remove(tmp);
+                addNewWork(tmp);
+            } else i++;
         }
     }
 
@@ -111,7 +109,13 @@ public class Server {
      * @param tmp Новая задача, которая только переноситься на текущий сервер
      */
     public void addNewTransferWork(WorkUser tmp) {
-        this.transferWorks.add(tmp);
+        if (Main.ADD_TRANSFER_TIME) {
+            this.transferWorks.add(tmp);
+            tmp.changeWorkLocation(this.numberOfLocation);
+        } else {
+            this.addNewWork(tmp);
+            tmp.changeWorkLocation(this.numberOfLocation);
+        }
     }
 
     /**
@@ -120,6 +124,7 @@ public class Server {
      * @param currentTime Текущий момент времени
      */
     public void removeWork(WorkUser tmp, double currentTime) {
+        tmp.statusOfProcessing = false;
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
         tmp.delay = currentTime - tmp.workInfo.windowIn;

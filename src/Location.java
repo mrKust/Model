@@ -32,7 +32,7 @@ public class Location {
     /**
      * В данном конструкторе формирются все сущности необходимые для корректного
      * функционирования области, а так же вызывается метод, который формирует входную очередь
-     * @param lyambda Текущее значение входной интенсивности
+     * @param lambda Текущее значение входной интенсивности
      * @param time Данный параметр означает какое условное количество единиц времени производится
      *             моделирование
      * @param q Коэффициент для рассчёта времени перемещения пользователя
@@ -45,7 +45,7 @@ public class Location {
      * @param serviceRate Данный параметр означает, с какой интенсивностью серевер обрабатывает
      *                    задачи пользователей
      */
-    public Location(float lyambda, double time, double q, int numberOfThisLocation, double quant,
+    public Location(float lambda, double time, double q, int numberOfThisLocation, double quant,
                     double d, double serviceRate) {
         this.numberOfThisLocation = numberOfThisLocation;
         server = new Server(this.numberOfThisLocation, serviceRate);
@@ -54,7 +54,7 @@ public class Location {
         this.d = d;
         this.sizeOfQuant = quant;
         this.lengthOfAllWorks = 0;
-        createInputStream(lyambda, time);
+        createInputStream(lambda, time);
         this.numberOfWorksInLocation = inputStream.size();
     }
 
@@ -64,8 +64,8 @@ public class Location {
      * @param time длина временной линии
      */
     public void createInputStream(float lambda, double time) {
-        //int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant); //экспоненциальное распределение
-        int tmpSize = 100; //постоянная
+        int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant); //экспоненциальное распределение
+        //int tmpSize = (int)(1 / this.sizeOfQuant); //постоянная
         //int tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение
 
         double tmpWindowIn = - (Math.log(Math.random()) / lambda);
@@ -78,7 +78,7 @@ public class Location {
 
         while (inputStream.get(userNumber - 1).workInfo.windowIn <= time) {
 
-            //tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
+            tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant);
             //tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant);
             tmpWindowIn = - (Math.log(Math.random()) / lambda);
             inputStream.add(new WorkUser(userNumber, numberOfThisLocation,
@@ -99,7 +99,7 @@ public class Location {
         this.server.getService(time);
         for (int i = 0; i < inputStream.size(); i++) {
             if ((time >= inputStream.get(i).workInfo.windowIn) &&
-                    (inputStream.get(i).statusBeginCount == false)) {
+                    (!inputStream.get(i).statusBeginCount)) {
                 server.addNewWork(inputStream.get(i));
             }
         }

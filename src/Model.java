@@ -124,6 +124,12 @@ public class Model implements Callable<OutputData> {
 
     }
 
+    /**
+     * Данный метод контролирует процесс работы модели и сбор статистики, по итогам её работы.
+     * Он запускает метод моделирования системы с заданной входной интенсивностью
+     * @return Возвращает объект содержащий основной набор выходных параметров системы
+     * @throws Exception
+     */
     @Override
     public OutputData call() throws Exception {
         this.getModeling();
@@ -140,8 +146,8 @@ public class Model implements Callable<OutputData> {
         for (double t = 0; t < this.T; t += sizeOfQuant) {
             for (int i = 0; i < locations.size(); i++) {
                 locations.get(i).processingAtLocation(t);
-                this.userSwitchLocation();
             }
+            this.userSwitchLocation();
         }
 
     }
@@ -263,7 +269,6 @@ public class Model implements Callable<OutputData> {
                     if (probabilityToSwitchWorkServer < this.a) {
                         tmpServer.removeWorkToSwitchServer(tmpWorkUser);
                         locations.get(currentClosestLocation).server.addNewTransferWork(tmpWorkUser);
-                        tmpWorkUser.changeWorkLocation(currentClosestLocation);
                     } else tmpWorkUser.isEverAbandoned = true;
                 }
             }
@@ -287,29 +292,29 @@ public class Model implements Callable<OutputData> {
         double transfersPerTime = (double) allNumberOfTransfersOfEachFinishedWork / T;
         System.out.println("Average transfers number in one window " + transfersPerTime);
 
-        System.out.println("Number of works with transfer numbers");
-        List<Integer> numberTransfersOfWorks = numberOfTransfersOfCompletedWorks.keySet().stream().sorted().collect(Collectors.toList());
-        for (Integer currentKey : numberTransfersOfWorks) {
-            long currentValue = numberOfTransfersOfCompletedWorks.get(currentKey);
-            double probabilityToNTransfers = (double) currentValue / numberOfExitedWorks;
-            if (Main.SHOW_WORKS_TRANSFER_PROBABILITY) {
+        if (Main.SHOW_WORKS_TRANSFER_PROBABILITY) {
+            System.out.println("Number of works with transfer numbers");
+            List<Integer> numberTransfersOfWorks = numberOfTransfersOfCompletedWorks.keySet().stream().sorted().collect(Collectors.toList());
+            for (Integer currentKey : numberTransfersOfWorks) {
+                long currentValue = numberOfTransfersOfCompletedWorks.get(currentKey);
+                double probabilityToNTransfers = (double) currentValue / numberOfExitedWorks;
                 System.out.println("With transfer num equals " + currentKey + " was " + currentValue + " works. Probability to make n transfers is "
                         + probabilityToNTransfers);
             }
+            System.out.println();
         }
-        System.out.println();
 
-        System.out.println("Number of users with transfer numbers");
-        List<Integer> numberTransfersOfUsers = numberOfTransfersOfUsersWithCompletedWorks.keySet().stream().sorted().collect(Collectors.toList());
-        for (Integer currentKey : numberTransfersOfUsers) {
-            long currentValue = numberOfTransfersOfUsersWithCompletedWorks.get(currentKey);
-            double probabilityToNTransfers = (double) currentValue / numberOfExitedWorks;
-            if (Main.SHOW_USERS_TRANSFER_PROBABILITY) {
+        if (Main.SHOW_USERS_TRANSFER_PROBABILITY) {
+            System.out.println("Number of users with transfer numbers");
+            List<Integer> numberTransfersOfUsers = numberOfTransfersOfUsersWithCompletedWorks.keySet().stream().sorted().collect(Collectors.toList());
+            for (Integer currentKey : numberTransfersOfUsers) {
+                long currentValue = numberOfTransfersOfUsersWithCompletedWorks.get(currentKey);
+                double probabilityToNTransfers = (double) currentValue / numberOfExitedWorks;
                 System.out.println("With transfer num equals " + currentKey + " was " + currentValue + " users. Probability to make n transfers is "
                         + probabilityToNTransfers);
             }
+            System.out.println();
         }
-        System.out.println();
 
         if (lambda < 1)
             return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime, mD, mDTheoretical);
