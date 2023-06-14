@@ -77,7 +77,6 @@ public class WorkUser {
      * новую область
      */
     public boolean isEverAbandoned;
-    public double prevTimeUpdate;
 
     /**
      * Данный конструктор создаёт заявку и записывает в неё необходимые данные, ат так же
@@ -111,8 +110,6 @@ public class WorkUser {
         this.numberOfWorkTransfers = 0;
         this.numberOfUserTransfers = 0;
         this.isEverAbandoned = false;
-
-        prevTimeUpdate = 0.0;
     }
 
     /**

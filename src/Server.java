@@ -56,7 +56,6 @@ public class Server {
             WorkUser tmpWorkUser = workUsersOnServer.get(i);
             if (tmpWorkUser.currentProcessingWorkOnServer) {
                 double coeffUdalennost = 1;
-                tmpWorkUser.prevTimeUpdate = currentTime;
                 tmpWorkUser.increaseWorkProcessing(coeffUdalennost *
                         this.serviceRate);
                 tmpWorkUser.setCurrentProcessingWorkOnServer(false);
