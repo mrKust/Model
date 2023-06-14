@@ -109,7 +109,7 @@ public class Main {
             Future<OutputData> future = null;
             for (float lambda = LAMBDA_IN_START; lambda <= LAMBDA_IN_FINISH; lambda += 0.1) {
                 future = service.take();
-                writeInOutputFile(lambda, future.get(), outputFile);
+                writeInOutputFile(future.get(), outputFile);
             }
         } catch (ExecutionException e) {
             System.err.println("Something went wrong. Check error message");
@@ -124,7 +124,7 @@ public class Main {
         System.out.println("Final time " + (end - start));
     }
 
-    public synchronized static void writeInOutputFile(float lambda, OutputData outputData, BufferedWriter outputFile) {
+    public synchronized static void writeInOutputFile(OutputData outputData, BufferedWriter outputFile) {
         try {
             StringBuilder outputText = new StringBuilder();
             outputText.append(outputData.toString());

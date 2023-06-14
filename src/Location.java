@@ -28,6 +28,7 @@ public class Location {
     /** Данное поле хранит в себе такое вспомгательное значение, как общее количество заявок(задач)
      * пользователей в этой области */
     public int numberOfWorksInLocation;
+    private int nextStartedWork;
 
     /**
      * В данном конструкторе формирются все сущности необходимые для корректного
@@ -56,6 +57,7 @@ public class Location {
         this.lengthOfAllWorks = 0;
         createInputStream(lambda, time);
         this.numberOfWorksInLocation = inputStream.size();
+        nextStartedWork = 0;
     }
 
     /**
@@ -97,11 +99,12 @@ public class Location {
      */
     public void processingAtLocation(double time) {
         this.server.getService(time);
-        for (int i = 0; i < inputStream.size(); i++) {
-            if ((time >= inputStream.get(i).workInfo.windowIn) &&
-                    (!inputStream.get(i).statusBeginCount)) {
-                server.addNewWork(inputStream.get(i));
-            }
+        while (nextStartedWork < inputStream.size()) {
+            if ((time >= inputStream.get(nextStartedWork).workInfo.windowIn) &&
+                    (!inputStream.get(nextStartedWork).statusBeginCount)) {
+                server.addNewWork(inputStream.get(nextStartedWork));
+                nextStartedWork++;
+            } else break;
         }
     }
 }
