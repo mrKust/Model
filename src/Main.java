@@ -25,7 +25,7 @@ public class Main {
     public static double d = 1;
     /** Данный параметр означает вероятность, с которой пользователь, при перемещении в
      * следующую область, решит перенести свою задачу на сервера следующей области */
-    public static double a = 0.0;
+    public static double a = 0.2;
     /** Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
      * временной шкале каждой локации*/
     public static double quant = 0.01;
@@ -33,13 +33,13 @@ public class Main {
     public static int numberOfLocations = 2;
     /** Данный параметр означает какое условное количество единиц времени производится
      * моделирование*/
-    public static float T = 5000;
+    public static float T = 5_000_000;
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
     /** Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование */
     public static final float LAMBDA_IN_START = 0.1F;
     /** Данный параметр задаёт финальную входную интенсивность, при достижении которой моделирование заканчивается */
-    public static final float LAMBDA_IN_FINISH = 1.15F;
+    public static final float LAMBDA_IN_FINISH = 0.25F;
 
     /**
      * Данный флаг устанавливает такой параметр системы, как добавления трансферного времени,
@@ -64,7 +64,7 @@ public class Main {
      * Значение false - означает, что в консоль не выведется кол-во переходов задачи и вероятнсоть
      * такого события
      */
-    public static final boolean SHOW_WORKS_TRANSFER_PROBABILITY = false;
+    public static final boolean SHOW_WORKS_TRANSFER_PROBABILITY = true;
     /**
      * Данный флаг устанавливает такой параметр системы, как вывод в консоль данных о вероятности
      * n-ого перехода пользователя
@@ -81,6 +81,8 @@ public class Main {
      */
     public static void main(String[] args) throws InterruptedException {
 
+        long heapMaxSize = Runtime.getRuntime().maxMemory();
+        System.out.println("Max heap size in bytes " + heapMaxSize);
         BufferedWriter outputFile = null;
         try {
             outputFile = new BufferedWriter(new FileWriter("model.txt"));
