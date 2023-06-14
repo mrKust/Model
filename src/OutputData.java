@@ -62,6 +62,25 @@ public class OutputData {
         this.mDTheoretical = mDTheoretical;
     }
 
+    @Override
+    public String toString() {
+        if (lambdaIn < 1.0) {
+            return lambdaIn +
+                    " " + lambdaOut +
+                    " " + mediumSizeOfWork +
+                    " " + transfersPerTime +
+                    " " + mD +
+                    " " + mDTheoretical +
+                    "\n";
+        } else {
+            return lambdaIn +
+                    " " + lambdaOut +
+                    " " + mediumSizeOfWork +
+                    " " + transfersPerTime +
+                    "\n";
+        }
+    }
+
     /**
      * Данный метод возвращает строку с параметрами для случаев с входной интенсивностью меньше 1
      * @return Строка с необходимыми параметрами

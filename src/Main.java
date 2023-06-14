@@ -33,7 +33,7 @@ public class Main {
     public static int numberOfLocations = 2;
     /** Данный параметр означает какое условное количество единиц времени производится
      * моделирование*/
-    public static float T = 10_000;
+    public static float T = 5000;
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
     /** Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование */
@@ -91,7 +91,7 @@ public class Main {
 
         long start = System.currentTimeMillis();
 
-        ExecutorService executor = Executors.newFixedThreadPool(3);
+        ExecutorService executor = Executors.newFixedThreadPool(4);
 
         CompletionService<OutputData> service
                 = new ExecutorCompletionService<>(executor);
@@ -124,16 +124,10 @@ public class Main {
         System.out.println("Final time " + (end - start));
     }
 
-    public static void writeInOutputFile(float lambda, OutputData outputData, BufferedWriter outputFile) {
+    public synchronized static void writeInOutputFile(float lambda, OutputData outputData, BufferedWriter outputFile) {
         try {
             StringBuilder outputText = new StringBuilder();
-
-            if (lambda < 1.0) {
-                outputText.append(outputData.fullToString());
-            } else {
-                outputText.append(outputData.shortToString());
-            }
-
+            outputText.append(outputData.toString());
             outputFile.write(outputText.toString());
             outputFile.flush();
         } catch (IOException e) {
