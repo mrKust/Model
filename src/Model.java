@@ -281,40 +281,43 @@ public class Model implements Callable<OutputData> {
      * @return Список выходных параметров, необходимых для построения части графиков
      */
     public OutputData outputSummary() {
-        System.out.println("lambda = " + lambda + " M[D] = " + mD + " lambda_out = " + lambda_out);
+        StringBuilder textData = new StringBuilder();
+        textData.append("lambda = " + lambda + " M[D] = " + mD + " lambda_out = " + lambda_out + "\n");
 
         double partOfWorksCompletedBeforeUserMoves = ((double)allNumberOfWorksWhichCompleteBeforeUserMoves / numberOfExitedWorks);
-        System.out.println("Part of works which were completed before user moves from start location " + partOfWorksCompletedBeforeUserMoves);
+        textData.append("Part of works which were completed before user moves from start location " + partOfWorksCompletedBeforeUserMoves + "\n");
         double averageNumberOfWorkTransfers = ((double)allNumberOfTransfersOfEachFinishedWork / numberOfExitedWorks);
-        System.out.println("Average number of transfers for completed works " + averageNumberOfWorkTransfers);
+        textData.append("Average number of transfers for completed works " + averageNumberOfWorkTransfers + "\n");
         double averageNumberOfUserTransfers = ((double) allNumberOfTransfersOfUsersWithCompletedWork / numberOfExitedWorks);
-        System.out.println("Average number of transfers for users with completed tasks " + averageNumberOfUserTransfers);
+        textData.append("Average number of transfers for users with completed tasks " + averageNumberOfUserTransfers + "\n");
         double transfersPerTime = (double) allNumberOfTransfersOfEachFinishedWork / T;
-        System.out.println("Average transfers number in one window " + transfersPerTime);
+        textData.append("Average transfers number in one window " + transfersPerTime + "\n");
 
         if (Main.SHOW_WORKS_TRANSFER_PROBABILITY) {
-            System.out.println("Number of works with transfer numbers");
+            textData.append("Number of works with transfer numbers\n");
             List<Integer> numberTransfersOfWorks = numberOfTransfersOfCompletedWorks.keySet().stream().sorted().collect(Collectors.toList());
             for (Integer currentKey : numberTransfersOfWorks) {
                 long currentValue = numberOfTransfersOfCompletedWorks.get(currentKey);
                 double probabilityToNTransfers = (double) currentValue / numberOfExitedWorks;
-                System.out.println("With transfer num equals " + currentKey + " was " + currentValue + " works. Probability to make n transfers is "
-                        + probabilityToNTransfers);
+                textData.append("With transfer num equals " + currentKey + " was " + currentValue + " works. Probability to make n transfers is "
+                        + probabilityToNTransfers + "\n");
             }
-            System.out.println();
+            textData.append("\n");
         }
 
         if (Main.SHOW_USERS_TRANSFER_PROBABILITY) {
-            System.out.println("Number of users with transfer numbers");
+            textData.append("Number of users with transfer numbers\n");
             List<Integer> numberTransfersOfUsers = numberOfTransfersOfUsersWithCompletedWorks.keySet().stream().sorted().collect(Collectors.toList());
             for (Integer currentKey : numberTransfersOfUsers) {
                 long currentValue = numberOfTransfersOfUsersWithCompletedWorks.get(currentKey);
                 double probabilityToNTransfers = (double) currentValue / numberOfExitedWorks;
-                System.out.println("With transfer num equals " + currentKey + " was " + currentValue + " users. Probability to make n transfers is "
-                        + probabilityToNTransfers);
+                textData.append("With transfer num equals " + currentKey + " was " + currentValue + " users. Probability to make n transfers is "
+                        + probabilityToNTransfers + "\n");
             }
-            System.out.println();
+            textData.append("\n");
         }
+
+        System.out.println(textData);
 
         if (lambda < 1)
             return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime, mD, mDTheoretical);
