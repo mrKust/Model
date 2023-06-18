@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 
 def lineplotMD(x_data, y_data, y2_data, y3_data, x_label="", y_label="", title=""):
     _, ax = plt.subplots()
-    ax.plot(x_data, y2_data, '-go', lw=3, label=('С доп временем'))
     ax.plot(x_data, y_data, '--bo', lw=3, label=('Без доп времени'))
+    ax.plot(x_data, y2_data, '-go', lw=3, label=('С доп временем'))
     ax.plot(x_data, y3_data, ':ro', lw=3, label=('Без доп времени + время на трансферы'))
     ax.set_title(title)
     ax.set_xlabel(x_label)
@@ -12,7 +12,7 @@ def lineplotMD(x_data, y_data, y2_data, y3_data, x_label="", y_label="", title="
 
 def main():
     data = []
-    with open("D:\Pereezd\Labs\Научка\Model\AverageNumberWorkTransfers.txt") as f:
+    with open("/Users/da.vasilyev/Desktop/Projects/Model/AverageNumberWorkTransfers.txt") as f:
         num = 0
         for line in f:
             if num == 0:

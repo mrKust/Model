@@ -21,7 +21,7 @@ def lineplotMD(x_data, y_data, x_label="", y_label="", title=""):
 
 def main():
     data = []
-    with open("D:\Pereezd\Labs\Научка\Model\AverageNumberOfWorkTransfersWithTheory.txt") as f:
+    with open("/Users/da.vasilyev/Desktop/Projects/Model/AverageNumberOfWorkTransfersWithTheory.txt") as f:
         for line in f:
             data.append([float(x) for x in line.split()])
 
@@ -37,6 +37,7 @@ def main():
     print(dataY)
 
     lineplotMD(dataX, dataY, "Кол-во перемещений, n, раз", "Вероятность перемещения задачи, Pr{n}", "Вероятность, что задача переместиться заданное\nкол-во переходов при вероятности переноса задачи 0.8")
+#    lineplotMD(dataX, dataY, "Кол-во перемещений, n, раз", "Вероятность перемещения задачи, Pr{n}", "Вероятность, что пользователь совершит заданное\nкол-во переходов")
     plt.legend()
 
     plt.show()

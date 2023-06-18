@@ -2,10 +2,10 @@ import matplotlib.pyplot as plt
 
 def lineplotMD(x_data, y1_data, y2_data, y3_data, y4_data, x_label="", y_label="", title=""):
     _, ax = plt.subplots()
-    ax.plot(x_data, y1_data, '--go', lw=3, label=('Формула для пакетной системы'))
-    ax.plot(x_data, y2_data, '--bo', lw=3, label=('Экспоненциальное распределение с 1'))
-    ax.plot(x_data, y3_data, '--ro', lw=3, label=('Фиксированное значение 1'))
-    ax.plot(x_data, y4_data, '--mo', lw=3, label=('Равномерное распределение с 1'))
+#    ax.plot(x_data, y1_data, '--go', lw=2, label=('Формула для пакетной системы'))
+    ax.plot(x_data, y2_data, '--bo', lw=2, label=('Экспоненциальное распределение с 1'))
+    ax.plot(x_data, y3_data, '--ro', lw=2, label=('Фиксированное значение 1'))
+    ax.plot(x_data, y4_data, '--mo', lw=2, label=('Равномерное распределение с 1'))
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)

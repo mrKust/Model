@@ -4,8 +4,8 @@ def lineplotLambda(x_data, y1_data, y2_data, y3_data, x_label="", y_label="", ti
     _, ax = plt.subplots()
     ax.plot(x_data, x_data, '--go', lw=2, label=('Входной поток'))
     ax.plot(x_data, y1_data, '--bo', lw=2, label=('При n = 2'))
-    ax.plot(x_data, y2_data, '--ro', lw=2, label=('При n = 4'))
-    ax.plot(x_data, y3_data, '--mo', lw=2, label=('При n = 8'))
+    ax.plot(x_data, y2_data, '--ro', lw=2, label=('При n = 8'))
+    ax.plot(x_data, y3_data, '--mo', lw=2, label=('При n = 16'))
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
@@ -17,8 +17,8 @@ def lineplotMD(x_data, y1_data, y2_data, y3_data, x_label="", y_label="", title=
     y2_data = y2_data[:len(y2_data) - 2]
     y3_data = y3_data[:len(y3_data) - 2]
     ax.plot(x_data, y1_data, '--bo', lw=2, label=('При n = 2'))
-    ax.plot(x_data, y2_data, '--ro', lw=2, label=('При n = 4'))
-    ax.plot(x_data, y3_data, '--mo', lw=2, label=('При n = 8'))
+    ax.plot(x_data, y2_data, '--ro', lw=2, label=('При n = 8'))
+    ax.plot(x_data, y3_data, '--mo', lw=2, label=('При n = 16'))
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
