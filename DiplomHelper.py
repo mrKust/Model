@@ -44,25 +44,34 @@ def main():
     dataY3 = []
     dataY4 = []
     dataY5 = []
+    dataY6 = []
+    dataY7 = []
 
     for line in data:
         dataX.append(line.pop(0))
         dataY1.append(line.pop(0))
         dataY2.append(line.pop(0))
         dataY3.append(line.pop(0))
+        dataY4.append(line.pop(0))
+        dataY5.append(line.pop(0))
         if (dataX[-1] < 1.0):
-            dataY4.append(line.pop(0))
-            dataY5.append(line.pop(0))
+            dataY6.append(line.pop(0))
+            dataY7.append(line.pop(0))
 
+    print("x") 
     print(dataX)
     print(dataY1)
     print(dataY2)
     print(dataY3)
+    print("age of inf") 
     print(dataY4)
 
     lineplot(dataX, dataY2, chr(955), "medium length of work", "medium length of work")
     lineplot(dataX, dataY3, chr(955), "transfersNum / T", "transfers per T")
-    lineplotMD(dataX, dataY4, dataY5, "Входная интенсивность, " + chr(955), "Средняя задержка, D, квант", "Среднее значение задержки от входной интенсивности")
+    lineplotMD(dataX, dataY5, dataY4, "age of information theor", "age of information modeling",
+               "medium age of inforamtion")
+    plt.legend()
+    lineplotMD(dataX, dataY6, dataY7, "Входная интенсивность, " + chr(955), "Средняя задержка, D, квант", "Среднее значение задержки от входной интенсивности")
     plt.legend()
     lineplotLambda(dataX, dataY1, dataX, "Входная интенсивность, " + chr(955), "Выходная интенсивность, " + chr(955), "Среднее значение выходной интенсивности от\nвходной интенсивности")
     plt.legend()

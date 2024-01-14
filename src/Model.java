@@ -44,6 +44,8 @@ public class Model implements Callable<OutputData> {
     public int numberOfExitedWorks;
     /** Данное поле хранит суммарную задержку всех завершённых работ*/
     public double summaryDelay;
+
+    public double summaryAgeOfInformation;
     /** Данное поле хранит суммарный объём всех завершённых работ*/
     public double summaryLengthOfWorks;
     /**
@@ -75,6 +77,8 @@ public class Model implements Callable<OutputData> {
      * Данное поле хранит значение входной интенсивности для модели
      */
     public float lambda;
+    public double mAgeOfInfTheor = 0.0;
+    public double mAgeOfInfModel = 0.0;
 
     /**
      * В данном конструкторе задаются все параметры необходимые для работы модели
@@ -120,6 +124,7 @@ public class Model implements Callable<OutputData> {
 
         numberOfExitedWorks = 0;
         summaryDelay = 0;
+        summaryAgeOfInformation = 0;
         summaryLengthOfWorks = 0;
 
     }
@@ -162,6 +167,7 @@ public class Model implements Callable<OutputData> {
                 if ( (currentWorkUser.statusWorkFinished) && (currentWorkUser.delay != 0.0) ) {
                     numberOfExitedWorks++;
                     summaryDelay += currentWorkUser.delay;
+                    summaryAgeOfInformation += currentWorkUser.ageOfInformation;
                     summaryLengthOfWorks += currentWorkUser.workInfo.workSize;
                     allNumberOfTransfersOfEachFinishedWork += currentWorkUser.numberOfWorkTransfers;
                     allNumberOfTransfersOfUsersWithCompletedWork += currentWorkUser.numberOfUserTransfers;
@@ -194,9 +200,12 @@ public class Model implements Callable<OutputData> {
             }
         }
 
-        this.lambda_out = (double) numberOfExitedWorks / (T * numberOfLocations) ;
+        this.lambda_out = (double) numberOfExitedWorks / (T * numberOfLocations);
         this.mediumSizeOfWork = summaryLengthOfWorks / numberOfExitedWorks;
         this.mD = summaryDelay / numberOfExitedWorks;
+        double p = lambda / Main.serviceRate;
+        this.mAgeOfInfTheor = 1 / Main.serviceRate * (1 / (2 * (1 - p)) + 0.5 + ((1-p)*Math.exp(p)/p));
+        this.mAgeOfInfModel = summaryAgeOfInformation / (T * numberOfLocations);
     }
 
     /**
@@ -293,6 +302,9 @@ public class Model implements Callable<OutputData> {
         double transfersPerTime = (double) allNumberOfTransfersOfEachFinishedWork / T;
         textData.append("Average transfers number in one window " + transfersPerTime + "\n");
 
+        textData.append("Average age of information theoretical " + mAgeOfInfTheor + "\n");
+        textData.append("Average age of information modeling " + mAgeOfInfModel + "\n");
+
         if (Main.SHOW_WORKS_TRANSFER_PROBABILITY) {
             textData.append("Number of works with transfer numbers\n");
             List<Integer> numberTransfersOfWorks = numberOfTransfersOfCompletedWorks.keySet().stream().sorted().collect(Collectors.toList());
@@ -320,7 +332,8 @@ public class Model implements Callable<OutputData> {
         System.out.println(textData);
 
         if (lambda < 1)
-            return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime, mD, mDTheoretical);
+            return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime, mD, mDTheoretical,
+                    mAgeOfInfTheor, mAgeOfInfModel);
         else return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime);
     }
 }

@@ -29,6 +29,9 @@ public class OutputData {
      */
     private double mDTheoretical;
 
+    private double mAgeOfInfTheor;
+    private double mAgeOfInfModel;
+
     /**
      * Данный конструктор применяется для сохраненя выходных данных при значении входной интенсивности больше 1.
      * Так как формула, через которое получается mDTheoretical актуально для случаев с входной интенсивностью меньше 1.
@@ -53,13 +56,16 @@ public class OutputData {
      * @param mD Среднее значение задержки
      * @param mDTheoretical Средняя задержка, полученная при помощи формулы
      */
-    public OutputData(double lambdaIn, double lambdaOut, double mediumSizeOfWork, double transfersPerTime, double mD, double mDTheoretical) {
+    public OutputData(double lambdaIn, double lambdaOut, double mediumSizeOfWork, double transfersPerTime,
+                      double mD, double mDTheoretical, double mAgeOfInfTheor, double mAgeOfInfModel) {
         this.lambdaIn = lambdaIn;
         this.lambdaOut = lambdaOut;
         this.mediumSizeOfWork = mediumSizeOfWork;
         this.transfersPerTime = transfersPerTime;
         this.mD = mD;
         this.mDTheoretical = mDTheoretical;
+        this.mAgeOfInfTheor = mAgeOfInfTheor;
+        this.mAgeOfInfModel = mAgeOfInfModel;
     }
 
     @Override
@@ -69,8 +75,10 @@ public class OutputData {
                     " " + lambdaOut +
                     " " + mediumSizeOfWork +
                     " " + transfersPerTime +
-                    " " + mD +
+                    " " + mAgeOfInfTheor +
+                    " " + mAgeOfInfModel +
                     " " + mDTheoretical +
+                    " " + mD +
                     "\n";
         } else {
             return lambdaIn +

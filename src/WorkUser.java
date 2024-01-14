@@ -54,6 +54,7 @@ public class WorkUser {
     /** В данное поле записывается то сколько времени заявка провела в системе, в том случае
      * если задача будет успешна выполнена системой */
     public double delay;
+    public double ageOfInformation;
     /** Данное поле показывает должна ли в данный момент времени обслуживаться задача сервером
      * области или же нет
      * Значение true обозначает, что данная пара обслуживается сервером в текущий момент
@@ -102,6 +103,7 @@ public class WorkUser {
         this.currentProcessingWorkOnServer = false;
         this.transferStatus = false;
         this.delay = 0;
+        this.ageOfInformation = 0;
         this.d = dIn;
         this.sizeOfQuant = sizeOfQuant;
         this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / 1) /

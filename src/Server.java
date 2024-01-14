@@ -18,6 +18,7 @@ public class Server {
     /** Данное поле хранит список пар пользователь - задача, которые, в текущий момент, переносятся
      * на данный сервер */
     public ArrayList<WorkUser> transferWorks;
+    public double windowInOfPreviousWork;
 
     /**
      * Данный конструктор создаёт объект, который обслуживает и перемщает задачи пользователей
@@ -28,6 +29,7 @@ public class Server {
         this.numberOfLocation = i;
         this.numberOfJobs = 0;
         this.serviceRate = serviceRate;
+        this.windowInOfPreviousWork = 0;
         workUsersOnServer = new ArrayList<>();
         transferWorks = new ArrayList<>();
     }
@@ -127,6 +129,8 @@ public class Server {
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
         tmp.delay = currentTime - tmp.workInfo.windowIn;
+        tmp.ageOfInformation = (Math.pow(currentTime - this.windowInOfPreviousWork, 2) - Math.pow(currentTime - tmp.workInfo.windowIn, 2)) / 2;
+        this.windowInOfPreviousWork = tmp.workInfo.windowIn;
     }
 
     /**
