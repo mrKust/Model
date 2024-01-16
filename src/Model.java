@@ -77,8 +77,8 @@ public class Model implements Callable<OutputData> {
      * Данное поле хранит значение входной интенсивности для модели
      */
     public float lambda;
-    public double mAgeOfInfTheor = 0.0;
-    public double mAgeOfInfModel = 0.0;
+    public double mAgeOfInfTheor;
+    public double mAgeOfInfModel;
 
     /**
      * В данном конструкторе задаются все параметры необходимые для работы модели
@@ -117,6 +117,8 @@ public class Model implements Callable<OutputData> {
         this.mDTheoretical = 1 / (1 - lambda);
         this.lambda_out = 0;
         this.mediumSizeOfWork = 0;
+        this.mAgeOfInfModel = 0;
+        this.mAgeOfInfTheor = 0;
 
         allNumberOfTransfersOfEachFinishedWork = 0;
         allNumberOfTransfersOfUsersWithCompletedWork = 0L;
