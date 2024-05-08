@@ -1,4 +1,8 @@
 # Default ignored files
 /.idea/
 /out/
+/modeling-service/.gradle
+/modeling-service/build
+modeling-service.iml
 Model.iml
+model.txt

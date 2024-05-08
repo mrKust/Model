@@ -25,7 +25,7 @@ def lineplotMD(x_data, y1_data, y2_data, y3_data, x_label="", y_label="", title=
 
 def main():
     data = []
-    with open("/Users/da.vasilyev/Desktop/Projects/Model/AverageParamsFromN.txt") as f:
+    with open("../data/AverageParamsFromN.txt") as f:
         for line in f:
             data.append([float(x) for x in line.split()])
 

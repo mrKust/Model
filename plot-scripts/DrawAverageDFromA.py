@@ -9,7 +9,7 @@ def lineplotMD(x_data, y1_data, x_label="", y_label="", title=""):
 
 def main():
     data = []
-    with open("/Users/da.vasilyev/Desktop/Projects/Model/AverageDFromA.txt") as f:
+    with open("../data/AverageDFromA.txt") as f:
         for line in f:
             data.append([float(x) for x in line.split()])
 

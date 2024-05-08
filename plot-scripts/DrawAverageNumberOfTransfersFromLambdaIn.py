@@ -14,7 +14,7 @@ def lineplot(x_data, y_data, y2_data, y3_data, y4_data, x_label="", y_label="", 
 
 def main():
     data = []
-    with open("/Users/da.vasilyev/Desktop/Projects/Model/AverageNumberOfTransfersFromLambaIn.txt") as f:
+    with open("../data/AverageNumberOfTransfersFromLambaIn.txt") as f:
         for line in f:
             data.append([float(x) for x in line.split()])
 
