@@ -2,6 +2,8 @@ package org.guap;
 
 import java.util.ArrayList;
 
+import static org.guap.Main.*;
+
 /**
  * Данные класс отвечает за области. В данном классе храниться сервер, закрепленной за данной
  * областью, временная шкала данной области. Так же в данном классе осуществляется подсчёт средних
@@ -15,14 +17,6 @@ public class Location {
     public Server server;
     /** Данное поле хранит размер задач и расписание того, когда они попадают в систему*/
     public ArrayList<WorkUser> inputStream;
-    /** Данное поле хранит значение коэффициента необходимого для рассчёта времени перемещения
-     * пользователя до следующей локации*/
-    public double q;
-    /** Данное поле хранит значение коэффициента необходимого при рассчёте времени необходимого
-     * для перемещения задачи пользователя с серверов одной области на сервера другой области */
-    public double d;
-    /** Данное поле хранит в себе размер одного кванта времени*/
-    public double sizeOfQuant;
     /** Данное поле хранит все себе такое вспомагательное значение, как суммарный объём задач всех
      * пользователей */
     public double lengthOfAllWorks;
@@ -36,28 +30,14 @@ public class Location {
      * В данном конструкторе формирются все сущности необходимые для корректного
      * функционирования области, а так же вызывается метод, который формирует входную очередь
      * @param lambda Текущее значение входной интенсивности
-     * @param time Данный параметр означает какое условное количество единиц времени производится
-     *             моделирование
-     * @param q Коэффициент для рассчёта времени перемещения пользователя
-     *          до следующей локации
      * @param numberOfThisLocation Номер текущей области
-     * @param quant Данный параметр означает размер кванта, то есть размер шага с которым мы
-     *              двигаемся по временной шкале каждой локации
-     * @param d Коэффициент для рассчёта времени необходимого для перемещения задачи
-     *          пользователя с серверов одной области на сервера другой области
-     * @param serviceRate Данный параметр означает, с какой интенсивностью серевер обрабатывает
-     *                    задачи пользователей
      */
-    public Location(double lambda, double time, double q, int numberOfThisLocation, double quant,
-                    double d, double serviceRate) {
+    public Location(double lambda, int numberOfThisLocation) {
         this.numberOfThisLocation = numberOfThisLocation;
-        server = new Server(this.numberOfThisLocation, serviceRate);
+        server = new Server(this.numberOfThisLocation);
         inputStream = new ArrayList<>();
-        this.q = q;
-        this.d = d;
-        this.sizeOfQuant = quant;
         this.lengthOfAllWorks = 0;
-        createInputStream(lambda, time);
+        createInputStream(lambda, T);
         this.numberOfWorksInLocation = inputStream.size();
         nextStartedWork = 0;
     }
@@ -68,7 +48,7 @@ public class Location {
      * @param time длина временной линии
      */
     public void createInputStream(double lambda, double time) {
-        int tmpSize = (int) Math.ceil(Utils.generateExponentialValue(Main.LAMBDA_FOR_TASK_SIZE) / this.sizeOfQuant); //экспоненциальное распределение
+        int tmpSize = (int) Math.ceil(Utils.generateExponentialValue(Main.LAMBDA_FOR_TASK_SIZE) / sizeOfQuant); //экспоненциальное распределение
 //        int tmpSize = (int)(1 / this.sizeOfQuant); //постоянная
 //        int tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение
 
@@ -76,19 +56,17 @@ public class Location {
         this.lengthOfAllWorks += tmpSize;
         int userNumber = 0;
 
-        inputStream.add(new WorkUser(userNumber, numberOfThisLocation, tmpWindowIn, tmpSize,
-                this.sizeOfQuant, this.d));
+        inputStream.add(new WorkUser(userNumber, numberOfThisLocation, tmpWindowIn, tmpSize));
         userNumber++;
 
         while (inputStream.get(userNumber - 1).workInfo.windowIn <= time) {
 
-            tmpSize = (int) Math.ceil(Utils.generateExponentialValue(Main.LAMBDA_FOR_TASK_SIZE) / this.sizeOfQuant); //экспоненциальное распределение
+            tmpSize = (int) Math.ceil(Utils.generateExponentialValue(Main.LAMBDA_FOR_TASK_SIZE) / sizeOfQuant); //экспоненциальное распределение
 //            tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение
 
             tmpWindowIn = Utils.generateExponentialValue(lambda);
             inputStream.add(new WorkUser(userNumber, numberOfThisLocation,
-                    inputStream.get(userNumber - 1).workInfo.windowIn + tmpWindowIn, tmpSize,
-                    this.sizeOfQuant, this.d));
+                    inputStream.get(userNumber - 1).workInfo.windowIn + tmpWindowIn, tmpSize));
             this.lengthOfAllWorks += tmpSize;
             userNumber++;
         }

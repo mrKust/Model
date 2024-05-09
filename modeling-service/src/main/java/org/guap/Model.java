@@ -2,9 +2,8 @@ package org.guap;
 
 import java.util.*;
 import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
+import static org.guap.Main.*;
 
 /**
  * В данном классе создаются объекты областей, а так же происходит управление перемещениями
@@ -12,36 +11,10 @@ import static java.util.stream.Collectors.toList;
  * по всем областям
  */
 public class Model implements Callable<OutputData> {
-
-    /**
-     * В данном поле храниться количество областей в системе
-     */
-    public int numberOfLocations;
     /**
      * В данном листе храняться объекты отвечающие за области
      */
     public ArrayList<Location> locations;
-    Random random;
-    /**
-     * Данное поле хранит вероятность, с которой пользователь, при перемещении в
-     * следующую область, решит перенести свою задачу на сервера следующей области
-     */
-    public double a;
-    /**
-     * Данное поле хранит значение для рассчёта времени перемещения пользователя
-     * до следующей локации. Для симметричной модели значение этого параметра всегда равно 1
-     */
-    public double q;
-    /**
-     * Данное поле хранит значение для рассчёта времени необходимого для перемещения
-     * задачи пользователя с серверов одной области на сервера другой области
-     */
-    public double d;
-    /**
-     * Данное поле хранит условное количество единиц времени производится
-     * моделирование
-     */
-    private final float T;
     /**
      * Данное поле хранит среднее значение задержки задачи в системе
      */
@@ -54,11 +27,6 @@ public class Model implements Callable<OutputData> {
      * Данное поле хранит среднее значение выходной интенсивности в системе
      */
     public double lambda_out;
-    /**
-     * Данное поле хранит размер кванта, то есть размер шага с которым мы двигаемся по
-     * временной шкале каждой локации
-     */
-    public double sizeOfQuant;
     /**
      * Данное поле хранит среднее значение размера задачи в системе
      */
@@ -114,36 +82,14 @@ public class Model implements Callable<OutputData> {
      * В данном конструкторе задаются все параметры необходимые для работы модели
      *
      * @param lambda            Текущее значение входной интенсивности
-     * @param a                 Вероятность, с которой пользователь, при перемещении в
-     *                          следующую область, решит перенести свою задачу на сервера следующей области
-     * @param q                 Коэффициент для рассчёта времени перемещения пользователя
-     *                          до следующей локации
-     * @param d                 Коэффициент для рассчёта времени необходимого для перемещения
-     *                          задачи пользователя с серверов одной области на сервера другой области
-     * @param quant             Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
-     *                          временной шкале каждой локации
-     * @param numberOfLocations Данный параметр означает количество областей с которыми производиться
-     *                          моделирование
-     * @param T                 Данный параметр означает какое условное количество единиц времени производится
-     *                          моделирование
-     * @param serviceRate       Данный параметр означает, с какой интенсивностью серевер обрабатывает
-     *                          задачи пользователей
      */
-    public Model(double lambda, double a, double q, double d, double quant, int numberOfLocations,
-                 float T, double serviceRate) {
+    public Model(double lambda) {
 
         locations = new ArrayList<>();
-        random = new Random();
-        this.sizeOfQuant = quant;
         for (int i = 0; i < numberOfLocations; i++) {
-            locations.add(new Location(lambda, T, q, i, quant, d, serviceRate));
+            locations.add(new Location(lambda, i));
         }
-        this.a = a;
-        this.q = q;
-        this.d = d;
         this.lambda = lambda;
-        this.numberOfLocations = numberOfLocations;
-        this.T = T;
         this.mD = 0;
         this.mDTheoretical = 1 / (1 - lambda);
         this.lambda_out = 0;
@@ -182,9 +128,9 @@ public class Model implements Callable<OutputData> {
      */
     public void getModeling() {
 
-        for (double t = 0; t < this.T; t += sizeOfQuant) {
-            for (int i = 0; i < locations.size(); i++) {
-                locations.get(i).processingAtLocation(t);
+        for (double t = 0; t < T; t += sizeOfQuant) {
+            for (Location location : locations) {
+                location.processingAtLocation(t);
             }
             this.userSwitchLocation();
         }
@@ -251,8 +197,6 @@ public class Model implements Callable<OutputData> {
      */
     public void userSwitchLocation() {
         for (Location tmpLocation: locations) {
-//        for (int i = 0; i < locations.size(); i++) {
-//            Location tmpLocation = locations.get(i);
             Server tmpServer = tmpLocation.server;
             for (int k = 0; k < tmpServer.workUsersOnServer.size(); k++) {
                 WorkUser tmpWorkUser = tmpServer.workUsersOnServer.get(k);
@@ -276,7 +220,7 @@ public class Model implements Callable<OutputData> {
                 for (int locationTmpNumber = 0; locationTmpNumber < locations.size(); locationTmpNumber++) {
                     if (locationTmpNumber == tmpWorkUser.userLocation)
                         continue;
-                    int timeToTmpLocation = (int) Math.ceil(-(Math.log(Math.random()) / this.q) / this.sizeOfQuant);
+                    int timeToTmpLocation = (int) Math.ceil(-(Math.log(Math.random()) / q) / sizeOfQuant);
                     nextLocationsData.put(locationTmpNumber, timeToTmpLocation);
                     if (nextLocationsData.size() == 1) {
                         currentClosestLocation = locationTmpNumber;
@@ -310,7 +254,7 @@ public class Model implements Callable<OutputData> {
                  */
                     tmpWorkUser.changeUserLocation(currentClosestLocation);
                     double probabilityToSwitchWorkServer = Math.random();
-                    if (probabilityToSwitchWorkServer < this.a) {
+                    if (probabilityToSwitchWorkServer < a) {
                         tmpServer.removeWorkToSwitchServer(tmpWorkUser);
                         locations.get(currentClosestLocation).server.addNewTransferWork(tmpWorkUser);
                     } else tmpWorkUser.isEverAbandoned = true;

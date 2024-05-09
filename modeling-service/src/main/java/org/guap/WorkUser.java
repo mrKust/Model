@@ -1,5 +1,7 @@
 package org.guap;
 
+import static org.guap.Main.*;
+
 /**
  * Данный класс представляет собой пользователя и его задачу
  */
@@ -48,11 +50,6 @@ public class WorkUser {
      * области*/
     public int timeToTransfer;//показывает сколько времени данная работа будет переноситься
     // с одних серверов на другие
-    /** Данное поле хранит значение коэффициента необходимого при рассчёте времени необходимого
-     * для перемещения задачи пользователя с серверов одной области на сервера другой области */
-    public double d;
-    /** Данное поле хранит в себе размер одного кванта времени*/
-    public double sizeOfQuant;
     /** В данное поле записывается то сколько времени заявка провела в системе, в том случае
      * если задача будет успешна выполнена системой */
     public double delay;
@@ -88,12 +85,8 @@ public class WorkUser {
      * @param numberOfLocation Номер начальной области пользователя и его задачи
      * @param windowIn Время появления заявки в системе
      * @param workSize Размер задачи
-     * @param sizeOfQuant Размер кванта
-     * @param dIn Коэффициент для рассчёта времени необходимого для перемещения задачи
-     *            пользователя с серверов одной области на сервера другой области
      */
-    public WorkUser(int i, int numberOfLocation, double windowIn, double workSize, double sizeOfQuant,
-                    double dIn) {
+    public WorkUser(int i, int numberOfLocation, double windowIn, double workSize) {
 
         userNumber = i;
         userLocation = numberOfLocation;
@@ -106,10 +99,8 @@ public class WorkUser {
         this.transferStatus = false;
         this.delay = 0;
         this.ageOfInformation = 0;
-        this.d = dIn;
-        this.sizeOfQuant = sizeOfQuant;
-        this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / 1) /
-                this.sizeOfQuant);
+        this.timeInCurrentLocation = (int) Math.ceil(Utils.generateExponentialValue(LAMBDA_FOR_TASK_SIZE) /
+                sizeOfQuant);
         workInfo = new Pair(windowIn, workSize);
         this.numberOfWorkTransfers = 0;
         this.numberOfUserTransfers = 0;
@@ -177,7 +168,7 @@ public class WorkUser {
      */
     public void transfer() {
         this.transferStatus = true;
-        this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / this.d) / this.sizeOfQuant);
+        this.timeToTransfer = (int) Math.ceil(- (Math.log(Math.random()) / d) / sizeOfQuant);
     }
 
     /**
@@ -192,7 +183,7 @@ public class WorkUser {
      * Данный метод рассчитывает какое количество времени проведёт пользователь в новой области
      */
     public void countTimeInNewLocation() {
-        this.timeInCurrentLocation = (int) Math.ceil(- (Math.log(Math.random()) / 1) / sizeOfQuant);
+        this.timeInCurrentLocation = (int) Math.ceil(Utils.generateExponentialValue(LAMBDA_FOR_TASK_SIZE) / sizeOfQuant);
     }
 
     /**

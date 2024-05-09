@@ -2,6 +2,8 @@ package org.guap;
 
 import java.util.ArrayList;
 
+import static org.guap.Main.serviceRate;
+
 /**
  * Данный класс отвечает за обработку задач на той области, за которой закреплён сервер
  */
@@ -11,11 +13,6 @@ public class Server {
      * Данное поле хранит номер локации, которую обслуживает сервер
      */
     public int numberOfLocation;
-    /**
-     * Данное поле хранит значение интенсивности, с которой сервер обрабатывает задачи
-     * пользователей
-     */
-    public double serviceRate;
     /**
      * Данное поле показывает количество задач, готовых к обслуживанию, хранящихся на данном сервере
      */
@@ -36,12 +33,10 @@ public class Server {
      * Данный конструктор создаёт объект, который обслуживает и перемщает задачи пользователей
      *
      * @param i           Номер текущего сервера
-     * @param serviceRate Интенсивность обслуживания задач текущим сервером
      */
-    public Server(int i, double serviceRate) {
+    public Server(int i) {
         this.numberOfLocation = i;
         this.numberOfJobs = 0;
-        this.serviceRate = serviceRate;
         this.windowInOfPreviousWork = 0;
         workUsersOnServer = new ArrayList<>();
         transferWorks = new ArrayList<>();
@@ -73,8 +68,7 @@ public class Server {
             WorkUser tmpWorkUser = workUsersOnServer.get(i);
             if (tmpWorkUser.currentProcessingWorkOnServer) {
                 double coeffUdalennost = 1;
-                tmpWorkUser.increaseWorkProcessing(coeffUdalennost *
-                        this.serviceRate);
+                tmpWorkUser.increaseWorkProcessing(coeffUdalennost * serviceRate);
                 tmpWorkUser.setCurrentProcessingWorkOnServer(false);
                 if (tmpWorkUser.statusWorkFinished) {
                     this.removeWork(tmpWorkUser, currentTime);

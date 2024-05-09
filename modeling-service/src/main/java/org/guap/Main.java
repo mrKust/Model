@@ -30,7 +30,7 @@ public class Main {
     public static double a = 0.0;
     /** Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
      * временной шкале каждой локации*/
-    public static double quant = 0.01;
+    public static double sizeOfQuant = 0.01;
     /** Данный параметр означает количество областей с которыми производиться моделирование*/
     public static int numberOfLocations = 2;
     /** Данный параметр означает какое условное количество единиц времени производится
@@ -39,9 +39,9 @@ public class Main {
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
     /** Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование */
-    public static final double LAMBDA_IN_START = 0.1F;
+    public static final double LAMBDA_IN_START = 0.1;
     /** Данный параметр задаёт финальную входную интенсивность, при достижении которой моделирование заканчивается */
-    public static final double LAMBDA_IN_FINISH = 0.95F;
+    public static final double LAMBDA_IN_FINISH = 0.95;
     public static final double LAMBDA_FOR_TASK_SIZE = 1.0;
 
     /**
@@ -102,7 +102,7 @@ public class Main {
 
         List<Callable<OutputData>> callablesList = new ArrayList<>();
         for (double lambda = LAMBDA_IN_START; lambda <= LAMBDA_IN_FINISH; lambda += 0.1) {
-            callablesList.add(new Model(lambda, a, q, d, quant, numberOfLocations, T, serviceRate));
+            callablesList.add(new Model(lambda));
         }
 
         for (Callable<OutputData> callable : callablesList) {

@@ -90,30 +90,4 @@ public class OutputData {
                     "\n";
         }
     }
-
-    /**
-     * Данный метод возвращает строку с параметрами для случаев с входной интенсивностью меньше 1
-     * @return Строка с необходимыми параметрами
-     */
-    public String fullToString() {
-        return lambdaIn +
-                " " + lambdaOut +
-                " " + mediumSizeOfWork +
-                " " + transfersPerTime +
-                " " + mD +
-                " " + mDTheoretical +
-                "\n";
-    }
-
-    /**
-     * Данный метод возвращает строку с параметрами для случаев с входной интенсивностью больше 1
-     * @return Строка с необходимыми параметрами
-     */
-    public String shortToString() {
-        return lambdaIn +
-                " " + lambdaOut +
-                " " + mediumSizeOfWork +
-                " " + transfersPerTime +
-                "\n";
-    }
 }
