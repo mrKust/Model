@@ -39,9 +39,9 @@ public class Main {
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
     /** Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование */
-    public static final float LAMBDA_IN_START = 0.1F;
+    public static final double LAMBDA_IN_START = 0.1F;
     /** Данный параметр задаёт финальную входную интенсивность, при достижении которой моделирование заканчивается */
-    public static final float LAMBDA_IN_FINISH = 0.95F;
+    public static final double LAMBDA_IN_FINISH = 0.95F;
 
     /**
      * Данный флаг устанавливает такой параметр системы, как добавления трансферного времени,
@@ -85,7 +85,7 @@ public class Main {
 
         long heapMaxSize = Runtime.getRuntime().maxMemory();
         System.out.println("Max heap size in bytes " + heapMaxSize);
-        BufferedWriter outputFile = null;
+        BufferedWriter outputFile;
         try {
             outputFile = new BufferedWriter(new FileWriter("./data/model.txt"));
         } catch (IOException e) {
@@ -101,7 +101,7 @@ public class Main {
                 = new ExecutorCompletionService<>(executor);
 
         List<Callable<OutputData>> callablesList = new ArrayList<>();
-        for (float lambda = LAMBDA_IN_START; lambda <= LAMBDA_IN_FINISH; lambda += 0.1) {
+        for (double lambda = LAMBDA_IN_START; lambda <= LAMBDA_IN_FINISH; lambda += 0.1) {
             callablesList.add(new Model(lambda, a, q, d, quant, numberOfLocations, T, serviceRate));
         }
 
@@ -110,29 +110,25 @@ public class Main {
         }
 
         try {
-            Future<OutputData> future = null;
-            for (float lambda = LAMBDA_IN_START; lambda <= LAMBDA_IN_FINISH; lambda += 0.1) {
+            Future<OutputData> future;
+            for (double lambda = LAMBDA_IN_START; lambda <= LAMBDA_IN_FINISH; lambda += 0.1) {
                 future = service.take();
                 writeInOutputFile(future.get(), outputFile);
             }
         } catch (ExecutionException e) {
             System.err.println("Something went wrong. Check error message");
-            e.printStackTrace();
+        } finally {
             executor.shutdown();
         }
 
         long end = System.currentTimeMillis();
-
-        executor.shutdown();
 
         System.out.println("Final time " + (end - start));
     }
 
     public synchronized static void writeInOutputFile(OutputData outputData, BufferedWriter outputFile) {
         try {
-            StringBuilder outputText = new StringBuilder();
-            outputText.append(outputData.toString());
-            outputFile.write(outputText.toString());
+            outputFile.write(outputData.toString());
             outputFile.flush();
         } catch (IOException e) {
             System.err.println("Can't write in file model.txt");

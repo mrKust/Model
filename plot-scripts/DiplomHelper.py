@@ -66,8 +66,8 @@ def main():
     print("age of inf") 
     print(dataY4)
 
-    lineplot(dataX, dataY2, chr(955), "medium length of work", "medium length of work")
-    lineplot(dataX, dataY3, chr(955), "transfersNum / T", "transfers per T")
+#     lineplot(dataX, dataY2, chr(955), "medium length of work", "medium length of work")
+#     lineplot(dataX, dataY3, chr(955), "transfersNum / T", "transfers per T")
     lineplotMD(dataX, dataY5, dataY4, "age of information theor", "age of information modeling",
                "medium age of inforamtion")
     plt.legend()

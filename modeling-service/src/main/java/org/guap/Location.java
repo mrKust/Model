@@ -48,7 +48,7 @@ public class Location {
      * @param serviceRate Данный параметр означает, с какой интенсивностью серевер обрабатывает
      *                    задачи пользователей
      */
-    public Location(float lambda, double time, double q, int numberOfThisLocation, double quant,
+    public Location(double lambda, double time, double q, int numberOfThisLocation, double quant,
                     double d, double serviceRate) {
         this.numberOfThisLocation = numberOfThisLocation;
         server = new Server(this.numberOfThisLocation, serviceRate);
@@ -67,7 +67,7 @@ public class Location {
      * @param lambda значение входной интенсивности
      * @param time длина временной линии
      */
-    public void createInputStream(float lambda, double time) {
+    public void createInputStream(double lambda, double time) {
 //        int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant); //экспоненциальное распределение
         int tmpSize = (int)(1 / this.sizeOfQuant); //постоянная
 //        int tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение

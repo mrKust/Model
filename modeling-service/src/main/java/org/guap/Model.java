@@ -78,7 +78,7 @@ public class Model implements Callable<OutputData> {
     /**
      * Данное поле хранит значение входной интенсивности для модели
      */
-    public float lambda;
+    public double lambda;
     public double mAgeOfInfTheor;
     public double mAgeOfInfModel;
 
@@ -100,7 +100,7 @@ public class Model implements Callable<OutputData> {
      * @param serviceRate Данный параметр означает, с какой интенсивностью серевер обрабатывает
      *                    задачи пользователей
      */
-    public Model(float lambda, double a, double q, double d, double quant, int numberOfLocations,
+    public Model(double lambda, double a, double q, double d, double quant, int numberOfLocations,
                  float T, double serviceRate) {
 
         locations = new ArrayList<>();
