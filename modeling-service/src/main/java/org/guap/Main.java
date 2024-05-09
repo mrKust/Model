@@ -42,6 +42,7 @@ public class Main {
     public static final double LAMBDA_IN_START = 0.1F;
     /** Данный параметр задаёт финальную входную интенсивность, при достижении которой моделирование заканчивается */
     public static final double LAMBDA_IN_FINISH = 0.95F;
+    public static final double LAMBDA_FOR_TASK_SIZE = 1.0;
 
     /**
      * Данный флаг устанавливает такой параметр системы, как добавления трансферного времени,
@@ -82,7 +83,6 @@ public class Main {
      * данных в выходной файл
      */
     public static void main(String[] args) throws InterruptedException {
-
         long heapMaxSize = Runtime.getRuntime().maxMemory();
         System.out.println("Max heap size in bytes " + heapMaxSize);
         BufferedWriter outputFile;

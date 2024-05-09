@@ -68,11 +68,11 @@ public class Location {
      * @param time длина временной линии
      */
     public void createInputStream(double lambda, double time) {
-//        int tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant); //экспоненциальное распределение
-        int tmpSize = (int)(1 / this.sizeOfQuant); //постоянная
+        int tmpSize = (int) Math.ceil(Utils.generateExponentialValue(Main.LAMBDA_FOR_TASK_SIZE) / this.sizeOfQuant); //экспоненциальное распределение
+//        int tmpSize = (int)(1 / this.sizeOfQuant); //постоянная
 //        int tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение
 
-        double tmpWindowIn = - (Math.log(Math.random()) / lambda);
+        double tmpWindowIn = Utils.generateExponentialValue(lambda);
         this.lengthOfAllWorks += tmpSize;
         int userNumber = 0;
 
@@ -82,9 +82,10 @@ public class Location {
 
         while (inputStream.get(userNumber - 1).workInfo.windowIn <= time) {
 
-            tmpSize = (int) Math.ceil(- (Math.log(Math.random()) / 1) / this.sizeOfQuant); //экспоненциальное распределение
+            tmpSize = (int) Math.ceil(Utils.generateExponentialValue(Main.LAMBDA_FOR_TASK_SIZE) / this.sizeOfQuant); //экспоненциальное распределение
 //            tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение
-            tmpWindowIn = - (Math.log(Math.random()) / lambda);
+
+            tmpWindowIn = Utils.generateExponentialValue(lambda);
             inputStream.add(new WorkUser(userNumber, numberOfThisLocation,
                     inputStream.get(userNumber - 1).workInfo.windowIn + tmpWindowIn, tmpSize,
                     this.sizeOfQuant, this.d));
