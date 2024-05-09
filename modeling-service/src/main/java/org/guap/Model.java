@@ -4,6 +4,8 @@ import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * В данном классе создаются объекты областей, а так же происходит управление перемещениями
  * пользователей и подсчёт среднего значения задержки, выходной интенсвности, среднего размера работы,
@@ -11,44 +13,70 @@ import java.util.stream.Collectors;
  */
 public class Model implements Callable<OutputData> {
 
-    /** В данном поле храниться количество областей в системе */
+    /**
+     * В данном поле храниться количество областей в системе
+     */
     public int numberOfLocations;
-    /** В данном листе храняться объекты отвечающие за области*/
+    /**
+     * В данном листе храняться объекты отвечающие за области
+     */
     public ArrayList<Location> locations;
     Random random;
-    /** Данное поле хранит вероятность, с которой пользователь, при перемещении в
-     * следующую область, решит перенести свою задачу на сервера следующей области */
+    /**
+     * Данное поле хранит вероятность, с которой пользователь, при перемещении в
+     * следующую область, решит перенести свою задачу на сервера следующей области
+     */
     public double a;
-    /** Данное поле хранит значение для рассчёта времени перемещения пользователя
-     * до следующей локации. Для симметричной модели значение этого параметра всегда равно 1*/
+    /**
+     * Данное поле хранит значение для рассчёта времени перемещения пользователя
+     * до следующей локации. Для симметричной модели значение этого параметра всегда равно 1
+     */
     public double q;
-    /** Данное поле хранит значение для рассчёта времени необходимого для перемещения
-     * задачи пользователя с серверов одной области на сервера другой области*/
+    /**
+     * Данное поле хранит значение для рассчёта времени необходимого для перемещения
+     * задачи пользователя с серверов одной области на сервера другой области
+     */
     public double d;
-    /** Данное поле хранит условное количество единиц времени производится
-     * моделирование*/
+    /**
+     * Данное поле хранит условное количество единиц времени производится
+     * моделирование
+     */
     private final float T;
-    /** Данное поле хранит среднее значение задержки задачи в системе*/
+    /**
+     * Данное поле хранит среднее значение задержки задачи в системе
+     */
     public double mD;
     /**
      * Данное поле хранит теоретическое значение, верное для случаев с a = 0.
-     * */
+     */
     public double mDTheoretical;
-    /** Данное поле хранит среднее значение выходной интенсивности в системе*/
+    /**
+     * Данное поле хранит среднее значение выходной интенсивности в системе
+     */
     public double lambda_out;
-    /** Данное поле хранит размер кванта, то есть размер шага с которым мы двигаемся по
-     * временной шкале каждой локации*/
+    /**
+     * Данное поле хранит размер кванта, то есть размер шага с которым мы двигаемся по
+     * временной шкале каждой локации
+     */
     public double sizeOfQuant;
-    /** Данное поле хранит среднее значение размера задачи в системе*/
+    /**
+     * Данное поле хранит среднее значение размера задачи в системе
+     */
     public double mediumSizeOfWork;
 
-    /** Данное поле хранит количество завершённых работ*/
+    /**
+     * Данное поле хранит количество завершённых работ
+     */
     public int numberOfExitedWorks;
-    /** Данное поле хранит суммарную задержку всех завершённых работ*/
+    /**
+     * Данное поле хранит суммарную задержку всех завершённых работ
+     */
     public double summaryDelay;
 
     public double summaryAgeOfInformation;
-    /** Данное поле хранит суммарный объём всех завершённых работ*/
+    /**
+     * Данное поле хранит суммарный объём всех завершённых работ
+     */
     public double summaryLengthOfWorks;
     /**
      * Данное поле хранит суммарное количество трансферов, всех завершённых задач
@@ -84,21 +112,22 @@ public class Model implements Callable<OutputData> {
 
     /**
      * В данном конструкторе задаются все параметры необходимые для работы модели
-     * @param lambda Текущее значение входной интенсивности
-     * @param a  Вероятность, с которой пользователь, при перемещении в
-     *           следующую область, решит перенести свою задачу на сервера следующей области
-     * @param q  Коэффициент для рассчёта времени перемещения пользователя
-     *           до следующей локации
-     * @param d  Коэффициент для рассчёта времени необходимого для перемещения
-     *           задачи пользователя с серверов одной области на сервера другой области
-     * @param quant Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
-     *              временной шкале каждой локации
+     *
+     * @param lambda            Текущее значение входной интенсивности
+     * @param a                 Вероятность, с которой пользователь, при перемещении в
+     *                          следующую область, решит перенести свою задачу на сервера следующей области
+     * @param q                 Коэффициент для рассчёта времени перемещения пользователя
+     *                          до следующей локации
+     * @param d                 Коэффициент для рассчёта времени необходимого для перемещения
+     *                          задачи пользователя с серверов одной области на сервера другой области
+     * @param quant             Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
+     *                          временной шкале каждой локации
      * @param numberOfLocations Данный параметр означает количество областей с которыми производиться
      *                          моделирование
-     * @param T Данный параметр означает какое условное количество единиц времени производится
-     *          моделирование
-     * @param serviceRate Данный параметр означает, с какой интенсивностью серевер обрабатывает
-     *                    задачи пользователей
+     * @param T                 Данный параметр означает какое условное количество единиц времени производится
+     *                          моделирование
+     * @param serviceRate       Данный параметр означает, с какой интенсивностью серевер обрабатывает
+     *                          задачи пользователей
      */
     public Model(double lambda, double a, double q, double d, double quant, int numberOfLocations,
                  float T, double serviceRate) {
@@ -136,6 +165,7 @@ public class Model implements Callable<OutputData> {
     /**
      * Данный метод контролирует процесс работы модели и сбор статистики, по итогам её работы.
      * Он запускает метод моделирования системы с заданной входной интенсивностью
+     *
      * @return Возвращает объект содержащий основной набор выходных параметров системы
      * @throws Exception
      */
@@ -166,9 +196,9 @@ public class Model implements Callable<OutputData> {
      * Происходит подсчёт значений, необходимых для вычисления выходных параметров системы
      */
     public void countModelStatistics() {
-        for (Location currentLocation: locations) {
-            for (WorkUser currentWorkUser: currentLocation.inputStream) {
-                if ( (currentWorkUser.statusWorkFinished) && (currentWorkUser.delay != 0.0) ) {
+        for (Location currentLocation : locations) {
+            for (WorkUser currentWorkUser : currentLocation.inputStream) {
+                if ((currentWorkUser.statusWorkFinished) && (currentWorkUser.delay != 0.0)) {
                     numberOfExitedWorks++;
                     summaryDelay += currentWorkUser.delay;
                     summaryAgeOfInformation += currentWorkUser.ageOfInformation;
@@ -208,7 +238,7 @@ public class Model implements Callable<OutputData> {
         this.mediumSizeOfWork = summaryLengthOfWorks / numberOfExitedWorks;
         this.mD = summaryDelay / numberOfExitedWorks;
         double p = lambda / Main.serviceRate;
-        this.mAgeOfInfTheor = 1 / Main.serviceRate * (1 / (2 * (1 - p)) + 0.5 + ((1-p)*Math.exp(p)/p));
+        this.mAgeOfInfTheor = 1 / Main.serviceRate * (1 / (2 * (1 - p)) + 0.5 + ((1 - p) * Math.exp(p) / p));
         this.mAgeOfInfModel = summaryAgeOfInformation / (T * numberOfLocations);
     }
 
@@ -220,8 +250,9 @@ public class Model implements Callable<OutputData> {
      * список задач нового сервера
      */
     public void userSwitchLocation() {
-        for (int i = 0; i < locations.size(); i++) {
-            Location tmpLocation = locations.get(i);
+        for (Location tmpLocation: locations) {
+//        for (int i = 0; i < locations.size(); i++) {
+//            Location tmpLocation = locations.get(i);
             Server tmpServer = tmpLocation.server;
             for (int k = 0; k < tmpServer.workUsersOnServer.size(); k++) {
                 WorkUser tmpWorkUser = tmpServer.workUsersOnServer.get(k);
@@ -245,7 +276,7 @@ public class Model implements Callable<OutputData> {
                 for (int locationTmpNumber = 0; locationTmpNumber < locations.size(); locationTmpNumber++) {
                     if (locationTmpNumber == tmpWorkUser.userLocation)
                         continue;
-                    int timeToTmpLocation = (int) Math.ceil(- (Math.log(Math.random()) / this.q) / this.sizeOfQuant);
+                    int timeToTmpLocation = (int) Math.ceil(-(Math.log(Math.random()) / this.q) / this.sizeOfQuant);
                     nextLocationsData.put(locationTmpNumber, timeToTmpLocation);
                     if (nextLocationsData.size() == 1) {
                         currentClosestLocation = locationTmpNumber;
@@ -291,44 +322,73 @@ public class Model implements Callable<OutputData> {
     /**
      * Данный метод выводит на экран необходимые выходные параметры и возвращает список параметров необходимых
      * для записи в файл
+     *
      * @return Список выходных параметров, необходимых для построения части графиков
      */
     public OutputData outputSummary() {
         StringBuilder textData = new StringBuilder();
-        textData.append("lambda = " + lambda + " M[D] = " + mD + " lambda_out = " + lambda_out + "\n");
+        textData.append("lambda = ")
+                .append(lambda)
+                .append(" M[D] = ")
+                .append(mD)
+                .append(" lambda_out = ")
+                .append(lambda_out)
+                .append("\n");
 
-        double partOfWorksCompletedBeforeUserMoves = ((double)allNumberOfWorksWhichCompleteBeforeUserMoves / numberOfExitedWorks);
-        textData.append("Part of works which were completed before user moves from start location " + partOfWorksCompletedBeforeUserMoves + "\n");
-        double averageNumberOfWorkTransfers = ((double)allNumberOfTransfersOfEachFinishedWork / numberOfExitedWorks);
-        textData.append("Average number of transfers for completed works " + averageNumberOfWorkTransfers + "\n");
+        double partOfWorksCompletedBeforeUserMoves = ((double) allNumberOfWorksWhichCompleteBeforeUserMoves / numberOfExitedWorks);
+        textData.append("Part of works which were completed before user moves from start location ")
+                .append(partOfWorksCompletedBeforeUserMoves)
+                .append("\n");
+        double averageNumberOfWorkTransfers = ((double) allNumberOfTransfersOfEachFinishedWork / numberOfExitedWorks);
+        textData.append("Average number of transfers for completed works ")
+                .append(averageNumberOfWorkTransfers)
+                .append("\n");
         double averageNumberOfUserTransfers = ((double) allNumberOfTransfersOfUsersWithCompletedWork / numberOfExitedWorks);
-        textData.append("Average number of transfers for users with completed tasks " + averageNumberOfUserTransfers + "\n");
+        textData.append("Average number of transfers for users with completed tasks ")
+                .append(averageNumberOfUserTransfers)
+                .append("\n");
         double transfersPerTime = (double) allNumberOfTransfersOfEachFinishedWork / T;
-        textData.append("Average transfers number in one window " + transfersPerTime + "\n");
+        textData.append("Average transfers number in one window ")
+                .append(transfersPerTime)
+                .append("\n");
 
-        textData.append("Average age of information theoretical " + mAgeOfInfTheor + "\n");
-        textData.append("Average age of information modeling " + mAgeOfInfModel + "\n");
+        textData.append("Average age of information theoretical ")
+                .append(mAgeOfInfTheor)
+                .append("\n")
+                .append("Average age of information modeling ")
+                .append(mAgeOfInfModel)
+                .append("\n");
 
         if (Main.SHOW_WORKS_TRANSFER_PROBABILITY) {
             textData.append("Number of works with transfer numbers\n");
-            List<Integer> numberTransfersOfWorks = numberOfTransfersOfCompletedWorks.keySet().stream().sorted().collect(Collectors.toList());
+            List<Integer> numberTransfersOfWorks = numberOfTransfersOfCompletedWorks.keySet().stream().sorted().toList();
             for (Integer currentKey : numberTransfersOfWorks) {
                 long currentValue = numberOfTransfersOfCompletedWorks.get(currentKey);
                 double probabilityToNTransfers = (double) currentValue / numberOfExitedWorks;
-                textData.append("With transfer num equals " + currentKey + " was " + currentValue + " works. Probability to make n transfers is "
-                        + probabilityToNTransfers + "\n");
+                textData.append("With transfer num equals ")
+                        .append(currentKey)
+                        .append(" was ")
+                        .append(currentValue)
+                        .append(" works. Probability to make n transfers is ")
+                        .append(probabilityToNTransfers)
+                        .append("\n");
             }
             textData.append("\n");
         }
 
         if (Main.SHOW_USERS_TRANSFER_PROBABILITY) {
             textData.append("Number of users with transfer numbers\n");
-            List<Integer> numberTransfersOfUsers = numberOfTransfersOfUsersWithCompletedWorks.keySet().stream().sorted().collect(Collectors.toList());
+            List<Integer> numberTransfersOfUsers = numberOfTransfersOfUsersWithCompletedWorks.keySet().stream().sorted().toList();
             for (Integer currentKey : numberTransfersOfUsers) {
                 long currentValue = numberOfTransfersOfUsersWithCompletedWorks.get(currentKey);
                 double probabilityToNTransfers = (double) currentValue / numberOfExitedWorks;
-                textData.append("With transfer num equals " + currentKey + " was " + currentValue + " users. Probability to make n transfers is "
-                        + probabilityToNTransfers + "\n");
+                textData.append("With transfer num equals ")
+                        .append(currentKey)
+                        .append(" was ")
+                        .append(currentValue)
+                        .append(" users. Probability to make n transfers is ")
+                        .append(probabilityToNTransfers)
+                        .append("\n");
             }
             textData.append("\n");
         }

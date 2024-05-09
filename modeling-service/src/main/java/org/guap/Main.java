@@ -89,7 +89,7 @@ public class Main {
         try {
             outputFile = new BufferedWriter(new FileWriter("./data/model.txt"));
         } catch (IOException e) {
-            System.err.println("Problems with output file model.txt");
+            System.err.println("Problems with output file model.txt " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -116,7 +116,7 @@ public class Main {
                 writeInOutputFile(future.get(), outputFile);
             }
         } catch (ExecutionException e) {
-            System.err.println("Something went wrong. Check error message");
+            System.err.println("Something went wrong. Check error message " + e.getMessage());
         } finally {
             executor.shutdown();
         }
