@@ -87,7 +87,7 @@ public class Main {
         System.out.println("Max heap size in bytes " + heapMaxSize);
         BufferedWriter outputFile;
         try {
-            outputFile = new BufferedWriter(new FileWriter("./data/model.txt"));
+            outputFile = new BufferedWriter(new FileWriter("model.txt"));
         } catch (IOException e) {
             System.err.println("Problems with output file model.txt " + e.getMessage());
             throw new RuntimeException(e);

@@ -48,7 +48,8 @@ public class Location {
      * @param time длина временной линии
      */
     public void createInputStream(double lambda, double time) {
-        int tmpSize = (int) Math.ceil(Utils.generateExponentialValue(Main.LAMBDA_FOR_TASK_SIZE) / sizeOfQuant); //экспоненциальное распределение
+        int tmpSize = Utils.generateExponentialDistributedNumberOfQuants(LAMBDA_FOR_TASK_SIZE);
+//        int tmpSize = (int) Math.ceil(Utils.generateExponentialValue(Main.LAMBDA_FOR_TASK_SIZE) / sizeOfQuant); //экспоненциальное распределение
 //        int tmpSize = (int)(1 / this.sizeOfQuant); //постоянная
 //        int tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение
 
@@ -61,7 +62,7 @@ public class Location {
 
         while (inputStream.get(userNumber - 1).workInfo.windowIn <= time) {
 
-            tmpSize = (int) Math.ceil(Utils.generateExponentialValue(Main.LAMBDA_FOR_TASK_SIZE) / sizeOfQuant); //экспоненциальное распределение
+            tmpSize = Utils.generateExponentialDistributedNumberOfQuants(LAMBDA_FOR_TASK_SIZE); //экспоненциальное распределение
 //            tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение
 
             tmpWindowIn = Utils.generateExponentialValue(lambda);

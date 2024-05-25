@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("application")
 }
 
 group = "org.guap"
@@ -16,4 +17,12 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+apply {
+    plugins.apply("java")
+}
+
+application {
+    mainClass = "org.guap.Main"
 }
