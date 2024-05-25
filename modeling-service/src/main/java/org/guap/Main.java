@@ -100,13 +100,13 @@ public class Main {
         CompletionService<OutputData> service
                 = new ExecutorCompletionService<>(executor);
 
-        List<Callable<OutputData>> callablesList = new ArrayList<>();
+        Map<Double, Callable<OutputData>> callablesMap = new TreeMap<>();
         for (double lambda = LAMBDA_IN_START; lambda <= LAMBDA_IN_FINISH; lambda += 0.1) {
-            callablesList.add(new Model(lambda));
+            callablesMap.put(lambda, new Model(lambda));
         }
 
-        for (Callable<OutputData> callable : callablesList) {
-            service.submit(callable);
+        for (Map.Entry<Double, Callable<OutputData>> callableEntry: callablesMap.entrySet()) {
+            service.submit(callableEntry.getValue());
         }
 
         try {

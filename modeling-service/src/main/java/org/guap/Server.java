@@ -68,6 +68,7 @@ public class Server {
             WorkUser tmpWorkUser = workUsersOnServer.get(i);
             if (tmpWorkUser.currentProcessingWorkOnServer) {
                 double coeffUdalennost = 1;
+//                serviceRate = Utils.generateExponentialDistributedNumberOfQuants(Main.LAMBDA_FOR_TASK_SIZE); //for MM1
                 tmpWorkUser.increaseWorkProcessing(coeffUdalennost * serviceRate);
                 tmpWorkUser.setCurrentProcessingWorkOnServer(false);
                 if (tmpWorkUser.statusWorkFinished) {
