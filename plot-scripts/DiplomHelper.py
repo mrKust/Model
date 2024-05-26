@@ -25,8 +25,8 @@ def lineplotMD(x_data, y_data, y2_data, x_label="", y_label="", title=""):
     for x in x_data:
         if (x <= 1) :
             x2_data.append(x)
-    ax.plot(x2_data, y2_data, '-go', lw=3, label=('Теоретические значения'))
-    ax.plot(x2_data, y_data, '--bo', lw=3, label=('Практические значения'))
+    ax.plot(x2_data, y_data, '-go', lw=3, label=('Теоретические значения'))
+    ax.plot(x2_data, y2_data, '--bo', lw=3, label=('Практические значения'))
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
@@ -68,7 +68,7 @@ def main():
 
 #     lineplot(dataX, dataY2, chr(955), "medium length of work", "medium length of work")
 #     lineplot(dataX, dataY3, chr(955), "transfersNum / T", "transfers per T")
-    lineplotMD(dataX, dataY5, dataY4, "age of information theor", "age of information modeling",
+    lineplotMD(dataX, dataY4, dataY5, "age of information theor", "age of information modeling",
                "medium age of inforamtion")
     plt.legend()
     lineplotMD(dataX, dataY6, dataY7, "Входная интенсивность, " + chr(955), "Средняя задержка, D, квант", "Среднее значение задержки от входной интенсивности")

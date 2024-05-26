@@ -59,13 +59,13 @@ public class OutputData {
      * @param mDTheoretical Средняя задержка, полученная при помощи формулы
      */
     public OutputData(double lambdaIn, double lambdaOut, double mediumSizeOfWork, double transfersPerTime,
-                      double mD, double mDTheoretical, double mAgeOfInfTheor, double mAgeOfInfModel) {
+                      double mDTheoretical, double mD, double mAgeOfInfTheor, double mAgeOfInfModel) {
         this.lambdaIn = lambdaIn;
         this.lambdaOut = lambdaOut;
         this.mediumSizeOfWork = mediumSizeOfWork;
         this.transfersPerTime = transfersPerTime;
-        this.mD = mD;
         this.mDTheoretical = mDTheoretical;
+        this.mD = mD;
         this.mAgeOfInfTheor = mAgeOfInfTheor;
         this.mAgeOfInfModel = mAgeOfInfModel;
     }

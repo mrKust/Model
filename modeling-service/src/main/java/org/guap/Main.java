@@ -10,7 +10,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * В данном классе задаются все параметры необходимые для моделирования системы. Так же
@@ -35,7 +34,7 @@ public class Main {
     public static int numberOfLocations = 2;
     /** Данный параметр означает какое условное количество единиц времени производится
      * моделирование*/
-    public static float T = 1_000_000;
+    public static float T = 1_500_000;
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
     /** Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование */
@@ -43,6 +42,7 @@ public class Main {
     /** Данный параметр задаёт финальную входную интенсивность, при достижении которой моделирование заканчивается */
     public static final double LAMBDA_IN_FINISH = 0.95;
     public static final double LAMBDA_FOR_TASK_SIZE = 1.0;
+    public static final SystemType MODELING_SYSTEM_TYPE = SystemType.MM1;
 
     /**
      * Данный флаг устанавливает такой параметр системы, как добавления трансферного времени,

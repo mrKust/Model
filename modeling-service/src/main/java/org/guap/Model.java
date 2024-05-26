@@ -91,7 +91,6 @@ public class Model implements Callable<OutputData> {
         }
         this.lambda = lambda;
         this.mD = 0;
-        this.mDTheoretical = 1 / (1 - lambda);
         this.lambda_out = 0;
         this.mediumSizeOfWork = 0;
         this.mAgeOfInfModel = 0;
@@ -182,9 +181,13 @@ public class Model implements Callable<OutputData> {
 
         this.lambda_out = (double) numberOfExitedWorks / (T * numberOfLocations);
         this.mediumSizeOfWork = summaryLengthOfWorks / numberOfExitedWorks;
+        this.mDTheoretical = 1 / (1 - lambda);
         this.mD = summaryDelay / numberOfExitedWorks;
         double p = lambda / Main.serviceRate;
-        this.mAgeOfInfTheor = 1 / Main.serviceRate * (1 / (2 * (1 - p)) + 0.5 + ((1 - p) * Math.exp(p) / p));
+        this.mAgeOfInfTheor = switch (MODELING_SYSTEM_TYPE) {
+            case MD1 -> 1 / Main.serviceRate * (1 / (2 * (1 - p)) + 0.5 + ((1 - p) * Math.exp(p) / p));
+            case MM1 -> 1 / Main.serviceRate * (1 + (1 / p) + (Math.pow(p, 2) / (1 - p)) );
+        };
         this.mAgeOfInfModel = summaryAgeOfInformation / (T * numberOfLocations);
     }
 
@@ -340,7 +343,7 @@ public class Model implements Callable<OutputData> {
         System.out.println(textData);
 
         if (lambda < 1)
-            return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime, mD, mDTheoretical,
+            return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime, mDTheoretical, mD,
                     mAgeOfInfTheor, mAgeOfInfModel);
         else return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime);
     }
