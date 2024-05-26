@@ -83,8 +83,6 @@ public class Main {
      * данных в выходной файл
      */
     public static void main(String[] args) throws InterruptedException {
-        long heapMaxSize = Runtime.getRuntime().maxMemory();
-        System.out.println("Max heap size in bytes " + heapMaxSize);
         BufferedWriter outputFile;
         try {
             outputFile = new BufferedWriter(new FileWriter("model.txt"));
@@ -100,20 +98,24 @@ public class Main {
         CompletionService<OutputData> service
                 = new ExecutorCompletionService<>(executor);
 
-        Map<Double, Callable<OutputData>> callablesMap = new TreeMap<>();
+        List<Callable<OutputData>> callablesList = new ArrayList<>();
         for (double lambda = LAMBDA_IN_START; lambda <= LAMBDA_IN_FINISH; lambda += 0.1) {
-            callablesMap.put(lambda, new Model(lambda));
+            callablesList.add(new Model(lambda));
         }
 
-        for (Map.Entry<Double, Callable<OutputData>> callableEntry: callablesMap.entrySet()) {
-            service.submit(callableEntry.getValue());
+        for (Callable<OutputData> currentCallable: callablesList) {
+            service.submit(currentCallable);
         }
 
+        Map<Double, OutputData> results = new TreeMap<>();
         try {
-            Future<OutputData> future;
+            OutputData outputData;
             for (double lambda = LAMBDA_IN_START; lambda <= LAMBDA_IN_FINISH; lambda += 0.1) {
-                future = service.take();
-                writeInOutputFile(future.get(), outputFile);
+                outputData = service.take().get();
+                results.put(outputData.getLambdaIn(), outputData);
+            }
+            for (Map.Entry<Double, OutputData> currentResult: results.entrySet()) {
+                writeInOutputFile(currentResult.getValue(), outputFile);
             }
         } catch (ExecutionException e) {
             System.err.println("Something went wrong. Check error message " + e.getMessage());

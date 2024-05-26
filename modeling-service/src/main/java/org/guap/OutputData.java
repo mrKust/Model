@@ -70,6 +70,10 @@ public class OutputData {
         this.mAgeOfInfModel = mAgeOfInfModel;
     }
 
+    public double getLambdaIn() {
+        return lambdaIn;
+    }
+
     @Override
     public String toString() {
         if (lambdaIn < 1.0) {
