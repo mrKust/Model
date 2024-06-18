@@ -73,13 +73,20 @@ public class Server {
                     serviceRate = Utils.generateExponentialDistributedNumberOfQuants(Main.LAMBDA_FOR_TASK_SIZE);
 
                 tmpWorkUser.increaseWorkProcessing(coeffUdalennost * serviceRate);
-                tmpWorkUser.setCurrentProcessingWorkOnServer(false);
-                if (tmpWorkUser.statusWorkFinished) {
-                    this.removeWork(tmpWorkUser, currentTime);
-                    if (!workUsersOnServer.isEmpty())
-                        workUsersOnServer.get(i % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
-                } else {
-                    workUsersOnServer.get((i + 1) % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
+                switch (Main.MODELING_SYSTEM_TYPE) {
+                    case MD1, MM1 -> {
+
+                    }
+                    case KR -> {
+                        tmpWorkUser.setCurrentProcessingWorkOnServer(false);
+                        if (tmpWorkUser.statusWorkFinished) {
+                            this.removeWork(tmpWorkUser, currentTime);
+                            if (!workUsersOnServer.isEmpty())
+                                workUsersOnServer.get(i % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
+                        } else {
+                            workUsersOnServer.get((i + 1) % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
+                        }
+                    }
                 }
                 return;
             }
