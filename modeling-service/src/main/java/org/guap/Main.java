@@ -14,33 +14,51 @@ import java.util.concurrent.Executors;
 /**
  * В данном классе задаются все параметры необходимые для моделирования системы. Так же
  * из этого класса запускается моделирование систем
- * */
+ */
 
 public class Main {
 
-    /** Данный параметр используется для рассчёта времени перемещения пользователя
-     * до следующей локации. Для симметричной модели значение этого параметра всегда равно 1*/
+    /**
+     * Данный параметр используется для рассчёта времени перемещения пользователя
+     * до следующей локации. Для симметричной модели значение этого параметра всегда равно 1
+     */
     public static double q = 1;
-    /** Данный параметр используется для рассчёта времени необходимого для перемещения
-     * задачи пользователя с серверов одной области на сервера другой области*/
+    /**
+     * Данный параметр используется для рассчёта времени необходимого для перемещения
+     * задачи пользователя с серверов одной области на сервера другой области
+     */
     public static double d = 1;
-    /** Данный параметр означает вероятность, с которой пользователь, при перемещении в
-     * следующую область, решит перенести свою задачу на сервера следующей области */
+    /**
+     * Данный параметр означает вероятность, с которой пользователь, при перемещении в
+     * следующую область, решит перенести свою задачу на сервера следующей области
+     */
     public static double a = 0.0;
-    /** Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
-     * временной шкале каждой локации*/
+    /**
+     * Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
+     * временной шкале каждой локации
+     */
     public static double sizeOfQuant = 0.01;
-    /** Данный параметр означает количество областей с которыми производиться моделирование*/
+    /**
+     * Данный параметр означает количество областей с которыми производиться моделирование
+     */
     public static int numberOfLocations = 1;
-    /** Данный параметр означает какое условное количество единиц времени производится
-     * моделирование*/
+    /**
+     * Данный параметр означает какое условное количество единиц времени производится
+     * моделирование
+     */
     public static float T = 1_000_00;
-    /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
+    /**
+     * Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей
+     */
     public static double serviceRate = 1.0;
-    /** Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование */
+    /**
+     * Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование
+     */
     public static final double LAMBDA_IN_START = 0.1;
-    /** Данный параметр задаёт финальную входную интенсивность, при достижении которой моделирование заканчивается */
-    public static final double LAMBDA_IN_FINISH = 0.95;
+    /**
+     * Данный параметр задаёт финальную входную интенсивность, при достижении которой моделирование заканчивается
+     */
+    public static final double LAMBDA_IN_FINISH = 0.75;
     public static final double LAMBDA_FOR_TASK_SIZE = 1.0;
     public static final SystemType MODELING_SYSTEM_TYPE = SystemType.KR;
     public static final DistributionType TASK_SIZE_DISTRIBUTION_TYPE = DistributionType.EXPONENTIAL;
@@ -55,9 +73,11 @@ public class Main {
      */
     public static final boolean ADD_TRANSFER_TIME = false;
 
-    /** Данный параметр хранит значение необходимое для отображения итоговых данных по каждой области.
+    /**
+     * Данный параметр хранит значение необходимое для отображения итоговых данных по каждой области.
      * true - выводятся данные в формате номер области - номер задачи - объём выполненной работы - общий объём задачи
-     * false - данные о задачах в области не выводятся*/
+     * false - данные о задачах в области не выводятся
+     */
     public static final boolean SHOW_LOCATION_SUMMARY = false;
 
     /**
@@ -78,12 +98,21 @@ public class Main {
      * такого события
      */
     public static final boolean SHOW_USERS_TRANSFER_PROBABILITY = false;
+
     /**
      * В данном методе производиться заупкск моделирования с заданным значениями параметров, а так
      * же изменение параметра входной интенсивности. Так же данный метод осуществляет запись полученных
      * данных в выходной файл
      */
     public static void main(String[] args) throws InterruptedException {
+        if (
+                ((MODELING_SYSTEM_TYPE == SystemType.MM1) || (MODELING_SYSTEM_TYPE == SystemType.MD1)) && (sizeOfQuant != 1.0D)
+        ) {
+            sizeOfQuant = 1.0;
+            System.out.println("Size of quant value has been forced to 1, because for MM1 and MD1 it is only " +
+                    "this value acceptable. Current size of quant is " + sizeOfQuant);
+        }
+
         BufferedWriter outputFile;
         try {
             outputFile = new BufferedWriter(new FileWriter("model.txt"));
@@ -104,7 +133,7 @@ public class Main {
             callablesList.add(new Model(lambda));
         }
 
-        for (Callable<OutputData> currentCallable: callablesList) {
+        for (Callable<OutputData> currentCallable : callablesList) {
             service.submit(currentCallable);
         }
 
@@ -115,7 +144,7 @@ public class Main {
                 outputData = service.take().get();
                 results.put(outputData.getLambdaIn(), outputData);
             }
-            for (Map.Entry<Double, OutputData> currentResult: results.entrySet()) {
+            for (Map.Entry<Double, OutputData> currentResult : results.entrySet()) {
                 writeInOutputFile(currentResult.getValue(), outputFile);
             }
         } catch (ExecutionException e) {
