@@ -48,27 +48,20 @@ public class Location {
      * @param time длина временной линии
      */
     public void createInputStream(double lambda, double time) {
-        int tmpSize = Utils.generateExponentialDistributedNumberOfQuants(LAMBDA_FOR_TASK_SIZE); //экспоненциальное распределение
-//        int tmpSize = (int)(1 / this.sizeOfQuant); //постоянная
-//        int tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение
+        double previousWindowIn = 0.0;
 
-        double tmpWindowIn = Utils.generateExponentialValue(lambda);
-        this.lengthOfAllWorks += tmpSize;
-        int userNumber = 0;
+        while (previousWindowIn <= time) {
 
-        inputStream.add(new WorkUser(userNumber, numberOfThisLocation, tmpWindowIn, tmpSize));
-        userNumber++;
+            int tmpSize = switch (TASK_SIZE_DISTRIBUTION_TYPE) {
+                case EXPONENTIAL -> Utils.generateExponentialDistributedNumberOfQuants(LAMBDA_FOR_TASK_SIZE);
+                case CONST -> (int)(1 / sizeOfQuant);
+                case UNIFORM -> (int) Math.ceil( (0.8 + 0.4*Math.random()) / sizeOfQuant);
+            };
 
-        while (inputStream.get(userNumber - 1).workInfo.windowIn <= time) {
-
-            tmpSize = Utils.generateExponentialDistributedNumberOfQuants(LAMBDA_FOR_TASK_SIZE); //экспоненциальное распределение
-//            tmpSize = (int) Math.ceil( (0.8 + 0.4*Math.random()) / this.sizeOfQuant); //равномерное распределение
-
-            tmpWindowIn = Utils.generateExponentialValue(lambda);
-            inputStream.add(new WorkUser(userNumber, numberOfThisLocation,
-                    inputStream.get(userNumber - 1).workInfo.windowIn + tmpWindowIn, tmpSize));
+            double tmpWindowIn = previousWindowIn + Utils.generateExponentialValue(lambda);
+            inputStream.add(new WorkUser(numberOfThisLocation, tmpWindowIn, tmpSize));
             this.lengthOfAllWorks += tmpSize;
-            userNumber++;
+            previousWindowIn = tmpWindowIn;
         }
     }
 
@@ -79,7 +72,6 @@ public class Location {
      * @param time текущее значение времени
      */
     public void processingAtLocation(double time) {
-        this.server.getService(time);
         while (nextStartedWork < inputStream.size()) {
             if ((time >= inputStream.get(nextStartedWork).workInfo.windowIn) &&
                     (!inputStream.get(nextStartedWork).statusBeginCount)) {
@@ -87,5 +79,6 @@ public class Location {
                 nextStartedWork++;
             } else break;
         }
+        this.server.getService(time);
     }
 }

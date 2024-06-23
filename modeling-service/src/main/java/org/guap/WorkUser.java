@@ -7,8 +7,6 @@ import static org.guap.Main.*;
  */
 public class WorkUser {
 
-    /** Номер пользователя в системе*/
-    public int userNumber;
     /** Данное поле показывает, текущий прогресс выполнения данной задачи*/
     public double workProcessingValue;
     /** В данном классе храняться данные о данной паре пользователь - задача.
@@ -81,14 +79,12 @@ public class WorkUser {
     /**
      * Данный конструктор создаёт заявку и записывает в неё необходимые данные, ат так же
      * выставляет флаги в необходимые позиции
-     * @param i Номер пользователя
      * @param numberOfLocation Номер начальной области пользователя и его задачи
      * @param windowIn Время появления заявки в системе
      * @param workSize Размер задачи
      */
-    public WorkUser(int i, int numberOfLocation, double windowIn, double workSize) {
+    public WorkUser(int numberOfLocation, double windowIn, double workSize) {
 
-        userNumber = i;
         userLocation = numberOfLocation;
         workLocation = numberOfLocation;
         workProcessingValue = 0;

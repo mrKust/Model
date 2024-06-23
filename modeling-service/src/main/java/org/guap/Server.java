@@ -75,7 +75,12 @@ public class Server {
                 tmpWorkUser.increaseWorkProcessing(coeffUdalennost * serviceRate);
                 switch (Main.MODELING_SYSTEM_TYPE) {
                     case MD1, MM1 -> {
-
+                        if (tmpWorkUser.statusWorkFinished) {
+                            tmpWorkUser.setCurrentProcessingWorkOnServer(false);
+                            this.removeWork(tmpWorkUser, currentTime);
+                            if (!workUsersOnServer.isEmpty())
+                                workUsersOnServer.get(i % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
+                        }
                     }
                     case KR -> {
                         tmpWorkUser.setCurrentProcessingWorkOnServer(false);

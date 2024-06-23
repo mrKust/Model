@@ -31,10 +31,10 @@ public class Main {
      * временной шкале каждой локации*/
     public static double sizeOfQuant = 0.01;
     /** Данный параметр означает количество областей с которыми производиться моделирование*/
-    public static int numberOfLocations = 2;
+    public static int numberOfLocations = 1;
     /** Данный параметр означает какое условное количество единиц времени производится
      * моделирование*/
-    public static float T = 1_500_000;
+    public static float T = 1_000_00;
     /** Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей */
     public static double serviceRate = 1.0;
     /** Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование */
@@ -42,7 +42,8 @@ public class Main {
     /** Данный параметр задаёт финальную входную интенсивность, при достижении которой моделирование заканчивается */
     public static final double LAMBDA_IN_FINISH = 0.95;
     public static final double LAMBDA_FOR_TASK_SIZE = 1.0;
-    public static final SystemType MODELING_SYSTEM_TYPE = SystemType.MM1;
+    public static final SystemType MODELING_SYSTEM_TYPE = SystemType.KR;
+    public static final DistributionType TASK_SIZE_DISTRIBUTION_TYPE = DistributionType.EXPONENTIAL;
 
     /**
      * Данный флаг устанавливает такой параметр системы, как добавления трансферного времени,
@@ -67,7 +68,7 @@ public class Main {
      * Значение false - означает, что в консоль не выведется кол-во переходов задачи и вероятнсоть
      * такого события
      */
-    public static final boolean SHOW_WORKS_TRANSFER_PROBABILITY = true;
+    public static final boolean SHOW_WORKS_TRANSFER_PROBABILITY = false;
     /**
      * Данный флаг устанавливает такой параметр системы, как вывод в консоль данных о вероятности
      * n-ого перехода пользователя
