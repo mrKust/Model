@@ -2,7 +2,7 @@ package org.guap;
 
 import java.util.ArrayList;
 
-import static org.guap.Main.serviceRate;
+import static org.guap.Main.*;
 
 /**
  * Данный класс отвечает за обработку задач на той области, за которой закреплён сервер
@@ -70,13 +70,12 @@ public class Server {
                 double coeffUdalennost = 1;
 
                 if (Main.MODELING_SYSTEM_TYPE == SystemType.MM1)
-                    serviceRate = Utils.generateExponentialDistributedNumberOfQuants(Main.LAMBDA_FOR_TASK_SIZE);
+                    serviceRate = Utils.generateExponentialDistributedNumberOfQuants(serviceRate);
 
                 tmpWorkUser.increaseWorkProcessing(coeffUdalennost * serviceRate);
                 switch (Main.MODELING_SYSTEM_TYPE) {
                     case MD1, MM1 -> {
                         if (tmpWorkUser.statusWorkFinished) {
-                            tmpWorkUser.setCurrentProcessingWorkOnServer(false);
                             this.removeWork(tmpWorkUser, currentTime);
                             if (!workUsersOnServer.isEmpty())
                                 workUsersOnServer.get(i % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
@@ -153,6 +152,7 @@ public class Server {
      * @param currentTime Текущий момент времени
      */
     public void removeWork(WorkUser tmp, double currentTime) {
+        currentTime += serviceRate * sizeOfQuant; // add one step when task was processed
         tmp.statusOfProcessing = false;
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);

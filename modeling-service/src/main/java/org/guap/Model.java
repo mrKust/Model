@@ -179,16 +179,20 @@ public class Model implements Callable<OutputData> {
             }
         }
 
+        if (MODELING_SYSTEM_TYPE == SystemType.MM1)
+            serviceRate = 1.0;
+
         this.lambda_out = (double) numberOfExitedWorks / (T * numberOfLocations);
         this.mediumSizeOfWork = summaryLengthOfWorks / numberOfExitedWorks;
+        double p = lambda / serviceRate;
         this.mDTheoretical = switch (MODELING_SYSTEM_TYPE) {
-            case KR, MM1 -> 1 / (1 - lambda);
-            case MD1 -> (lambda * (2 - lambda)) / (2 * (1 - lambda)); // формула не смахивает на верную?
+            case KR -> 1 / (1 - lambda);
+            case MM1 -> (p / (1 - p)) + (1 / serviceRate);
+            case MD1 -> (3 - 2 * p) / (2 * (1 - p));
         };
         this.mD = summaryDelay / numberOfExitedWorks;
-        double p = lambda / Main.serviceRate;
         this.mAgeOfInfTheor = switch (MODELING_SYSTEM_TYPE) {
-            case MD1 -> 1 / Main.serviceRate * (1 / (2 * (1 - p)) + 0.5 + ((1 - p) * Math.exp(p) / p));
+            case MD1 -> (1 / serviceRate) * ( (1/(2*(1-p))) + 0.5 + (((1-p)*Math.exp(p))/p) );
             case MM1 -> 1 / Main.serviceRate * (1 + (1 / p) + (Math.pow(p, 2) / (1 - p)) );
             case KR -> -1;
         };
