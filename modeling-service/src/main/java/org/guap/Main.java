@@ -58,10 +58,10 @@ public class Main {
     /**
      * Данный параметр задаёт финальную входную интенсивность, при достижении которой моделирование заканчивается
      */
-    public static final double LAMBDA_IN_FINISH = 0.75;
+    public static final double LAMBDA_IN_FINISH = 0.95;
     public static final double LAMBDA_FOR_TASK_SIZE = 1.0;
     public static final SystemType MODELING_SYSTEM_TYPE = SystemType.KR;
-    public static final DistributionType TASK_SIZE_DISTRIBUTION_TYPE = DistributionType.EXPONENTIAL;
+    public static final DistributionType TASK_SIZE_DISTRIBUTION_TYPE = DistributionType.UNIFORM;
 
     /**
      * Данный флаг устанавливает такой параметр системы, как добавления трансферного времени,

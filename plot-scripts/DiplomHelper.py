@@ -1,35 +1,16 @@
 import matplotlib.pyplot as plt
 
 
-def lineplot(x_data, y_data, x_label="", y_label="", title=""):
+def lineplot(x_data, y_data, y_labels, lane_colors, x_label="", y_label="", title=""):
     _, ax = plt.subplots()
-    ax.plot(x_data, y_data, 'b', lw=4)
+    label_index = 0
+    for y_dots in y_data:
+        ax.plot(x_data, y_dots, lane_colors[label_index], lw=3, label=y_labels[label_index])
+        label_index += 1
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
 
-
-def lineplotLambda(x_data, y_data, y2_data, x_label="", y_label="", title=""):
-    _, ax = plt.subplots()
-    x_data.pop(0)
-    y_data.pop(0)
-    ax.plot(x_data, y2_data, '-go', lw=3, label=('Входной поток'))
-    ax.plot(x_data, y_data, '--bo', lw=3,label=('Выходной поток'))
-    ax.set_title(title)
-    ax.set_xlabel(x_label)
-    ax.set_ylabel(y_label)
-    
-def lineplotMD(x_data, y_data, y2_data, x_label="", y_label="", title=""):
-    _, ax = plt.subplots()
-    x2_data = []
-    for x in x_data:
-        if (x <= 1) :
-            x2_data.append(x)
-    ax.plot(x2_data, y_data, '-go', lw=3, label=('Теоретические значения'))
-    ax.plot(x2_data, y2_data, '--bo', lw=3, label=('Практические значения'))
-    ax.set_title(title)
-    ax.set_xlabel(x_label)
-    ax.set_ylabel(y_label)
 
 def main():
     data = []
@@ -46,6 +27,7 @@ def main():
     dataY5 = []
     dataY6 = []
     dataY7 = []
+    dataY8 = []
 
     for line in data:
         dataX.append(line.pop(0))
@@ -57,26 +39,62 @@ def main():
         if (dataX[-1] < 1.0):
             dataY6.append(line.pop(0))
             dataY7.append(line.pop(0))
+            dataY8.append(line.pop(0))
 
-    print("x") 
-    print(dataX)
-    print(dataY1)
-    print(dataY2)
-    print(dataY3)
-    print("age of inf") 
-    print(dataY4)
+    lineplot(dataX,
+                 [dataY8],
+                 ['Практические значения'],
+                 ['-go'],
+                 "x",
+                 "y",
+                 "Средняя задержка + 1/входная интенсивность"
+                 )
+    plt.legend()
 
-#     lineplot(dataX, dataY2, chr(955), "medium length of work", "medium length of work")
-#     lineplot(dataX, dataY3, chr(955), "transfersNum / T", "transfers per T")
-    lineplotMD(dataX, dataY4, dataY5, "age of information theor", "age of information modeling",
-               "medium age of inforamtion")
+    lineplot(dataX,
+             [dataY4, dataY5],
+             ['Теоретические значения', 'Практические значения'],
+             ['-go', '--bo'],
+             "age of information theor",
+             "age of information modeling",
+             "medium age of inforamtion"
+             )
     plt.legend()
-    lineplotMD(dataX, dataY6, dataY7, "Входная интенсивность, " + chr(955), "Средняя задержка, D, квант", "Среднее значение задержки от входной интенсивности")
+
+    lineplot(dataX,
+             [dataY4, dataY5, dataY6, dataY7],
+             ['Теоретические значения AoI', 'Практические значения AoI', 'Теоретические значения M[D]', 'Практические значения M[D]'],
+             ['-go', '--bo', '-yo', '--ro'],
+             "Входная интенсивность, " + chr(955),
+             "Cредний возраст информации\n средняя задержка",
+             "Средняя задержка и средний возраст информации"
+             )
     plt.legend()
-    lineplotLambda(dataX, dataY1, dataX, "Входная интенсивность, " + chr(955), "Выходная интенсивность, " + chr(955), "Среднее значение выходной интенсивности от\nвходной интенсивности")
+
+
+
+    lineplot(dataX,
+             [dataY6, dataY7],
+             ['Теоретические значения', 'Практические значения'],
+             ['-go', '--bo'],
+             "Входная интенсивность, " + chr(955),
+             "Средняя задержка, D, квант",
+             "Среднее значение задержки от входной интенсивности"
+             )
+    plt.legend()
+
+    lineplot(dataX,
+             [dataY1, dataX],
+             ['Входной поток', 'Выходной поток'],
+             ['-go', '--bo'],
+             "Входная интенсивность, " + chr(955),
+             "Выходная интенсивность, " + chr(955),
+             "Среднее значение выходной интенсивности от\nвходной интенсивности"
+             )
     plt.legend()
 
     plt.show()
+
 
 if __name__ == '__main__':
     main()

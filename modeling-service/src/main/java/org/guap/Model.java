@@ -77,6 +77,7 @@ public class Model implements Callable<OutputData> {
     public double lambda;
     public double mAgeOfInfTheor;
     public double mAgeOfInfModel;
+    public double dop; //todo change name
 
     /**
      * В данном конструкторе задаются все параметры необходимые для работы модели
@@ -95,6 +96,7 @@ public class Model implements Callable<OutputData> {
         this.mediumSizeOfWork = 0;
         this.mAgeOfInfModel = 0;
         this.mAgeOfInfTheor = 0;
+        this.dop = 0;
 
         allNumberOfTransfersOfEachFinishedWork = 0;
         allNumberOfTransfersOfUsersWithCompletedWork = 0L;
@@ -197,6 +199,7 @@ public class Model implements Callable<OutputData> {
             case KR -> -1;
         };
         this.mAgeOfInfModel = summaryAgeOfInformation / (T * numberOfLocations);
+        this.dop = this.mD + (1 / lambda);
     }
 
     /**
@@ -352,7 +355,7 @@ public class Model implements Callable<OutputData> {
 
         if (lambda < 1)
             return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime, mDTheoretical, mD,
-                    mAgeOfInfTheor, mAgeOfInfModel);
+                    mAgeOfInfTheor, mAgeOfInfModel, dop);
         else return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime);
     }
 }
