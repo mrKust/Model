@@ -48,7 +48,7 @@ public class Main {
      */
     public static float T = 1_500_000;
     /**
-     * Данный параметр означает, с какой интенсивностью серевер обрабатывает задачи пользователей
+     * Данный параметр означает, с какой интенсивностью сервер обрабатывает задачи пользователей
      */
     public static double serviceRate = 1.0;
     /**
@@ -60,7 +60,7 @@ public class Main {
      */
     public static final double LAMBDA_IN_FINISH = 0.95;
     public static final double LAMBDA_FOR_TASK_SIZE = 1.0;
-    public static final SystemType MODELING_SYSTEM_TYPE = SystemType.KR;
+    public static final SystemType MODELING_SYSTEM_TYPE = SystemType.MM1;
     public static final DistributionType TASK_SIZE_DISTRIBUTION_TYPE = DistributionType.UNIFORM;
 
     /**
@@ -100,7 +100,7 @@ public class Main {
     public static final boolean SHOW_USERS_TRANSFER_PROBABILITY = false;
 
     /**
-     * В данном методе производиться заупкск моделирования с заданным значениями параметров, а так
+     * В данном методе производиться запуск моделирования с заданным значениями параметров, а так
      * же изменение параметра входной интенсивности. Так же данный метод осуществляет запись полученных
      * данных в выходной файл
      */

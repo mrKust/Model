@@ -95,8 +95,20 @@ public class Model implements Callable<OutputData> {
         this.lambda_out = 0;
         this.mediumSizeOfWork = 0;
         this.mAgeOfInfModel = 0;
-        this.mAgeOfInfTheor = 0;
         this.dop = 0;
+
+        double p = lambda / serviceRate;
+        this.mDTheoretical = switch (MODELING_SYSTEM_TYPE) {
+            case KR -> 1 / (1 - lambda);
+            case MM1 -> (p / (1 - p)) + (1 / serviceRate);
+            case MD1 -> (3 - 2 * p) / (2 * (1 - p));
+        };
+
+        this.mAgeOfInfTheor = switch (MODELING_SYSTEM_TYPE) {
+            case MD1 -> (1 / serviceRate) * ( (1/(2*(1-p))) + 0.5 + (((1-p)*Math.exp(p))/p) );
+            case MM1 -> 1 / Main.serviceRate * (1 + (1 / p) + (Math.pow(p, 2) / (1 - p)) );
+            case KR -> -1;
+        };
 
         allNumberOfTransfersOfEachFinishedWork = 0;
         allNumberOfTransfersOfUsersWithCompletedWork = 0L;
@@ -181,23 +193,9 @@ public class Model implements Callable<OutputData> {
             }
         }
 
-        if (MODELING_SYSTEM_TYPE == SystemType.MM1)
-            serviceRate = 1.0;
-
         this.lambda_out = (double) numberOfExitedWorks / (T * numberOfLocations);
         this.mediumSizeOfWork = summaryLengthOfWorks / numberOfExitedWorks;
-        double p = lambda / serviceRate;
-        this.mDTheoretical = switch (MODELING_SYSTEM_TYPE) {
-            case KR -> 1 / (1 - lambda);
-            case MM1 -> (p / (1 - p)) + (1 / serviceRate);
-            case MD1 -> (3 - 2 * p) / (2 * (1 - p));
-        };
         this.mD = summaryDelay / numberOfExitedWorks;
-        this.mAgeOfInfTheor = switch (MODELING_SYSTEM_TYPE) {
-            case MD1 -> (1 / serviceRate) * ( (1/(2*(1-p))) + 0.5 + (((1-p)*Math.exp(p))/p) );
-            case MM1 -> 1 / Main.serviceRate * (1 + (1 / p) + (Math.pow(p, 2) / (1 - p)) );
-            case KR -> -1;
-        };
         this.mAgeOfInfModel = summaryAgeOfInformation / (T * numberOfLocations);
         this.dop = this.mD + (1 / lambda);
     }
