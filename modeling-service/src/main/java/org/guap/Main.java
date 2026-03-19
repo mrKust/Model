@@ -61,7 +61,9 @@ public class Main {
     public static final double LAMBDA_IN_FINISH = 0.95;
     public static final double LAMBDA_FOR_TASK_SIZE = 1.0;
     public static final SystemType MODELING_SYSTEM_TYPE = SystemType.MM1;
-    public static final DistributionType TASK_SIZE_DISTRIBUTION_TYPE = DistributionType.UNIFORM;
+    // TASK_SIZE_DISTRIBUTION_TYPE is CONST for MD1 - working theor and modeling (mD, aoi)
+    // TASK_SIZE_DISTRIBUTION_TYPE is EXPONENTIAL for MM1 - not working modeling (mD, aoi) - working theor (mD, aoi)
+    public static final DistributionType TASK_SIZE_DISTRIBUTION_TYPE = DistributionType.EXPONENTIAL;
 
     /**
      * Данный флаг устанавливает такой параметр системы, как добавления трансферного времени,
@@ -109,7 +111,7 @@ public class Main {
                 ((MODELING_SYSTEM_TYPE == SystemType.MM1) || (MODELING_SYSTEM_TYPE == SystemType.MD1)) && (sizeOfQuant != 1.0D)
         ) {
             sizeOfQuant = 1.0;
-            System.out.println("Size of quant value has been forced to 1, because for MM1 and MD1 it is only " +
+            System.err.println("Size of quant value has been forced to 1, because for MM1 and MD1 it is only " +
                     "this value acceptable. Current size of quant is " + sizeOfQuant);
         }
 

@@ -283,12 +283,14 @@ public class Model implements Callable<OutputData> {
      */
     public OutputData outputSummary() {
         StringBuilder textData = new StringBuilder();
-        textData.append("lambda = ")
+        textData.append("lambda in = ")
                 .append(lambda)
-                .append(" M[D] = ")
-                .append(mD)
                 .append(" lambda_out = ")
                 .append(lambda_out)
+                .append(" M[D] model = ")
+                .append(mD)
+                .append(" M[D] theor = ")
+                .append(mDTheoretical)
                 .append("\n");
 
         double partOfWorksCompletedBeforeUserMoves = ((double) allNumberOfWorksWhichCompleteBeforeUserMoves / numberOfExitedWorks);
