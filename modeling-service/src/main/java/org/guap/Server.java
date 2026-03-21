@@ -28,6 +28,7 @@ public class Server {
      */
     public ArrayList<WorkUser> transferWorks;
     public double windowInOfPreviousWork;
+    public double serviceRateOnThisServer;
 
     /**
      * Данный конструктор создаёт объект, который обслуживает и перемщает задачи пользователей
@@ -40,6 +41,9 @@ public class Server {
         this.windowInOfPreviousWork = 0;
         workUsersOnServer = new ArrayList<>();
         transferWorks = new ArrayList<>();
+        switch (MODELING_SYSTEM_TYPE) {
+            case KR, MD1 -> serviceRateOnThisServer = Main.serviceRate;
+        }
     }
 
     /**
@@ -69,12 +73,9 @@ public class Server {
             if (tmpWorkUser.currentProcessingWorkOnServer) {
                 double coeffUdalennost = 1;
 
-                if (Main.MODELING_SYSTEM_TYPE == SystemType.MM1)
-                    serviceRate = Utils.generateExponentialDistributedNumberOfQuants(serviceRate);
-
-                tmpWorkUser.increaseWorkProcessing(coeffUdalennost * serviceRate);
+                tmpWorkUser.increaseWorkProcessing(coeffUdalennost * serviceRateOnThisServer);
                 switch (Main.MODELING_SYSTEM_TYPE) {
-                    case MD1, MM1 -> {
+                    case MD1 -> {
                         if (tmpWorkUser.statusWorkFinished) {
                             this.removeWork(tmpWorkUser, currentTime);
                             if (!workUsersOnServer.isEmpty())

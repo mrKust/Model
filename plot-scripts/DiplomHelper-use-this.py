@@ -10,6 +10,7 @@ def lineplot(x_data, y_data, y_labels, lane_colors, x_label="", y_label="", titl
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
+    ax.grid(True)
 
 
 def main():
@@ -28,6 +29,7 @@ def main():
     dataY6 = []
     dataY7 = []
     dataY8 = []
+    dataY9 = []
 
     for line in data:
         dataX.append(line.pop(0))
@@ -40,24 +42,25 @@ def main():
             dataY6.append(line.pop(0))
             dataY7.append(line.pop(0))
             dataY8.append(line.pop(0))
+            dataY9.append(line.pop(0))
 
     lineplot(dataX,
-                 [dataY8],
-                 ['Практические значения'],
-                 ['-go'],
-                 "x",
-                 "y",
-                 "Средняя задержка + 1/входная интенсивность"
-                 )
+            [dataY8, dataY9],
+            ['Теоретические значения', 'Практические значения'],
+            ['-go', '--bo'],
+            "Входная интенсивность, " + chr(955),
+            "Верхняя граница среднего возраста информации,\nAoI, ед.времени",
+            "Верхняя граница среднего возраста информации"
+            )
     plt.legend()
 
     lineplot(dataX,
              [dataY4, dataY5],
              ['Теоретические значения', 'Практические значения'],
              ['-go', '--bo'],
-             "age of information theor",
-             "age of information modeling",
-             "medium age of inforamtion"
+             "Входная интенсивность, " + chr(955),
+             "Средний возраст информации,\nAoI, ед.времени",
+             "Средний возраст информации"
              )
     plt.legend()
 

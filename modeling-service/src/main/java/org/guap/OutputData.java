@@ -33,13 +33,15 @@ public class OutputData {
 
     private double mAgeOfInfTheor;
     private double mAgeOfInfModel;
-    private double dop; //todo change name
+    public double mAgeOfInfUpperBoundTheor;
+    public double mAgeOfInfUpperBoundModel;
 
     /**
      * Данный конструктор применяется для сохраненя выходных данных при значении входной интенсивности больше 1.
      * Так как формула, через которое получается mDTheoretical актуально для случаев с входной интенсивностью меньше 1.
-     * @param lambdaIn Значение входной интенсивности
-     * @param lambdaOut Значениы выходной интенсивности
+     *
+     * @param lambdaIn         Значение входной интенсивности
+     * @param lambdaOut        Значениы выходной интенсивности
      * @param mediumSizeOfWork Среднее значение размера задачи
      * @param transfersPerTime Среднее количество переходов в единицу времени
      */
@@ -52,15 +54,26 @@ public class OutputData {
 
     /**
      * Данный конструктор применяется для сохраненя выходных данных при значении входной интенсивности меньше 1.
-     * @param lambdaIn Значение входной интенсивности
-     * @param lambdaOut Значениы выходной интенсивности
+     *
+     * @param lambdaIn         Значение входной интенсивности
+     * @param lambdaOut        Значениы выходной интенсивности
      * @param mediumSizeOfWork Среднее значение размера задачи
      * @param transfersPerTime Среднее количество переходов в единицу времени
-     * @param mD Среднее значение задержки
-     * @param mDTheoretical Средняя задержка, полученная при помощи формулы
+     * @param mD               Среднее значение задержки
+     * @param mDTheoretical    Средняя задержка, полученная при помощи формулы
      */
-    public OutputData(double lambdaIn, double lambdaOut, double mediumSizeOfWork, double transfersPerTime,
-                      double mDTheoretical, double mD, double mAgeOfInfTheor, double mAgeOfInfModel, double dop) {
+    public OutputData(
+            double lambdaIn,
+            double lambdaOut,
+            double mediumSizeOfWork,
+            double transfersPerTime,
+            double mDTheoretical,
+            double mD,
+            double mAgeOfInfTheor,
+            double mAgeOfInfModel,
+            double mAgeOfInfUpperBoundTheor,
+            double mAgeOfInfUpperBoundModel
+    ) {
         this.lambdaIn = lambdaIn;
         this.lambdaOut = lambdaOut;
         this.mediumSizeOfWork = mediumSizeOfWork;
@@ -69,7 +82,8 @@ public class OutputData {
         this.mD = mD;
         this.mAgeOfInfTheor = mAgeOfInfTheor;
         this.mAgeOfInfModel = mAgeOfInfModel;
-        this.dop = dop;
+        this.mAgeOfInfUpperBoundTheor = mAgeOfInfUpperBoundTheor;
+        this.mAgeOfInfUpperBoundModel = mAgeOfInfUpperBoundModel;
     }
 
     public double getLambdaIn() {
@@ -87,7 +101,8 @@ public class OutputData {
                     " " + mAgeOfInfModel +
                     " " + mDTheoretical +
                     " " + mD +
-                    " " + dop +
+                    " " + mAgeOfInfUpperBoundTheor +
+                    " " + mAgeOfInfUpperBoundModel +
                     "\n";
         } else {
             return lambdaIn +

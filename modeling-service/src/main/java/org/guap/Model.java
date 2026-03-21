@@ -77,7 +77,8 @@ public class Model implements Callable<OutputData> {
     public double lambda;
     public double mAgeOfInfTheor;
     public double mAgeOfInfModel;
-    public double dop; //todo change name
+    public double mAgeOfInfUpperBoundTheor;
+    public double mAgeOfInfUpperBoundModel;
 
     /**
      * В данном конструкторе задаются все параметры необходимые для работы модели
@@ -95,19 +96,23 @@ public class Model implements Callable<OutputData> {
         this.lambda_out = 0;
         this.mediumSizeOfWork = 0;
         this.mAgeOfInfModel = 0;
-        this.dop = 0;
+        this.mAgeOfInfUpperBoundModel = 0;
 
         double p = lambda / serviceRate;
         this.mDTheoretical = switch (MODELING_SYSTEM_TYPE) {
             case KR -> 1 / (1 - lambda);
-            case MM1 -> (p / (1 - p)) + (1 / serviceRate);
+//            case MM1 -> (p / (1 - p)) + (1 / serviceRate);
             case MD1 -> (3 - 2 * p) / (2 * (1 - p));
         };
 
         this.mAgeOfInfTheor = switch (MODELING_SYSTEM_TYPE) {
             case MD1 -> (1 / serviceRate) * ( (1/(2*(1-p))) + 0.5 + (((1-p)*Math.exp(p))/p) );
-            case MM1 -> 1 / Main.serviceRate * (1 + (1 / p) + (Math.pow(p, 2) / (1 - p)) );
+//            case MM1 -> 1 / Main.serviceRate * (1 + (1 / p) + (Math.pow(p, 2) / (1 - p)) );
             case KR -> -1;
+        };
+        this.mAgeOfInfUpperBoundTheor = switch (MODELING_SYSTEM_TYPE) {
+            case KR -> 1 / (this.lambda * (1 - this.lambda));
+            case MD1 -> -1;
         };
 
         allNumberOfTransfersOfEachFinishedWork = 0;
@@ -197,7 +202,7 @@ public class Model implements Callable<OutputData> {
         this.mediumSizeOfWork = summaryLengthOfWorks / numberOfExitedWorks;
         this.mD = summaryDelay / numberOfExitedWorks;
         this.mAgeOfInfModel = summaryAgeOfInformation / (T * numberOfLocations);
-        this.dop = this.mD + (1 / lambda);
+        this.mAgeOfInfUpperBoundModel = this.mD + (1 / lambda);
     }
 
     /**
@@ -355,7 +360,7 @@ public class Model implements Callable<OutputData> {
 
         if (lambda < 1)
             return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime, mDTheoretical, mD,
-                    mAgeOfInfTheor, mAgeOfInfModel, dop);
+                    mAgeOfInfTheor, mAgeOfInfModel, mAgeOfInfUpperBoundTheor, mAgeOfInfUpperBoundModel);
         else return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime);
     }
 }

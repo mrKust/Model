@@ -41,7 +41,7 @@ public class Main {
     /**
      * Данный параметр означает количество областей с которыми производиться моделирование
      */
-    public static int numberOfLocations = 2;
+    public static int numberOfLocations = 1;
     /**
      * Данный параметр означает какое условное количество единиц времени производится
      * моделирование
@@ -50,7 +50,7 @@ public class Main {
     /**
      * Данный параметр означает, с какой интенсивностью сервер обрабатывает задачи пользователей
      */
-    public static double serviceRate = 1.0;
+    public static final double serviceRate = 1.0;
     /**
      * Данный параметр задаёт начальную входную интенсивность, с которой начинается моделирование
      */
@@ -60,9 +60,7 @@ public class Main {
      */
     public static final double LAMBDA_IN_FINISH = 0.95;
     public static final double LAMBDA_FOR_TASK_SIZE = 1.0;
-    public static final SystemType MODELING_SYSTEM_TYPE = SystemType.MM1;
-    // TASK_SIZE_DISTRIBUTION_TYPE is CONST for MD1 - working theor and modeling (mD, aoi)
-    // TASK_SIZE_DISTRIBUTION_TYPE is EXPONENTIAL for MM1 - not working modeling (mD, aoi) - working theor (mD, aoi)
+    public static final SystemType MODELING_SYSTEM_TYPE = SystemType.KR;
     public static final DistributionType TASK_SIZE_DISTRIBUTION_TYPE = DistributionType.EXPONENTIAL;
 
     /**
@@ -108,7 +106,7 @@ public class Main {
      */
     public static void main(String[] args) throws InterruptedException {
         if (
-                ((MODELING_SYSTEM_TYPE == SystemType.MM1) || (MODELING_SYSTEM_TYPE == SystemType.MD1)) && (sizeOfQuant != 1.0D)
+                (MODELING_SYSTEM_TYPE == SystemType.MD1) && (sizeOfQuant != 1.0D)
         ) {
             sizeOfQuant = 1.0;
             System.err.println("Size of quant value has been forced to 1, because for MM1 and MD1 it is only " +
