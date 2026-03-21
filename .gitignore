@@ -3,6 +3,7 @@
 /out/
 /modeling-service/.gradle
 /modeling-service/build
+/modeling-service/.idea
 modeling-service.iml
 Model.iml
 model.txt
