@@ -1,4 +1,6 @@
-package org.guap;
+package org.guap.entities;
+
+import org.guap.Main;
 
 import java.util.ArrayList;
 
@@ -157,9 +159,9 @@ public class Server {
         tmp.statusOfProcessing = false;
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
-        tmp.delay = currentTime - tmp.workInfo.windowIn;
-        tmp.ageOfInformation = (Math.pow(currentTime - this.windowInOfPreviousWork, 2) - Math.pow(currentTime - tmp.workInfo.windowIn, 2)) / 2;
-        this.windowInOfPreviousWork = tmp.workInfo.windowIn;
+        tmp.delay = currentTime - tmp.workInfo.getWindowIn();
+        tmp.ageOfInformation = (Math.pow(currentTime - this.windowInOfPreviousWork, 2) - Math.pow(currentTime - tmp.workInfo.getWindowIn(), 2)) / 2;
+        this.windowInOfPreviousWork = tmp.workInfo.getWindowIn();
     }
 
     /**

@@ -1,4 +1,7 @@
-package org.guap;
+package org.guap.entities;
+
+import org.guap.Main;
+import org.guap.utlis.OutputData;
 
 import java.util.*;
 import java.util.concurrent.Callable;
@@ -166,7 +169,7 @@ public class Model implements Callable<OutputData> {
                     numberOfExitedWorks++;
                     summaryDelay += currentWorkUser.delay;
                     summaryAgeOfInformation += currentWorkUser.ageOfInformation;
-                    summaryLengthOfWorks += currentWorkUser.workInfo.workSize;
+                    summaryLengthOfWorks += currentWorkUser.workInfo.getWorkSize();
                     allNumberOfTransfersOfEachFinishedWork += currentWorkUser.numberOfWorkTransfers;
                     allNumberOfTransfersOfUsersWithCompletedWork += currentWorkUser.numberOfUserTransfers;
 
@@ -193,7 +196,7 @@ public class Model implements Callable<OutputData> {
 
                 if (Main.SHOW_LOCATION_SUMMARY) {
                     System.out.println("User  do " + currentWorkUser.workProcessingValue +
-                            " from his job. Full size = " + currentWorkUser.workInfo.workSize);
+                            " from his job. Full size = " + currentWorkUser.workInfo.getWorkSize());
                 }
             }
         }

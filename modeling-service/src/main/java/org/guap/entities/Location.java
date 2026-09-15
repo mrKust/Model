@@ -1,4 +1,6 @@
-package org.guap;
+package org.guap.entities;
+
+import org.guap.utlis.Utils;
 
 import java.util.ArrayList;
 
@@ -73,7 +75,7 @@ public class Location {
      */
     public void processingAtLocation(double time) {
         while (nextStartedWork < inputStream.size()) {
-            if ((time >= inputStream.get(nextStartedWork).workInfo.windowIn) &&
+            if ((time >= inputStream.get(nextStartedWork).workInfo.getWindowIn()) &&
                     (!inputStream.get(nextStartedWork).statusBeginCount)) {
                 server.addNewWork(inputStream.get(nextStartedWork));
                 nextStartedWork++;

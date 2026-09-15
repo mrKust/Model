@@ -1,4 +1,4 @@
-package org.guap;
+package org.guap.enums;
 
 public enum DistributionType {
     EXPONENTIAL,

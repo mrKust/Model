@@ -1,4 +1,8 @@
-package org.guap;
+package org.guap.entities;
+
+import org.guap.Main;
+import org.guap.dto.Pair;
+import org.guap.utlis.Utils;
 
 import static org.guap.Main.*;
 
@@ -141,7 +145,7 @@ public class WorkUser {
      * ней или ей ещё требуется дополнительное обслуживание
      */
     public void checkWorkStatus() {
-        if (workProcessingValue >= workInfo.workSize) { // если работа выполнена
+        if (workProcessingValue >= workInfo.getWorkSize()) { // если работа выполнена
             this.statusWorkFinished = true;
         } else { // если работа ещё не выполнена
             this.statusWorkFinished = false;

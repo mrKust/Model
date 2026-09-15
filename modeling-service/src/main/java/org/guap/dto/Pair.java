@@ -1,4 +1,4 @@
-package org.guap;
+package org.guap.dto;
 
 /**
  * Данный файл является вспомогательным и хранит в себе пару значений, необходимых для заявки
@@ -11,5 +11,21 @@ public class Pair {
     public Pair(double tmp1, double tmp2) {
         this.windowIn = tmp1;
         this.workSize = tmp2;
+    }
+
+    public double getWindowIn() {
+        return windowIn;
+    }
+
+    public void setWindowIn(double windowIn) {
+        this.windowIn = windowIn;
+    }
+
+    public double getWorkSize() {
+        return workSize;
+    }
+
+    public void setWorkSize(double workSize) {
+        this.workSize = workSize;
     }
 }

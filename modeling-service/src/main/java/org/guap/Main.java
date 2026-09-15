@@ -1,5 +1,10 @@
 package org.guap;
 
+import org.guap.entities.Model;
+import org.guap.enums.DistributionType;
+import org.guap.enums.SystemType;
+import org.guap.utlis.OutputData;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;

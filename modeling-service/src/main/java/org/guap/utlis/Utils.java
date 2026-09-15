@@ -1,8 +1,8 @@
-package org.guap;
+package org.guap.utlis;
 
 import static org.guap.Main.sizeOfQuant;
 
-class Utils {
+public class Utils {
     public static double generateExponentialValue(double lambda) {
         return - Math.log(Math.random()) / lambda;
     }
