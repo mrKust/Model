@@ -2,6 +2,7 @@ package org.guap;
 
 import org.guap.entities.Model;
 import org.guap.enums.DistributionType;
+import org.guap.enums.ProcessingType;
 import org.guap.enums.SystemType;
 import org.guap.utlis.OutputData;
 
@@ -37,7 +38,7 @@ public class Main {
      * Данный параметр означает вероятность, с которой пользователь, при перемещении в
      * следующую область, решит перенести свою задачу на сервера следующей области
      */
-    public static double a = 0.0;
+    public static double a = 0.5;
     /**
      * Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
      * временной шкале каждой локации
@@ -67,6 +68,8 @@ public class Main {
     public static final double LAMBDA_FOR_TASK_SIZE = 1.0;
     public static final SystemType MODELING_SYSTEM_TYPE = SystemType.KR;
     public static final DistributionType TASK_SIZE_DISTRIBUTION_TYPE = DistributionType.EXPONENTIAL;
+    public static final ProcessingType TASK_PROCESSING_TYPE = ProcessingType.PREEMPTIVE;
+    public static final Short NUMBER_OF_PARALLEL_PROCESSING_THREADS = 4;
 
     /**
      * Данный флаг устанавливает такой параметр системы, как добавления трансферного времени,
@@ -128,7 +131,7 @@ public class Main {
 
         long start = System.currentTimeMillis();
 
-        ExecutorService executor = Executors.newFixedThreadPool(4);
+        ExecutorService executor = Executors.newFixedThreadPool(NUMBER_OF_PARALLEL_PROCESSING_THREADS);
 
         CompletionService<OutputData> service
                 = new ExecutorCompletionService<>(executor);
@@ -154,6 +157,9 @@ public class Main {
             }
         } catch (ExecutionException e) {
             System.err.println("Something went wrong. Check error message " + e.getMessage());
+            for (StackTraceElement currentFrame: e.getStackTrace()) {
+                System.err.println(currentFrame.toString());
+            }
         } finally {
             executor.shutdown();
         }

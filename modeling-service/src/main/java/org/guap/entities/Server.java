@@ -1,6 +1,7 @@
 package org.guap.entities;
 
 import org.guap.Main;
+import org.guap.enums.ProcessingType;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,7 @@ public class Server {
     public ArrayList<WorkUser> transferWorks;
     public double windowInOfPreviousWork;
     public double serviceRateOnThisServer;
+    public ProcessingType processingType;
 
     /**
      * Данный конструктор создаёт объект, который обслуживает и перемщает задачи пользователей
@@ -46,6 +48,7 @@ public class Server {
         switch (MODELING_SYSTEM_TYPE) {
             case KR, MD1 -> serviceRateOnThisServer = Main.serviceRate;
         }
+        this.processingType = TASK_PROCESSING_TYPE;
     }
 
     /**
@@ -91,7 +94,9 @@ public class Server {
                             if (!workUsersOnServer.isEmpty())
                                 workUsersOnServer.get(i % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
                         } else {
-                            workUsersOnServer.get((i + 1) % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
+                            if (workUsersOnServer.size() == 1) {
+                                workUsersOnServer.getFirst().setCurrentProcessingWorkOnServer(true);
+                            } else workUsersOnServer.get((i + 1) % this.numberOfJobs).setCurrentProcessingWorkOnServer(true);
                         }
                     }
                 }
@@ -125,11 +130,21 @@ public class Server {
      * @param tmp Новая задача
      */
     public void addNewWork(WorkUser tmp) {
-        if (this.numberOfJobs == 0)
-            tmp.setCurrentProcessingWorkOnServer(true);
-        tmp.setBeginCountedStatus();
-        this.numberOfJobs++;
-        this.workUsersOnServer.add(tmp);
+        switch (processingType) {
+            case NON_PREEMPTIVE -> {
+                if (this.numberOfJobs == 0)
+                    tmp.setCurrentProcessingWorkOnServer(true);
+                tmp.setBeginCountedStatus();
+                this.numberOfJobs++;
+                this.workUsersOnServer.add(tmp);
+            }
+            case PREEMPTIVE -> {
+                clearAllWorksOnServer();
+                tmp.setCurrentProcessingWorkOnServer(true);
+                this.workUsersOnServer.add(tmp);
+                this.numberOfJobs++;
+            }
+        }
     }
 
     /**
@@ -173,6 +188,10 @@ public class Server {
     public void removeWorkToSwitchServer(WorkUser tmp) {
         this.numberOfJobs--;
         this.workUsersOnServer.remove(tmp);
+    }
+
+    public void clearAllWorksOnServer() {
+        this.workUsersOnServer.clear();
     }
 
 }

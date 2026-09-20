@@ -87,7 +87,7 @@ def main():
     plt.legend()
 
     lineplot(dataX,
-             [dataY1, dataX],
+             [dataX, dataY1],
              ['Входной поток', 'Выходной поток'],
              ['-go', '--bo'],
              "Входная интенсивность, " + chr(955),
