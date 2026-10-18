@@ -82,6 +82,9 @@ public class Model implements Callable<OutputData> {
     public double mAgeOfInfModel;
     public double mAgeOfInfUpperBoundTheor;
     public double mAgeOfInfUpperBoundModel;
+    public Long numberOfAllProcessedWorks;
+    public Long numberOfAllPreemtedWorks;
+    public double percentageOfLoosedWorks;
 
     /**
      * В данном конструкторе задаются все параметры необходимые для работы модели
@@ -100,6 +103,7 @@ public class Model implements Callable<OutputData> {
         this.mediumSizeOfWork = 0;
         this.mAgeOfInfModel = 0;
         this.mAgeOfInfUpperBoundModel = 0;
+        this.percentageOfLoosedWorks = 0;
 
         double p = lambda / serviceRate;
         this.mDTheoretical = switch (MODELING_SYSTEM_TYPE) {
@@ -126,7 +130,8 @@ public class Model implements Callable<OutputData> {
         summaryDelay = 0;
         summaryAgeOfInformation = 0;
         summaryLengthOfWorks = 0;
-
+        numberOfAllProcessedWorks = 0L;
+        numberOfAllPreemtedWorks = 0L;
     }
 
     /**
@@ -199,6 +204,9 @@ public class Model implements Callable<OutputData> {
                             " from his job. Full size = " + currentWorkUser.workInfo.getWorkSize());
                 }
             }
+
+            numberOfAllProcessedWorks += currentLocation.server.numberOfAddedWorks;
+            numberOfAllPreemtedWorks += currentLocation.server.numberOfPreemtedWorks;
         }
 
         this.lambda_out = (double) numberOfExitedWorks / (T * numberOfLocations);
@@ -206,6 +214,7 @@ public class Model implements Callable<OutputData> {
         this.mD = summaryDelay / numberOfExitedWorks;
         this.mAgeOfInfModel = summaryAgeOfInformation / (T * numberOfLocations);
         this.mAgeOfInfUpperBoundModel = this.mD + (1 / lambda);
+        this.percentageOfLoosedWorks = (double) numberOfAllPreemtedWorks / numberOfAllProcessedWorks * 100;
     }
 
     /**
@@ -325,6 +334,10 @@ public class Model implements Callable<OutputData> {
                 .append(mAgeOfInfModel)
                 .append("\n");
 
+        textData.append("Part of loosed works ")
+                .append(percentageOfLoosedWorks)
+                .append("\n");
+
         if (Main.SHOW_WORKS_TRANSFER_PROBABILITY) {
             textData.append("Number of works with transfer numbers\n");
             List<Integer> numberTransfersOfWorks = numberOfTransfersOfCompletedWorks.keySet().stream().sorted().toList();
@@ -363,7 +376,7 @@ public class Model implements Callable<OutputData> {
 
         if (lambda < 1)
             return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime, mDTheoretical, mD,
-                    mAgeOfInfTheor, mAgeOfInfModel, mAgeOfInfUpperBoundTheor, mAgeOfInfUpperBoundModel);
+                    mAgeOfInfTheor, mAgeOfInfModel, mAgeOfInfUpperBoundTheor, mAgeOfInfUpperBoundModel, percentageOfLoosedWorks);
         else return new OutputData(lambda, lambda_out, mediumSizeOfWork, transfersPerTime);
     }
 }

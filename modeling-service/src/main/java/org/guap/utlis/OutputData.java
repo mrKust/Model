@@ -35,6 +35,7 @@ public class OutputData {
     private double mAgeOfInfModel;
     public double mAgeOfInfUpperBoundTheor;
     public double mAgeOfInfUpperBoundModel;
+    public double partOfLoosedWorks;
 
     /**
      * Данный конструктор применяется для сохраненя выходных данных при значении входной интенсивности больше 1.
@@ -72,7 +73,8 @@ public class OutputData {
             double mAgeOfInfTheor,
             double mAgeOfInfModel,
             double mAgeOfInfUpperBoundTheor,
-            double mAgeOfInfUpperBoundModel
+            double mAgeOfInfUpperBoundModel,
+            double partOfLoosedWorks
     ) {
         this.lambdaIn = lambdaIn;
         this.lambdaOut = lambdaOut;
@@ -84,6 +86,7 @@ public class OutputData {
         this.mAgeOfInfModel = mAgeOfInfModel;
         this.mAgeOfInfUpperBoundTheor = mAgeOfInfUpperBoundTheor;
         this.mAgeOfInfUpperBoundModel = mAgeOfInfUpperBoundModel;
+        this.partOfLoosedWorks = partOfLoosedWorks;
     }
 
     public double getLambdaIn() {
@@ -99,6 +102,7 @@ public class OutputData {
                     " " + transfersPerTime +
                     " " + mAgeOfInfTheor +
                     " " + mAgeOfInfModel +
+                    " " + partOfLoosedWorks +
                     " " + mDTheoretical +
                     " " + mD +
                     " " + mAgeOfInfUpperBoundTheor +

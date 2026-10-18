@@ -10,58 +10,253 @@ def lineplot(x_data, y_data, y_labels, lane_colors, x_label="", y_label="", titl
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
-
+    ax.grid(True)
 
 def main():
     data = []
-    with open("../data/summary.txt") as f:
+    with open("../modeling-service/modelPREEMPTIVE0.2.txt") as f:
         for line in f:
             data.append([float(x) for x in line.split()])
 
     print(data)
-    dataX = []
-    dataY1 = []
-    dataY2 = []
-    dataY3 = []
-    dataY4 = []
-    dataY5 = []
-    dataY6 = []
-    dataY7 = []
-    dataY8 = []
-    dataY9 = []
-    dataY10 = []
+    dataXPREEMPTIVE02 = []
+    dataY1PREEMPTIVE02 = []
+    dataY2PREEMPTIVE02 = []
+    dataY3PREEMPTIVE02 = []
+    dataY4PREEMPTIVE02 = []
+    dataY5PREEMPTIVE02 = []
+    dataY6PREEMPTIVE02 = []
+    dataY7PREEMPTIVE02 = []
+    dataY8PREEMPTIVE02 = []
+    dataY9PREEMPTIVE02 = []
+    dataY10PREEMPTIVE02 = []
 
     for line in data:
-        dataX.append(line.pop(0))
-        dataY1.append(line.pop(0)) #theor
-        dataY2.append(line.pop(0)) #md exp
-        dataY3.append(line.pop(0)) #aoi exp
-        dataY4.append(line.pop(0)) #tmp exp
-        dataY5.append(line.pop(0)) #md const
-        if (dataX[-1] < 1.0):
-            dataY6.append(line.pop(0)) # aoi const
-            dataY7.append(line.pop(0)) # tmp const
-            dataY8.append(line.pop(0)) # md uniform
-            dataY9.append(line.pop(0)) # aoi uniform
-            dataY10.append(line.pop(0)) # tmp uniform
+        dataXPREEMPTIVE02.append(line.pop(0))
+        dataY1PREEMPTIVE02.append(line.pop(0))
+        dataY2PREEMPTIVE02.append(line.pop(0))
+        dataY3PREEMPTIVE02.append(line.pop(0))
+        dataY4PREEMPTIVE02.append(line.pop(0))
+        dataY5PREEMPTIVE02.append(line.pop(0))
+        dataY6PREEMPTIVE02.append(line.pop(0))
+        if (dataXPREEMPTIVE02[-1] < 1.0):
+            dataY7PREEMPTIVE02.append(line.pop(0))
+            dataY8PREEMPTIVE02.append(line.pop(0))
+            dataY9PREEMPTIVE02.append(line.pop(0))
+            dataY10PREEMPTIVE02.append(line.pop(0))
 
-    lineplot(dataX,
-             [dataY1, dataY2, dataY3, dataY5, dataY6, dataY8, dataY9],
-             ['theor D', 'D exp', 'AoI exp', 'D const', 'AoI const', 'D uniform', 'AoI uniform'],
-             ['--go', '--bo', '--yo', '--ro', '-co', '--ko', '--mo'],
+    data = []
+    with open("../modeling-service/modelNON_PREEMPTIVE0.2.txt") as f2:
+        for line in f2:
+            data.append([float(x) for x in line.split()])
+
+    print(data)
+    dataXNON_PREEMPTIVE02 = []
+    dataY1NON_PREEMPTIVE02 = []
+    dataY2NON_PREEMPTIVE02 = []
+    dataY3NON_PREEMPTIVE02 = []
+    dataY4NON_PREEMPTIVE02 = []
+    dataY5NON_PREEMPTIVE02 = []
+    dataY6NON_PREEMPTIVE02 = []
+    dataY7NON_PREEMPTIVE02 = []
+    dataY8NON_PREEMPTIVE02 = []
+    dataY9NON_PREEMPTIVE02 = []
+    dataY10NON_PREEMPTIVE02 = []
+
+    for line in data:
+        dataXNON_PREEMPTIVE02.append(line.pop(0))
+        dataY1NON_PREEMPTIVE02.append(line.pop(0))
+        dataY2NON_PREEMPTIVE02.append(line.pop(0))
+        dataY3NON_PREEMPTIVE02.append(line.pop(0))
+        dataY4NON_PREEMPTIVE02.append(line.pop(0))
+        dataY5NON_PREEMPTIVE02.append(line.pop(0))
+        dataY6NON_PREEMPTIVE02.append(line.pop(0))
+        if (dataXNON_PREEMPTIVE02[-1] < 1.0):
+            dataY7NON_PREEMPTIVE02.append(line.pop(0))
+            dataY8NON_PREEMPTIVE02.append(line.pop(0))
+            dataY9NON_PREEMPTIVE02.append(line.pop(0))
+            dataY10NON_PREEMPTIVE02.append(line.pop(0))
+
+    data = []
+    with open("../modeling-service/modelPREEMPTIVE0.5.txt") as f3:
+            for line in f3:
+                data.append([float(x) for x in line.split()])
+
+    print(data)
+    dataXPREEMPTIVE05 = []
+    dataY1PREEMPTIVE05 = []
+    dataY2PREEMPTIVE05 = []
+    dataY3PREEMPTIVE05 = []
+    dataY4PREEMPTIVE05 = []
+    dataY5PREEMPTIVE05 = []
+    dataY6PREEMPTIVE05 = []
+    dataY7PREEMPTIVE05 = []
+    dataY8PREEMPTIVE05 = []
+    dataY9PREEMPTIVE05 = []
+    dataY10PREEMPTIVE05 = []
+
+    for line in data:
+        dataXPREEMPTIVE05.append(line.pop(0))
+        dataY1PREEMPTIVE05.append(line.pop(0))
+        dataY2PREEMPTIVE05.append(line.pop(0))
+        dataY3PREEMPTIVE05.append(line.pop(0))
+        dataY4PREEMPTIVE05.append(line.pop(0))
+        dataY5PREEMPTIVE05.append(line.pop(0))
+        dataY6PREEMPTIVE05.append(line.pop(0))
+        if (dataXPREEMPTIVE05[-1] < 1.0):
+            dataY7PREEMPTIVE05.append(line.pop(0))
+            dataY8PREEMPTIVE05.append(line.pop(0))
+            dataY9PREEMPTIVE05.append(line.pop(0))
+            dataY10PREEMPTIVE05.append(line.pop(0))
+
+    data = []
+    with open("../modeling-service/modelNON_PREEMPTIVE0.5.txt") as f4:
+        for line in f4:
+            data.append([float(x) for x in line.split()])
+
+    print(data)
+    dataXNON_PREEMPTIVE05 = []
+    dataY1NON_PREEMPTIVE05 = []
+    dataY2NON_PREEMPTIVE05 = []
+    dataY3NON_PREEMPTIVE05 = []
+    dataY4NON_PREEMPTIVE05 = []
+    dataY5NON_PREEMPTIVE05 = []
+    dataY6NON_PREEMPTIVE05 = []
+    dataY7NON_PREEMPTIVE05 = []
+    dataY8NON_PREEMPTIVE05 = []
+    dataY9NON_PREEMPTIVE05 = []
+    dataY10NON_PREEMPTIVE05 = []
+
+    for line in data:
+        dataXNON_PREEMPTIVE05.append(line.pop(0))
+        dataY1NON_PREEMPTIVE05.append(line.pop(0))
+        dataY2NON_PREEMPTIVE05.append(line.pop(0))
+        dataY3NON_PREEMPTIVE05.append(line.pop(0))
+        dataY4NON_PREEMPTIVE05.append(line.pop(0))
+        dataY5NON_PREEMPTIVE05.append(line.pop(0))
+        dataY6NON_PREEMPTIVE05.append(line.pop(0))
+        if (dataXNON_PREEMPTIVE05[-1] < 1.0):
+            dataY7NON_PREEMPTIVE05.append(line.pop(0))
+            dataY8NON_PREEMPTIVE05.append(line.pop(0))
+            dataY9NON_PREEMPTIVE05.append(line.pop(0))
+            dataY10NON_PREEMPTIVE05.append(line.pop(0))
+
+    data = []
+    with open("../modeling-service/modelPREEMPTIVE0.8.txt") as f5:
+            for line in f5:
+                data.append([float(x) for x in line.split()])
+
+    print(data)
+    dataXPREEMPTIVE08 = []
+    dataY1PREEMPTIVE08 = []
+    dataY2PREEMPTIVE08 = []
+    dataY3PREEMPTIVE08 = []
+    dataY4PREEMPTIVE08 = []
+    dataY5PREEMPTIVE08 = []
+    dataY6PREEMPTIVE08 = []
+    dataY7PREEMPTIVE08 = []
+    dataY8PREEMPTIVE08 = []
+    dataY9PREEMPTIVE08 = []
+    dataY10PREEMPTIVE08 = []
+
+    for line in data:
+        dataXPREEMPTIVE08.append(line.pop(0))
+        dataY1PREEMPTIVE08.append(line.pop(0))
+        dataY2PREEMPTIVE08.append(line.pop(0))
+        dataY3PREEMPTIVE08.append(line.pop(0))
+        dataY4PREEMPTIVE08.append(line.pop(0))
+        dataY5PREEMPTIVE08.append(line.pop(0))
+        dataY6PREEMPTIVE08.append(line.pop(0))
+        if (dataXPREEMPTIVE08[-1] < 1.0):
+            dataY7PREEMPTIVE08.append(line.pop(0))
+            dataY8PREEMPTIVE08.append(line.pop(0))
+            dataY9PREEMPTIVE08.append(line.pop(0))
+            dataY10PREEMPTIVE08.append(line.pop(0))
+
+    data = []
+    with open("../modeling-service/modelNON_PREEMPTIVE0.8.txt") as f6:
+        for line in f6:
+            data.append([float(x) for x in line.split()])
+
+    print(data)
+    dataXNON_PREEMPTIVE08 = []
+    dataY1NON_PREEMPTIVE08 = []
+    dataY2NON_PREEMPTIVE08 = []
+    dataY3NON_PREEMPTIVE08 = []
+    dataY4NON_PREEMPTIVE08 = []
+    dataY5NON_PREEMPTIVE08 = []
+    dataY6NON_PREEMPTIVE08 = []
+    dataY7NON_PREEMPTIVE08 = []
+    dataY8NON_PREEMPTIVE08 = []
+    dataY9NON_PREEMPTIVE08 = []
+    dataY10NON_PREEMPTIVE08 = []
+
+    for line in data:
+        dataXNON_PREEMPTIVE08.append(line.pop(0))
+        dataY1NON_PREEMPTIVE08.append(line.pop(0))
+        dataY2NON_PREEMPTIVE08.append(line.pop(0))
+        dataY3NON_PREEMPTIVE08.append(line.pop(0))
+        dataY4NON_PREEMPTIVE08.append(line.pop(0))
+        dataY5NON_PREEMPTIVE08.append(line.pop(0))
+        dataY6NON_PREEMPTIVE08.append(line.pop(0))
+        if (dataXNON_PREEMPTIVE08[-1] < 1.0):
+            dataY7NON_PREEMPTIVE08.append(line.pop(0))
+            dataY8NON_PREEMPTIVE08.append(line.pop(0))
+            dataY9NON_PREEMPTIVE08.append(line.pop(0))
+            dataY10NON_PREEMPTIVE08.append(line.pop(0))
+
+    lineplot(dataXNON_PREEMPTIVE02,
+#              [dataY5PREEMPTIVE02, dataY5PREEMPTIVE05, dataY5PREEMPTIVE08],
+             [dataY5NON_PREEMPTIVE02, dataY5NON_PREEMPTIVE05, dataY5NON_PREEMPTIVE08],
+             ['Вероятность переноса 0.2', 'Вероятность переноса 0.5', 'Вероятность переноса 0.8'],
+             ['-go', '--bo', '--yo'],
              "Входная интенсивность, " + chr(955),
-             "Cредний возраст информации\nCредняя задержка",
-             "Средняя задержка и средний возраст информации для системы\nс круговым опросом при разных законах обслуживания"
+             "Средний возраст информации,\nAoI, ед.времени",
+             "Средний возраст информации"
              )
     plt.legend()
 
-    lineplot(dataX,
-             [dataY4, dataY7, dataY10],
-             ['Tmp exp', 'Tmp const', 'Tmp uniform'],
+    lineplot(dataXNON_PREEMPTIVE02,
+#              [dataY8PREEMPTIVE02, dataY8PREEMPTIVE05, dataY8PREEMPTIVE08],
+             [dataY8NON_PREEMPTIVE02, dataY8NON_PREEMPTIVE05, dataY8NON_PREEMPTIVE08],
+             ['Вероятность переноса 0.2', 'Вероятность переноса 0.5', 'Вероятность переноса 0.8'],
              ['-go', '--bo', '--yo'],
              "Входная интенсивность, " + chr(955),
-             "Tmp",
-             "Средняя задержка + 1/входная интенсивность"
+             "Средняя задержка, D, квант",
+             "Среднее значение задержки от входной интенсивности"
+             )
+    plt.legend()
+
+    lineplot(dataXNON_PREEMPTIVE02,
+#              [dataY1PREEMPTIVE02, dataY1PREEMPTIVE05, dataY1PREEMPTIVE08],
+             [dataY1NON_PREEMPTIVE02, dataY1NON_PREEMPTIVE05, dataY1NON_PREEMPTIVE08],
+             ['Вероятность переноса 0.2', 'Вероятность переноса 0.5', 'Вероятность переноса 0.8'],
+             ['-go', '--bo', '--yo'],
+             "Входная интенсивность, " + chr(955),
+             "Выходная интенсивность, " + chr(955),
+             "Зависимость выходной интенсивности от\nвходной интенсивности"
+             )
+    plt.legend()
+
+    lineplot(dataXNON_PREEMPTIVE02,
+#              [dataY6PREEMPTIVE02, dataY6PREEMPTIVE05, dataY6PREEMPTIVE08],
+             [dataY6NON_PREEMPTIVE02, dataY6NON_PREEMPTIVE05, dataY6NON_PREEMPTIVE08],
+             ['Вероятность переноса 0.2', 'Вероятность переноса 0.5', 'Вероятность переноса 0.8'],
+             ['-go', '--bo', '--yo'],
+             "Входная интенсивность, " + chr(955),
+             "Процент потерянных задач, %",
+             "Зависимость процента потерянных задач от\nвходной интенсивности"
+             )
+    plt.legend()
+
+    lineplot(dataXNON_PREEMPTIVE02,
+#              [dataY2PREEMPTIVE02, dataY2PREEMPTIVE05, dataY2PREEMPTIVE08],
+             [dataY2NON_PREEMPTIVE02, dataY2NON_PREEMPTIVE05, dataY2NON_PREEMPTIVE08],
+             ['Вероятность переноса 0.2', 'Вероятность переноса 0.5', 'Вероятность переноса 0.8'],
+             ['-go', '--bo', '--yo'],
+             "Входная интенсивность, " + chr(955),
+             "Средний размер задачи, квант",
+             "Зависимость среднего размера задач от\nвходной интенсивности"
              )
     plt.legend()
 

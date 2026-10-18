@@ -33,6 +33,8 @@ public class Server {
     public double windowInOfPreviousWork;
     public double serviceRateOnThisServer;
     public ProcessingType processingType;
+    public Long numberOfAddedWorks;
+    public Long numberOfPreemtedWorks;
 
     /**
      * Данный конструктор создаёт объект, который обслуживает и перемщает задачи пользователей
@@ -43,6 +45,8 @@ public class Server {
         this.numberOfLocation = i;
         this.numberOfJobs = 0;
         this.windowInOfPreviousWork = 0;
+        this.numberOfAddedWorks = 0L;
+        this.numberOfPreemtedWorks = 0L;
         workUsersOnServer = new ArrayList<>();
         transferWorks = new ArrayList<>();
         switch (MODELING_SYSTEM_TYPE) {
@@ -130,6 +134,9 @@ public class Server {
      * @param tmp Новая задача
      */
     public void addNewWork(WorkUser tmp) {
+        if (!tmp.statusBeginCount) {
+            this.numberOfAddedWorks++;
+        }
         switch (processingType) {
             case NON_PREEMPTIVE -> {
                 if (this.numberOfJobs == 0)
@@ -141,6 +148,7 @@ public class Server {
             case PREEMPTIVE -> {
                 clearAllWorksOnServer();
                 tmp.setCurrentProcessingWorkOnServer(true);
+                tmp.setBeginCountedStatus();
                 this.workUsersOnServer.add(tmp);
                 this.numberOfJobs++;
             }
@@ -191,6 +199,7 @@ public class Server {
     }
 
     public void clearAllWorksOnServer() {
+        this.numberOfPreemtedWorks += this.workUsersOnServer.size();
         this.workUsersOnServer.clear();
     }
 

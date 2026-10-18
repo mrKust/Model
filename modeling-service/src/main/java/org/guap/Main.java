@@ -38,7 +38,7 @@ public class Main {
      * Данный параметр означает вероятность, с которой пользователь, при перемещении в
      * следующую область, решит перенести свою задачу на сервера следующей области
      */
-    public static double a = 0.5;
+    public static double a = 0.0;
     /**
      * Данный параметр означает размер кванта, то есть размер шага с которым мы двигаемся по
      * временной шкале каждой локации
@@ -47,7 +47,7 @@ public class Main {
     /**
      * Данный параметр означает количество областей с которыми производиться моделирование
      */
-    public static int numberOfLocations = 1;
+    public static int numberOfLocations = 8;
     /**
      * Данный параметр означает какое условное количество единиц времени производится
      * моделирование
@@ -68,7 +68,7 @@ public class Main {
     public static final double LAMBDA_FOR_TASK_SIZE = 1.0;
     public static final SystemType MODELING_SYSTEM_TYPE = SystemType.KR;
     public static final DistributionType TASK_SIZE_DISTRIBUTION_TYPE = DistributionType.EXPONENTIAL;
-    public static final ProcessingType TASK_PROCESSING_TYPE = ProcessingType.PREEMPTIVE;
+    public static final ProcessingType TASK_PROCESSING_TYPE = ProcessingType.NON_PREEMPTIVE;
     public static final Short NUMBER_OF_PARALLEL_PROCESSING_THREADS = 4;
 
     /**
@@ -79,7 +79,7 @@ public class Main {
      * Значение false - означает, что при переносе задачи на её перенос не потребуется дополнительного
      * времени
      */
-    public static final boolean ADD_TRANSFER_TIME = false;
+    public static final boolean ADD_TRANSFER_TIME = true;
 
     /**
      * Данный параметр хранит значение необходимое для отображения итоговых данных по каждой области.
@@ -123,7 +123,8 @@ public class Main {
 
         BufferedWriter outputFile;
         try {
-            outputFile = new BufferedWriter(new FileWriter("model.txt"));
+//            outputFile = new BufferedWriter(new FileWriter("model"+ TASK_PROCESSING_TYPE + a +".txt"));
+            outputFile = new BufferedWriter(new FileWriter("model"+ TASK_PROCESSING_TYPE + ".txt"));
         } catch (IOException e) {
             System.err.println("Problems with output file model.txt " + e.getMessage());
             throw new RuntimeException(e);
